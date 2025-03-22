@@ -357,16 +357,7 @@ int daCow_c::checkBck(int param_0) {
 
 /* 80658830-80658A68 000350 0238+00 1/1 0/0 0/0 .text            setEffect__7daCow_cFv */
 void daCow_c::setEffect() {
-    cXyz vector_1;
-    cXyz vector_2;
-    cXyz vector_3;
-    cXyz vector_4;
-
-    cXyz* vector_ptr_1;
-    cXyz* vector_ptr_2;
-    cXyz* vector_ptr_3;
-
-    static Vec runScale = {2.0f, 2.0f, 2.0f};
+    cXyz vectors[4];
 
     if (mShouldSetEffect != 0) {
         if (mShouldSetEffect == 1) {
@@ -374,38 +365,29 @@ void daCow_c::setEffect() {
                 cXyz offset(0.0f, -70.0f, 25.0f);
 
                 offset.x = 10.0f;
-                cLib_offsetPos(&vector_4, &current.pos, field_0xc32.y, &offset);
+                cLib_offsetPos(&vectors[0], &current.pos, field_0xc32.y, &offset);
                 offset.x = 0.0;
-                cLib_offsetPos(&vector_1, &current.pos, field_0xc32.y, &offset);
+                cLib_offsetPos(&vectors[2], &current.pos, field_0xc32.y, &offset);
                 offset.x = -25.0;
-                cLib_offsetPos(&vector_1, &current.pos, field_0xc32.y, &offset);
+                cLib_offsetPos(&vectors[2], &current.pos, field_0xc32.y, &offset);
             } else {
                 mShouldSetEffect = 0;
             }
 
-            if (!mShouldSetEffect) {
-                vector_ptr_1 = NULL;
-            } else {
-                vector_ptr_1 = &vector_2;
-            }
-            if (!mShouldSetEffect) {
-                vector_ptr_2 = NULL;
-            } else {
-                vector_ptr_2 = &vector_1;
-            }
-            if (!mShouldSetEffect) {
-                vector_ptr_3 = NULL;
-            } else {
-                vector_ptr_3 = &vector_4;
-            }
+            int roomNumber = fopAcM_GetRoomNo(this);
 
-            mParticle.setEffectTwo(&tevStr, &current.pos, 0, 0, vector_ptr_3, vector_ptr_2,
-                                   vector_ptr_3, &field_0xc32, NULL, fopAcM_GetRoomNo(this), 1.0,
-                                   speedF);
+            cXyz* vector_ptr_1 = mShouldSetEffect ? &vectors[1] : NULL;
+            cXyz* vector_ptr_3 = mShouldSetEffect ? &vectors[2] : NULL;
+            cXyz* vector_ptr_2 = mShouldSetEffect ? &vectors[3] : NULL;
+
+            mParticle.setEffectTwo(&tevStr, &current.pos, 0, 0, vector_ptr_1, vector_ptr_2,
+                                   vector_ptr_3, &field_0xc32, NULL, roomNumber, 1.0, speedF);
+
+            static cXyz runScale(2.0f, 2.0f, 2.0f);
 
             for (int i = 0; i < 3; i = i + 1) {
                 for (int j = 0; j < 2; j = j + 1) {
-                    JPABaseEmitter* emitter = mParticle.getRightEmitter(i, j);
+                    JPABaseEmitter* emitter = mParticle.getEmitterTwo(i, j, 0);
 
                     if (emitter) {
                         emitter->setGlobalScale(runScale);
