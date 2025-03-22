@@ -580,25 +580,7 @@ void daCow_c::setRushVibration(int param_0) {
     // NONMATCHING
 }
 
-/* ##############################################################################################
- */
-/* 80662F58-80662F64 000000 000C+00 13/13 0/0 0/0 .data            cNullVec__6Z2Calc */
-SECTION_DATA static u8 cNullVec__6Z2Calc[12] = {
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-};
-
-/* 80662F64-80662F78 00000C 0004+10 0/0 0/0 0/0 .data            @1787 */
-#pragma push
-#pragma force_active on
-SECTION_DATA static u32 lit_1787[1 + 4 /* padding */] = {
-    0x02000201,
-    /* padding */
-    0x40080000,
-    0x00000000,
-    0x3FE00000,
-    0x00000000,
-};
-#pragma pop
+UNK_REL_DATA;
 
 /* 80662F78-80662FB8 000020 0040+00 0/1 0/0 0/0 .data            cc_sph_src__21@unnamed@d_a_cow_cpp@
  */
