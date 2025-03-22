@@ -475,8 +475,10 @@ void daCow_c::setSeSnort() {
 }
 
 /* 80658D3C-80658DB8 00085C 007C+00 2/2 0/0 0/0 .text            setRushVibration__7daCow_cFi */
-void daCow_c::setRushVibration(int param_0) {
-    // NONMATCHING
+void daCow_c::setRushVibration(int i_vibmode) {
+    if (mpMorf->checkFrame(1.0f)) {
+        dComIfGp_getVibration().StartShock(i_vibmode, 0x1F, cXyz(0.0f, 1.0f, 0.0f));
+    }
 }
 
 UNK_REL_DATA;
