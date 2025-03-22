@@ -437,7 +437,12 @@ void daCow_c::setCarryStatus() {
 
 /* 80658C18-80658C78 000738 0060+00 5/5 0/0 0/0 .text            setActetcStatus__7daCow_cFv */
 void daCow_c::setActetcStatus() {
-    // NONMATCHING
+    if (!field_0xca8) {
+        s32 playerAngle = fopAcM_seenPlayerAngleY(this);
+        if (playerAngle < 0x6000 && playerAngle > 0x2000) {
+            attention_info.flags = attention_info.flags | 0x80;  // in debug this is 0x800
+        }
+    }
 }
 
 /* 80658C78-80658CA4 000798 002C+00 3/3 0/0 0/0 .text            checkNadeNadeFinish__7daCow_cFv */

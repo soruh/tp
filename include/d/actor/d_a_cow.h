@@ -180,7 +180,7 @@ private:
     /* 0xca5 */ u8 field_0xca5;
     /* 0xca6 */ u8 field_0xca6;
     /* 0xca7 */ u8 field_0xca7;  // undefined
-    /* 0xca8 */ s8 field_0xca8;
+    /* 0xca8 */ u8 field_0xca8;
     /* 0xca9 */ u8 field_0xca9;
     /* 0xcaa */ u8 field_0xcaa;
     /* 0xcab */ u8 field_0xcab;  // undefined
