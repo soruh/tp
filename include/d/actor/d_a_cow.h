@@ -141,7 +141,7 @@ private:
     /* 0xc5a */ u8 field_0xc5a;  // undefined
     /* 0xc5b */ u8 field_0xc5b;  // undefined
     /* 0xc5c */ u16 field_0xc5c;
-    /* 0xc5e */ s8 field_0xc5e;
+    /* 0xc5e */ s8 mAnimationPhase;
     /* 0xc5f */ u8 mPrm0;
     /* 0xc60 */ u8 field_0xc60;
     /* 0xc61 */ u8 field_0xc61;

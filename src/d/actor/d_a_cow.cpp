@@ -268,73 +268,80 @@ extern "C" void __register_global_object();
 // Declarations:
 //
 
-/* ############################################################################################## */
-/* 80662DB0-80662DB4 000000 0004+00 37/37 0/0 0/0 .rodata          @3987 */
-SECTION_RODATA static f32 const lit_3987 = 35.0f;
-COMPILER_STRIP_GATE(0x80662DB0, &lit_3987);
+// /* ##############################################################################################
+// */
+// /* 80662DB0-80662DB4 000000 0004+00 37/37 0/0 0/0 .rodata          @3987 */
+// SECTION_RODATA static f32 const lit_3987 = 35.0f;
+// COMPILER_STRIP_GATE(0x80662DB0, &lit_3987);
 
-/* 80662DB4-80662DB8 000004 0004+00 0/6 0/0 0/0 .rodata          @3988 */
-#pragma push
-#pragma force_active on
-SECTION_RODATA static f32 const lit_3988 = 5.0f;
-COMPILER_STRIP_GATE(0x80662DB4, &lit_3988);
-#pragma pop
+// /* 80662DB4-80662DB8 000004 0004+00 0/6 0/0 0/0 .rodata          @3988 */
+// #pragma push
+// #pragma force_active on
+// SECTION_RODATA static f32 const lit_3988 = 5.0f;
+// COMPILER_STRIP_GATE(0x80662DB4, &lit_3988);
+// #pragma pop
 
-/* 80662DB8-80662DBC 000008 0004+00 6/31 0/0 0/0 .rodata          @3989 */
-SECTION_RODATA static f32 const lit_3989 = 1.0f;
-COMPILER_STRIP_GATE(0x80662DB8, &lit_3989);
+// /* 80662DB8-80662DBC 000008 0004+00 6/31 0/0 0/0 .rodata          @3989 */
+// SECTION_RODATA static f32 const lit_3989 = 1.0f;
+// COMPILER_STRIP_GATE(0x80662DB8, &lit_3989);
 
-/* 80662DBC-80662DC0 00000C 0004+00 0/5 0/0 0/0 .rodata          @3990 */
-#pragma push
-#pragma force_active on
-SECTION_RODATA static f32 const lit_3990 = 3.0f;
-COMPILER_STRIP_GATE(0x80662DBC, &lit_3990);
-#pragma pop
+// /* 80662DBC-80662DC0 00000C 0004+00 0/5 0/0 0/0 .rodata          @3990 */
+// #pragma push
+// #pragma force_active on
+// SECTION_RODATA static f32 const lit_3990 = 3.0f;
+// COMPILER_STRIP_GATE(0x80662DBC, &lit_3990);
+// #pragma pop
 
-/* 80662DC0-80662DC4 000010 0004+00 0/3 0/0 0/0 .rodata          @3991 */
-#pragma push
-#pragma force_active on
-SECTION_RODATA static f32 const lit_3991 = 25.0f;
-COMPILER_STRIP_GATE(0x80662DC0, &lit_3991);
-#pragma pop
+// /* 80662DC0-80662DC4 000010 0004+00 0/3 0/0 0/0 .rodata          @3991 */
+// #pragma push
+// #pragma force_active on
+// SECTION_RODATA static f32 const lit_3991 = 25.0f;
+// COMPILER_STRIP_GATE(0x80662DC0, &lit_3991);
+// #pragma pop
 
-/* 80662DC4-80662DC8 000014 0004+00 0/2 0/0 0/0 .rodata          @3992 */
-#pragma push
-#pragma force_active on
-SECTION_RODATA static f32 const lit_3992 = 13.0f / 10.0f;
-COMPILER_STRIP_GATE(0x80662DC4, &lit_3992);
-#pragma pop
+// /* 80662DC4-80662DC8 000014 0004+00 0/2 0/0 0/0 .rodata          @3992 */
+// #pragma push
+// #pragma force_active on
+// SECTION_RODATA static f32 const lit_3992 = 13.0f / 10.0f;
+// COMPILER_STRIP_GATE(0x80662DC4, &lit_3992);
+// #pragma pop
 
 /* 806585CC-80658730 0000EC 0164+00 6/6 0/0 0/0 .text            calcRunAnime__7daCow_cFi */
-int daCow_c::calcRunAnime(int param_0) {
-    if (param_0 != 0) {
-        field_0xc5e = 0;
+int daCow_c::calcRunAnime(int resetAnimation) {
+    if (resetAnimation != 0) {
+        mAnimationPhase = 0;
     }
-    s8 bVar1 = field_0xc5e;
-    if (bVar1 == 1) {
-        float fVar2 = (speedF * 3.0) / 25.0;
-        if (fVar2 > 5.0) {
-            fVar2 = 5.0;
-        }
-        mpMorf->mFrameCtrl.mRate = fVar2;
-        if (speedF > 35.0) {
-            setBck(0x13, 2, 5.0, 1.0);
-            field_0xc5e = 2;
-        }
-    } else if ((char)bVar1 < 1) {
-        if ((char)bVar1 > -1) {
-            if (speedF >= 35.0) {
-                setBck(0x13, 2, 5.0, 1.0);
-                field_0xc5e = 2;
-            } else {
+    int animationPhase = mAnimationPhase;
+
+    if (animationPhase != 1) {
+        if (animationPhase < 1) {
+            if (animationPhase >= 0) {
+                if (speedF >= 35.0f) {
+                    setBck(0x13, 2, 5.0f, 1.0f);
+                    mAnimationPhase = 2;
+                } else {
+                    setBck(0x19, 2, 5.0f, 1.0f);
+                    mAnimationPhase = 1;
+                }
+            }
+        } else if (animationPhase < 3) {
+            mpMorf->setPlaySpeed(1.3f);
+
+            if (speedF < 35.0) {
                 setBck(0x19, 2, 5.0, 1.0);
-                field_0xc5e = 1;
+                mAnimationPhase = 1;
             }
         }
-        // todo: wtf
-    } else if (((char)bVar1 < 3) && (mpMorf->mFrameCtrl.mRate = 1.3, speedF < 35.0)) {
-        setBck(0x19, '\x02', 5.0, 1.0);
-        field_0xc5e = 1;
+    } else {
+        f32 newSpeed = (speedF * 3.0f) / 25.0f;
+        if (newSpeed > 5.0f) {
+            newSpeed = 5.0f;
+        }
+        mpMorf->setPlaySpeed(newSpeed);
+        if (speedF > 35.0f) {
+            setBck(0x13, 2, 5.0f, 1.0f);
+            mAnimationPhase = 2;
+        }
     }
     return 1;
 }
