@@ -11,7 +11,6 @@
 // Forward References:
 //
 
-extern "C" void calcRunAnime__7daCow_cFi();
 extern "C" void setBck__7daCow_cFiUcff();
 extern "C" void checkBck__7daCow_cFi();
 extern "C" void setEffect__7daCow_cFv();
@@ -307,8 +306,37 @@ COMPILER_STRIP_GATE(0x80662DC4, &lit_3992);
 #pragma pop
 
 /* 806585CC-80658730 0000EC 0164+00 6/6 0/0 0/0 .text            calcRunAnime__7daCow_cFi */
-void daCow_c::calcRunAnime(int param_0) {
-    // NONMATCHING
+int daCow_c::calcRunAnime(int param_0) {
+    if (param_0 != 0) {
+        field_0xc5e = 0;
+    }
+    s8 bVar1 = field_0xc5e;
+    if (bVar1 == 1) {
+        float fVar2 = (speedF * 3.0) / 25.0;
+        if (fVar2 > 5.0) {
+            fVar2 = 5.0;
+        }
+        mpMorf->mFrameCtrl.mRate = fVar2;
+        if (speedF > 35.0) {
+            setBck(0x13, 2, 5.0, 1.0);
+            field_0xc5e = 2;
+        }
+    } else if ((char)bVar1 < 1) {
+        if ((char)bVar1 > -1) {
+            if (speedF >= 35.0) {
+                setBck(0x13, 2, 5.0, 1.0);
+                field_0xc5e = 2;
+            } else {
+                setBck(0x19, 2, 5.0, 1.0);
+                field_0xc5e = 1;
+            }
+        }
+        // todo: wtf
+    } else if (((char)bVar1 < 3) && (mpMorf->mFrameCtrl.mRate = 1.3, speedF < 35.0)) {
+        setBck(0x19, '\x02', 5.0, 1.0);
+        field_0xc5e = 1;
+    }
+    return 1;
 }
 
 /* ############################################################################################## */

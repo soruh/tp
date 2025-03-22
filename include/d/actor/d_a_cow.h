@@ -1,6 +1,9 @@
 #ifndef D_A_COW_H
 #define D_A_COW_H
 
+#include "d/d_bg_s_acch.h"
+#include "d/d_cc_d.h"
+#include "d/d_path.h"
 #include "f_op/f_op_actor_mng.h"
 
 /**
@@ -13,7 +16,7 @@
  */
 class daCow_c : public fopAc_ac_c {
 public:
-    /* 806585CC */ void calcRunAnime(int);
+    /* 806585CC */ int calcRunAnime(int);
     /* 80658730 */ void setBck(int, u8, f32, f32);
     /* 806587D4 */ void checkBck(int);
     /* 80658830 */ void setEffect();
@@ -98,17 +101,94 @@ public:
     /* 80662BE4 */ void Delete();
     /* 80662D70 */ void getShapeAngle();
 
-    void setNaderu() { field_0x568 |= 0x80; }
-    void setNaderuFinish() { field_0x568 |= 0x100; }
-    void setCrazyDash() { field_0x568 |= 4; }
-    void setCrazyBeforeCatch() { field_0x568 |= 1; }
-    void setCrazyCatch() { field_0x568 |= 2; }
-    void setCrazyThrowLeft() { field_0x568 |= 8; }
-    void setCrazyThrowRight() { field_0x568 |= 0x10; }
+    void setNaderu() { mFlags |= 0x80; }
+    void setNaderuFinish() { mFlags |= 0x100; }
+    void setCrazyDash() { mFlags |= 4; }
+    void setCrazyBeforeCatch() { mFlags |= 1; }
+    void setCrazyCatch() { mFlags |= 2; }
+    void setCrazyThrowLeft() { mFlags |= 8; }
+    void setCrazyThrowRight() { mFlags |= 0x10; }
 
 private:
-    /* 0x568 */ u16 field_0x568;
-    /* 0x56A */ u8 field_0x56a[0xD40 - 0x56A];
+    /* 0x568 */ u16 mFlags;
+    /* 0x56a */ u8 field_0x56a;  // undefined
+    /* 0x56b */ u8 field_0x56b;  // undefined
+    /* 0x56c */ request_of_phase_process_class mPhase;
+    /* 0x574 */ mDoExt_McaMorfSO* mpMorf;
+    /* 0x578 */ mDoExt_btpAnm* mpBtp;
+    /* 0x57c */ Z2Creature mSound;
+    /* 0x60c */ dBgS_ObjAcch mAcch;
+    /* 0x7e4 */ dCcD_Stts mCcStts;
+    /* 0x820 */ dBgS_AcchCir mAcchCir;
+    /* 0x860 */ dCcD_Sph mSph[3];
+    /* 0xc08 */ u32 field_0xc08;
+    /* 0xc0c */ dPath* mPath;
+    /* 0xc10 */ u8 field_0xc10;
+    /* 0xc11 */ u8 field_0xc11;  // undefined
+    /* 0xc12 */ u8 field_0xc12;  // undefined
+    /* 0xc13 */ u8 field_0xc13;  // undefined
+    /* 0xc14 */ cXyz field_0xc14;
+    /* 0xc20 */ cXyz field_0xc20;
+    /* 0xc2c */ csXyz field_0xc2c;
+    /* 0xc32 */ csXyz field_0xc32;
+    /* 0xc38 */ csXyz field_0xc38;
+    /* 0xc3e */ csXyz field_0xc3e;
+    /* 0xc44 */ f32 field_0xc44;
+    /* 0xc48 */ u8 mProcess[0xc];  // todo: _ptmf (function pointer?)
+    /* 0xc54 */ int field_0xc54;
+    /* 0xc58 */ u8 field_0xc58;  // undefined
+    /* 0xc59 */ u8 field_0xc59;  // undefined
+    /* 0xc5a */ u8 field_0xc5a;  // undefined
+    /* 0xc5b */ u8 field_0xc5b;  // undefined
+    /* 0xc5c */ u16 field_0xc5c;
+    /* 0xc5e */ s8 field_0xc5e;
+    /* 0xc5f */ u8 mPrm0;
+    /* 0xc60 */ u8 field_0xc60;
+    /* 0xc61 */ u8 field_0xc61;
+    /* 0xc62 */ u8 field_0xc62;
+    /* 0xc63 */ u8 field_0xc63;
+    /* 0xc64 */ u32 field_0xc64;
+    /* 0xc68 */ u8 field_0xc68;  // undefined
+    /* 0xc69 */ u8 field_0xc69;
+    /* 0xc6a */ u8 field_0xc6a;  // undefined
+    /* 0xc6b */ u8 field_0xc6b;  // undefined
+    /* 0xc6c */ f32 field_0xc6c;
+    /* 0xc70 */ u8 field_0xc70;  // undefined
+    /* 0xc71 */ u8 field_0xc71;  // undefined
+    /* 0xc72 */ s16 field_0xc72;
+    /* 0xc74 */ s16 field_0xc74;
+    /* 0xc76 */ u16 field_0xc76;
+    /* 0xc78 */ f32 field_0xc78;
+    /* 0xc7c */ f32 field_0xc7c;
+    /* 0xc80 */ int field_0xc80;
+    /* 0xc84 */ u32 field_0xc84;
+    /* 0xc88 */ int field_0xc88;
+    /* 0xc8c */ int field_0xc8c;
+    /* 0xc90 */ u32 field_0xc90;
+    /* 0xc94 */ u32 field_0xc94;
+    /* 0xc98 */ u32 field_0xc98;
+    /* 0xc9c */ u8 field_0xc9c;
+    /* 0xc9d */ u8 field_0xc9d;
+    /* 0xc9e */ u8 field_0xc9e;
+    /* 0xc9f */ u8 field_0xc9f;
+    /* 0xca0 */ u8 field_0xca0;
+    /* 0xca1 */ u8 field_0xca1;
+    /* 0xca2 */ u8 field_0xca2;  // undefined
+    /* 0xca3 */ u8 field_0xca3;
+    /* 0xca4 */ u8 mNoNearCheckTimer;
+    /* 0xca5 */ u8 field_0xca5;
+    /* 0xca6 */ u8 field_0xca6;
+    /* 0xca7 */ u8 field_0xca7;  // undefined
+    /* 0xca8 */ s8 field_0xca8;
+    /* 0xca9 */ u8 field_0xca9;
+    /* 0xcaa */ u8 field_0xcaa;
+    /* 0xcab */ u8 field_0xcab;  // undefined
+    /* 0xcac */ f32 field_0xcac;
+    /* 0xcb0 */ f32 field_0xcb0;
+    /* 0xcb4 */ u8 field_0xcb4;
+    /* 0xcb5 */ u8 field_0xcb5;
+
+    /* 0xc5F */ u8 field_0xc5F[0xd40 - 0xcb6];
 };
 
 STATIC_ASSERT(sizeof(daCow_c) == 0xd40);
