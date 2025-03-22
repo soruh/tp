@@ -4,6 +4,7 @@
  */
 
 #include "d/actor/d_a_cow.h"
+#include "d/actor/d_a_player.h"
 #include "d/d_com_inf_game.h"
 #include "dol2asm.h"
 #include "dolphin/types.h"
@@ -336,7 +337,7 @@ int daCow_c::calcRunAnime(int resetAnimation) {
         mpMorf->setPlaySpeed(1.3f);
 
         if (speedF < 35.0f) {
-            setBck(0x19, 2, 5.0, 1.0);
+            setBck(0x19, 2, 5.0f, 1.0f);
             mAnimationPhase = 1;
         }
     }
@@ -413,38 +414,25 @@ bool daCow_c::isChaseCowGame() {
     return false;
 }
 
-/* ############################################################################################## */
-/* 80662DE0-80662DE4 000030 0004+00 0/1 0/0 0/0 .rodata          @4126 */
-#pragma push
-#pragma force_active on
-SECTION_RODATA static f32 const lit_4126 = 270.0f;
-COMPILER_STRIP_GATE(0x80662DE0, &lit_4126);
-#pragma pop
-
-/* 80662DE4-80662DE8 000034 0004+00 0/1 0/0 0/0 .rodata          @4127 */
-#pragma push
-#pragma force_active on
-SECTION_RODATA static f32 const lit_4127 = 70.0f;
-COMPILER_STRIP_GATE(0x80662DE4, &lit_4127);
-#pragma pop
-
-/* 80662DE8-80662DEC 000038 0004+00 0/3 0/0 0/0 .rodata          @4128 */
-#pragma push
-#pragma force_active on
-SECTION_RODATA static f32 const lit_4128 = 600.0f;
-COMPILER_STRIP_GATE(0x80662DE8, &lit_4128);
-#pragma pop
-
-/* 80662DEC-80662DF0 00003C 0004+00 0/10 0/0 0/0 .rodata          @4129 */
-#pragma push
-#pragma force_active on
-SECTION_RODATA static f32 const lit_4129 = 100.0f;
-COMPILER_STRIP_GATE(0x80662DEC, &lit_4129);
-#pragma pop
-
 /* 80658B10-80658C18 000630 0108+00 6/6 0/0 0/0 .text            setCarryStatus__7daCow_cFv */
 void daCow_c::setCarryStatus() {
-    // NONMATCHING
+    f32 zMax = 270.0f;
+    f32 xMax = 70.0f;
+    if (speedF >= 10.0f) {
+        zMax = 600.0f;
+        xMax = 100.0f;
+    }
+    mDoMtx_stack_c::YrotS(-shape_angle.y);
+    mDoMtx_stack_c::transM(-current.pos.x, -current.pos.y, -current.pos.z);
+
+    Vec carryPosition;
+    mDoMtx_stack_c::multVec(&daPy_getPlayerActorClass()->current.pos, &carryPosition);
+
+    if (fabsf(carryPosition.x) < xMax && carryPosition.z > 0.0f && carryPosition.z < zMax) {
+        // todo: what does this mean
+        attention_info.flags = attention_info.flags | 0x10;  // in debug this is 0x80
+    }
+    return;
 }
 
 /* 80658C18-80658C78 000738 0060+00 5/5 0/0 0/0 .text            setActetcStatus__7daCow_cFv */
