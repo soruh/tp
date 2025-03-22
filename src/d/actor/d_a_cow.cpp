@@ -549,13 +549,20 @@ void daCow_c::setBodyAngle2(s16 angle) {
 }
 
 /* 806590E8-80659114 000C08 002C+00 5/5 0/0 0/0 .text checkProcess__7daCow_cFM7daCow_cFPCvPv_v */
-void daCow_c::checkProcess(void (daCow_c::*param_0)()) {
-    // NONMATCHING
+bool daCow_c::checkProcess(void (daCow_c::*process)()) {
+    return this->mProcess == process;
 }
 
 /* 80659114-806591BC 000C34 00A8+00 16/16 0/0 0/0 .text setProcess__7daCow_cFM7daCow_cFPCvPv_vi */
-void daCow_c::setProcess(void (daCow_c::*param_0)(), int param_1) {
-    // NONMATCHING
+bool daCow_c::setProcess(void (daCow_c::*process)(), u8 param_1) {
+    field_0xc5c = 3;
+    (this->*mProcess)();
+    field_0xcaa = param_1;
+    field_0xc5c = 0;
+    mProcess = process;
+    (this->*mProcess)();
+
+    return true;
 }
 
 /* ############################################################################################## */

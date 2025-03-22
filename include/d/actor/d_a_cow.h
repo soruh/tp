@@ -31,8 +31,8 @@ public:
     /* 80658DB8 */ bool checkThrow();
     /* 80658E98 */ void setBodyAngle(s16);
     /* 80658F94 */ void setBodyAngle2(s16);
-    /* 806590E8 */ void checkProcess(void (daCow_c::*)());
-    /* 80659114 */ void setProcess(void (daCow_c::*)(), int);
+    /* 806590E8 */ bool checkProcess(void (daCow_c::*)());
+    /* 80659114 */ bool setProcess(void (daCow_c::*)(), u8);
     /* 806591BC */ void damage_check();
     /* 8065945C */ void setEnterCow20();
     /* 80659540 */ void setEnterCow10();
@@ -135,7 +135,7 @@ private:
     /* 0xc38 */ csXyz field_0xc38;
     /* 0xc3e */ csXyz field_0xc3e;
     /* 0xc44 */ f32 field_0xc44;
-    /* 0xc48 */ u8 mProcess[0xc];  // todo: _ptmf (function pointer?)
+    /* 0xc48 */ void (daCow_c::*mProcess)();
     /* 0xc54 */ int field_0xc54;
     /* 0xc58 */ u8 field_0xc58;  // undefined
     /* 0xc59 */ u8 field_0xc59;  // undefined
