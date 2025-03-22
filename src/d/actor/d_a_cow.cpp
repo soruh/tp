@@ -1808,8 +1808,58 @@ bool daCow_c::checkPlayerSurprise() {
 
 /* 8065AE88-8065B034 0029A8 01AC+00 2/2 0/0 0/0 .text            checkPlayerPos__7daCow_cFv */
 bool daCow_c::checkPlayerPos() {
-    // NONMATCHING
-    return false;
+    if (field_0xca5) {
+        return false;
+    }
+
+    this->field_0xc60 = 6;
+
+    f32 playerDistance = fopAcM_searchPlayerDistance(this);
+    float cutoffDistance = field_0xc78;
+    if (field_0xca3) {
+        cutoffDistance = 1500.0f;
+    }
+    if (playerDistance > cutoffDistance) {
+        return false;
+    }
+
+    s16 angleDifference = fopAcM_searchPlayerAngleY(this) - field_0xc32.y;
+    s16 absAngleDifference = abs(angleDifference);
+    if (absAngleDifference >= 0x2000) {
+        if (angleDifference >= 1) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    if (absAngleDifference >= 0x6001) {
+        if (angleDifference < 1) {
+            field_0xc60 = 5;
+        } else {
+            field_0xc60 = 4;
+        }
+    } else {
+        if (fabsf(cutoffDistance * cM_scos(0x2000)) <
+            fabsf(playerDistance * cM_scos(angleDifference)))
+        {
+            return false;
+        }
+
+        if (fabsf(cutoffDistance * cM_ssin(0x2000)) <
+            fabsf(playerDistance * cM_ssin(angleDifference)))
+        {
+            return false;
+        }
+
+        if (angleDifference >= 1) {
+            field_0xc60 = 2;
+        } else {
+            field_0xc60 = 3;
+        }
+    }
+
+    return true;
 }
 
 /* ############################################################################################## */
