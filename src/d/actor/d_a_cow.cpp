@@ -1761,35 +1761,49 @@ void daCow_c::action_shake() {
     }
 }
 
-/* ##############################################################################################
- */
-/* 80662E44-80662E48 000094 0004+00 1/1 0/0 0/0 .rodata          @5007 */
-SECTION_RODATA static f32 const lit_5007 = 3000.0f;
-COMPILER_STRIP_GATE(0x80662E44, &lit_5007);
-
 /* 8065ACC8-8065AD2C 0027E8 0064+00 4/4 0/0 0/0 .text            checkNearWolf__7daCow_cFv */
 bool daCow_c::checkNearWolf() {
-    // NONMATCHING
-    return false;
+    if ((u32)daPy_getPlayerActorClass()->checkNowWolf() != 0 &&
+        fopAcM_searchPlayerDistance(this) < 3000.f)
+    {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 /* 8065AD2C-8065ADB0 00284C 0084+00 5/5 0/0 0/0 .text            checkPlayerWait__7daCow_cFv */
 bool daCow_c::checkPlayerWait() {
-    // NONMATCHING
-    return false;
+    if ((daPy_getPlayerActorClass()->checkHorseRide() ||
+         (u32)daPy_getPlayerActorClass()->checkNowWolf() != 0) &&
+        fopAcM_searchPlayerDistance(this) < field_0xc78)
+    {
+        return true;
+    } else {
+        return false;
+    }
 }
-
-/* ##############################################################################################
- */
-/* 80662E48-80662E4C 000098 0004+00 2/5 0/0 0/0 .rodata          @5049 */
-SECTION_RODATA static f32 const lit_5049 = 1500.0f;
-COMPILER_STRIP_GATE(0x80662E48, &lit_5049);
 
 /* 8065ADB0-8065AE88 0028D0 00D8+00 2/2 0/0 0/0 .text            checkPlayerSurprise__7daCow_cFv
  */
 bool daCow_c::checkPlayerSurprise() {
-    // NONMATCHING
-    return false;
+    if (field_0xca5 != 0) {
+        return false;
+    }
+
+    daPy_py_c* player = daPy_getPlayerActorClass();
+
+    if (!player->checkHorseRide()) {
+        return false;
+    }
+
+    if (fopAcM_searchPlayerDistance(this) < 1500.0f && player->checkCowGameLash()) {
+        mSound.startCreatureVoice(JAISoundID(Z2SE_GOAT_V_CRY), -1);
+        this->field_0xca3 = 0x32;
+        return true;
+    } else {
+        return false;
+    }
 }
 
 /* 8065AE88-8065B034 0029A8 01AC+00 2/2 0/0 0/0 .text            checkPlayerPos__7daCow_cFv */
