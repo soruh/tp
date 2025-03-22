@@ -483,6 +483,11 @@ void daCow_c::setRushVibration(int i_vibmode) {
 
 UNK_REL_DATA;
 
+/* 80663018-80663024 0000C0 000C+00 1/2 0/0 0/0 .data gWolfBustersID__21@unnamed@d_a_cow_cpp@ */
+// extern u8 gWolfBustersID[12] = {
+//     0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+// };
+
 /* 80658DB8-80658E98 0008D8 00E0+00 6/6 0/0 0/0 .text            checkThrow__7daCow_cFv */
 bool daCow_c::checkThrow() {
     if (mFlags != 0) {
@@ -565,67 +570,6 @@ bool daCow_c::setProcess(void (daCow_c::*process)(), int param_1) {
     return true;
 }
 
-/* ############################################################################################## */
-/* 8066303C-80663048 -00001 000C+00 0/1 0/0 0/0 .data            @4264 */
-#pragma push
-#pragma force_active on
-SECTION_DATA static void* lit_4264[3] = {
-    (void*)NULL,
-    (void*)0xFFFFFFFF,
-    (void*)action_crazy__7daCow_cFv,
-};
-#pragma pop
-
-/* 80663048-80663054 -00001 000C+00 0/1 0/0 0/0 .data            @4278 */
-#pragma push
-#pragma force_active on
-SECTION_DATA static void* lit_4278[3] = {
-    (void*)NULL,
-    (void*)0xFFFFFFFF,
-    (void*)action_angry__7daCow_cFv,
-};
-#pragma pop
-
-/* 80663054-80663060 -00001 000C+00 0/1 0/0 0/0 .data            @4285 */
-#pragma push
-#pragma force_active on
-SECTION_DATA static void* lit_4285[3] = {
-    (void*)NULL,
-    (void*)0xFFFFFFFF,
-    (void*)action_damage__7daCow_cFv,
-};
-#pragma pop
-
-/* 80663060-8066306C -00001 000C+00 0/1 0/0 0/0 .data            @4290 */
-#pragma push
-#pragma force_active on
-SECTION_DATA static void* lit_4290[3] = {
-    (void*)NULL,
-    (void*)0xFFFFFFFF,
-    (void*)action_damage__7daCow_cFv,
-};
-#pragma pop
-
-/* 8066306C-80663078 -00001 000C+00 0/1 0/0 0/0 .data            @4293 */
-#pragma push
-#pragma force_active on
-SECTION_DATA static void* lit_4293[3] = {
-    (void*)NULL,
-    (void*)0xFFFFFFFF,
-    (void*)action_wait__7daCow_cFv,
-};
-#pragma pop
-
-/* 80663078-80663084 -00001 000C+00 0/1 0/0 0/0 .data            @4297 */
-#pragma push
-#pragma force_active on
-SECTION_DATA static void* lit_4297[3] = {
-    (void*)NULL,
-    (void*)0xFFFFFFFF,
-    (void*)action_wait__7daCow_cFv,
-};
-#pragma pop
-
 #define COW_ATTACK_TYPES                                                                           \
     (AT_TYPE_NORMAL_SWORD | AT_TYPE_BOMB | AT_TYPE_ARROW | AT_TYPE_SPINNER | AT_TYPE_IRON_BALL)
 
@@ -695,9 +639,37 @@ void daCow_c::damage_check() {
     }
 }
 
+/* 80662FBC-80662FC0 000064 0004+00 0/2 0/0 0/0 .data l_CowRoomPosY__21@unnamed@d_a_cow_cpp@ */
+static f32 l_CowRoomPosY = 15000.0f;
+
+/* 80662FC0-80663010 000068 0050+00 1/3 0/0 0/0 .data l_CowRoomPosX__21@unnamed@d_a_cow_cpp@ */
+static f32 l_CowRoomPosX[20] = {-10600.0, -10600.0, -10800.0, -10800.0, -11000.0,
+                                -11000.0, -11200.0, -11200.0, -11400.0, -11400.0,
+                                -11600.0, -11600.0, -11800.0, -11800.0, -12000.0,
+                                -12000.0, -12200.0, -12200.0, -12400.0, -12400.0};
+
+/* 80663010-80663018 0000B8 0008+00 1/3 0/0 0/0 .data l_CowRoomPosZ__21@unnamed@d_a_cow_cpp@ */
+static f32 l_CowRoomPosZ[2] = {-19646.0, -20926.0};
+
+/* 806634D0-806634D4 000078 0004+00 3/3 0/0 0/0 .bss l_CowRoomNo__21@unnamed@d_a_cow_cpp@ */
+static int l_CowRoomNo = 0;
+
 /* 8065945C-80659540 000F7C 00E4+00 1/1 0/0 0/0 .text            setEnterCow20__7daCow_cFv */
 void daCow_c::setEnterCow20() {
-    // NONMATCHING
+    for (int iCow = 0; iCow < 20; iCow++) {
+        cXyz spawnPosition(l_CowRoomPosX[iCow], l_CowRoomPosY, l_CowRoomPosZ[iCow & 1]);
+
+        l_CowRoomNo |= 1 << (iCow & ~!0xc0);  // todo: what is this flag?
+
+        csXyz spawnAngle;
+        if (iCow & 1) {
+            spawnAngle.set(0, 0, 0);
+        } else {
+            spawnAngle.set(0, -0x8000, 0);
+        }
+        int roomNumber = fopAcM_GetRoomNo(this);
+        fopAcM_create(0x106, ~0xfb, &spawnPosition, roomNumber, &spawnAngle, 0, -1);
+    }
 }
 
 /* ############################################################################################## */
