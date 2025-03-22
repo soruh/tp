@@ -1545,7 +1545,8 @@ void daCow_c::action_wait() {
             return;
         }
     }
-    if (!cLib_calcTimer(&field_0xc58) && !field_0xc88) {
+    STATIC_ASSERT(sizeof(s32) == sizeof(int));
+    if (!cLib_calcTimer((int*)&field_0xc58) && !field_0xc88) {
         if (checkNearWolf()) {
             setProcess(&daCow_c::action_moo, 0);
         } else {
@@ -1563,31 +1564,78 @@ void daCow_c::action_wait() {
     }
 }
 
-/* ############################################################################################## */
-/* 80662E38-80662E3C 000088 0004+00 0/4 0/0 0/0 .rodata          @4786 */
-#pragma push
-#pragma force_active on
-SECTION_RODATA static f32 const lit_4786 = 40.0f;
-COMPILER_STRIP_GATE(0x80662E38, &lit_4786);
-#pragma pop
-
-/* 80662E3C-80662E40 00008C 0004+00 0/2 0/0 0/0 .rodata          @4787 */
-#pragma push
-#pragma force_active on
-SECTION_RODATA static f32 const lit_4787 = 68.0f;
-COMPILER_STRIP_GATE(0x80662E3C, &lit_4787);
-#pragma pop
-
-/* 80662E40-80662E44 000090 0004+00 0/1 0/0 0/0 .rodata          @4788 */
-#pragma push
-#pragma force_active on
-SECTION_RODATA static f32 const lit_4788 = 98.0f;
-COMPILER_STRIP_GATE(0x80662E40, &lit_4788);
-#pragma pop
+// goat sounds:
+// Z2SE_GOAT_V_CRY = 0x5001F,
+// Z2SE_GOAT_V_RUN = 0x50020,
+// Z2SE_GOAT_V_NOSE = 0x50021,
+// Z2SE_GOAT_V_EAT = 0x50022,
 
 /* 8065A0E8-8065A594 001C08 04AC+00 4/0 0/0 0/0 .text            action_eat__7daCow_cFv */
 void daCow_c::action_eat() {
-    // NONMATCHING
+    int nextAction = field_0xc5c;
+    if (nextAction != 2) {
+        if (nextAction < 2) {
+            if (nextAction != 0) {
+                f32 rand = cM_rndF(100.0f);
+                field_0xc58 = rand + 300.0f;
+                field_0xc90 = 0;
+                if (!field_0xcaa) {
+                    setBck(9, 2, 12.0f, 1.0f);
+                    field_0xc5c = 2;
+                } else {
+                    setBck(6, 0, 12.0f, 1.0f);
+                    field_0xc5c = 1;
+                }
+                return;
+            } else {
+                if (mpMorf->isStop()) {
+                    setBck(9, 2, 0.0f, 1.0f);
+                    field_0xc5c = 2;
+                }
+            }
+        } else {
+            return;
+        }
+    }
+
+    if (mpMorf->checkFrame(10.0f) || mpMorf->checkFrame(40.0f) || mpMorf->checkFrame(68.0f) ||
+        mpMorf->checkFrame(98.0f))
+    {
+        mSound.startCreatureVoice(JAISoundID(Z2SE_GOAT_V_EAT), -1);
+    }
+
+    if (!field_0xca5) {
+        if (checkNearCowRun() || checkPlayerWait()) {
+            setProcess(&daCow_c::action_wait, 0);
+            return;
+        }
+        setCarryStatus();
+        if (checkThrow()) {
+            return;
+        }
+        setActetcStatus();
+        if (checkNadeNade()) {
+            setProcess(&daCow_c::action_wait, 1);
+            return;
+        }
+    }
+    if (!cLib_calcTimer((int*)&field_0xc58) && mpMorf->isLoop()) {
+        if (checkNearWolf()) {
+            setProcess(&daCow_c::action_moo, 0);
+
+        } else {
+            f32 rand = cM_rnd();
+            if (current.pos.absXZ(daPy_getPlayerActorClass()->current.pos) > 500.0 && rand < 0.4) {
+                setProcess(&daCow_c::action_moo, 0);
+            } else {
+                if (rand < 0.5) {
+                    setProcess(&daCow_c::action_shake, 0);
+                } else {
+                    setProcess(&daCow_c::action_wait, 1);
+                }
+            }
+        }
+    }
 }
 
 /* 8065A594-8065A8A4 0020B4 0310+00 9/0 0/0 0/0 .text            action_moo__7daCow_cFv */
