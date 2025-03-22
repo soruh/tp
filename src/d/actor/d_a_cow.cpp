@@ -445,10 +445,12 @@ void daCow_c::setActetcStatus() {
     }
 }
 
+// NOTE: nade nade seems to be petting the Goat
+
 /* 80658C78-80658CA4 000798 002C+00 3/3 0/0 0/0 .text            checkNadeNadeFinish__7daCow_cFv */
 bool daCow_c::checkNadeNadeFinish() {
     if (mFlags & 0x100) {
-        mFlags &= 0xfeff;
+        mFlags &= ~0x0100;  // todo: enum
         field_0xca8 = 0;
         return true;
     }
@@ -456,8 +458,13 @@ bool daCow_c::checkNadeNadeFinish() {
 }
 
 /* 80658CA4-80658CD0 0007C4 002C+00 5/5 0/0 0/0 .text            checkNadeNade__7daCow_cFv */
-void daCow_c::checkNadeNade() {
-    // NONMATCHING
+bool daCow_c::checkNadeNade() {
+    if ((mFlags & 0x80) != 0) {
+        mFlags &= ~0x080;  // todo: enum
+        field_0xca8 = 1;
+        return 1;
+    }
+    return 0;
 }
 
 /* 80658CD0-80658D3C 0007F0 006C+00 3/3 0/0 0/0 .text            setSeSnort__7daCow_cFv */
