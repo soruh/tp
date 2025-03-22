@@ -403,22 +403,14 @@ void daCow_c::setEffect() {
     mShouldSetEffect = 0;
 }
 
-/* 80658A68-80658AA4 000588 003C+00 3/3 0/0 0/0 .text            __dt__4cXyzFv */
-// cXyz::~cXyz() {
-extern "C" void __dt__4cXyzFv() {
-    // NONMATCHING
-}
-
-/* ############################################################################################## */
-/* 80662F18-80662F18 000168 0000+00 0/0 0/0 0/0 .rodata          @stringBase0 */
-#pragma push
-#pragma force_active on
-SECTION_DEAD static char const* const stringBase_80662F1C = "F_SP00";
-#pragma pop
-
 /* 80658AA4-80658B10 0005C4 006C+00 5/5 0/0 0/0 .text            isChaseCowGame__7daCow_cFv */
-void daCow_c::isChaseCowGame() {
-    // NONMATCHING
+bool daCow_c::isChaseCowGame() {
+    if (strcmp(dComIfGp_getStartStageName(), "F_SP00") == 0) {
+        if (dComIfG_play_c::getLayerNo(0) == 4 || dComIfG_play_c::getLayerNo(0) == 5) {
+            return true;
+        }
+    }
+    return false;
 }
 
 /* ############################################################################################## */

@@ -21,7 +21,7 @@ public:
     /* 80658730 */ void setBck(int, u8, f32, f32);
     /* 806587D4 */ int checkBck(int);
     /* 80658830 */ void setEffect();
-    /* 80658AA4 */ void isChaseCowGame();
+    /* 80658AA4 */ bool isChaseCowGame();
     /* 80658B10 */ void setCarryStatus();
     /* 80658C18 */ void setActetcStatus();
     /* 80658C78 */ void checkNadeNadeFinish();
