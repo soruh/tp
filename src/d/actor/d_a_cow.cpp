@@ -674,18 +674,26 @@ void daCow_c::setEnterCow20() {
 
 /* ############################################################################################## */
 /* 80663084-806630AC 00012C 0028+00 0/1 0/0 0/0 .data            cow_number$4349 */
-#pragma push
-#pragma force_active on
-SECTION_DATA static u8 cow_number[40] = {
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00,
-    0x00, 0x03, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00, 0x06,
-    0x00, 0x00, 0x00, 0x07, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x09,
-};
-#pragma pop
+static int cow_number[10] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
 
 /* 80659540-80659630 001060 00F0+00 1/1 0/0 0/0 .text            setEnterCow10__7daCow_cFv */
 void daCow_c::setEnterCow10() {
-    // NONMATCHING
+    for (int iCow = 0; iCow < 10; iCow++) {
+        int cowNumber = cow_number[iCow];
+
+        cXyz spawnPosition(l_CowRoomPosX[cowNumber], l_CowRoomPosY, l_CowRoomPosZ[cowNumber & 1]);
+
+        l_CowRoomNo |= 1 << (iCow & ~!0xc0);  // todo: what is this flag?
+
+        csXyz spawnAngle;
+        if (iCow & 1) {
+            spawnAngle.set(0, 0, 0);
+        } else {
+            spawnAngle.set(0, -0x8000, 0);
+        }
+        int roomNumber = fopAcM_GetRoomNo(this);
+        fopAcM_create(0x106, ~0xfb, &spawnPosition, roomNumber, &spawnAngle, 0, -1);
+    }
 }
 
 /* ############################################################################################## */
