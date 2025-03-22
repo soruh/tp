@@ -1402,8 +1402,14 @@ static int s_angry_cow(daCow_c* cow_1, daCow_c* cow_2) {
 }
 
 /* 806598D4-80659970 0013F4 009C+00 1/1 0/0 0/0 .text            s_angry_cow2__FPvPv */
-static void s_angry_cow2(void* param_1, void* param_0) {
-    // NONMATCHING
+static daCow_c* s_angry_cow2(daCow_c* cow_1, daCow_c* cow_2) {
+    if (IS_VALID_COW_INTERACTION(cow_1, cow_2)) {
+        if (cow_1->isAngry()) {
+            m_angry_cow = true;
+            return cow_1;
+        }
+    }
+    return NULL;
 }
 
 /* 80659970-806599C0 001490 0050+00 1/1 0/0 0/0 .text            checkRun__7daCow_cFv */
