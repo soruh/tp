@@ -399,8 +399,7 @@ void daCow_c::setEffect() {
             }
         }
     } else {
-        fopAcM_effSmokeSet1(&this->field_0xd38, &this->field_0xd3c, &current.pos, NULL, 2.0f,
-                            &tevStr, 1);
+        fopAcM_effSmokeSet1(&field_0xd38, &field_0xd3c, &current.pos, NULL, 2.0f, &tevStr, 1);
     }
     mShouldSetEffect = 0;
 }
@@ -490,42 +489,63 @@ bool daCow_c::checkThrow() {
         if ((mFlags & 1) != 0) {
             setProcess(&daCow_c::action_thrown, 0);
             initCrazyBeforeCatch(0);
-            this->mFlags &= ~0x0001;
+            mFlags &= ~0x0001;
             return true;
         }
         if ((mFlags & 2) != 0) {
             setProcess(&daCow_c::action_thrown, 0);
             initCrazyCatch(0);
-            this->mFlags &= ~0x0002;
+            mFlags &= ~0x0002;
             return true;
         }
     }
     return false;
 }
 
+#define CLAMP_COW_BODY_ANGLE(angle)                                                                \
+    if ((angle) > 0x2000) {                                                                        \
+        (angle) = 0x2000;                                                                          \
+    }                                                                                              \
+    if ((angle) < -0x2000) {                                                                       \
+        (angle) = -0x2000;                                                                         \
+    }
+
 /* 80658E98-80658F94 0009B8 00FC+00 3/3 0/0 0/0 .text            setBodyAngle__7daCow_cFs */
 void daCow_c::setBodyAngle(s16 angle) {
-    short offsetAngle = field_0xc32.y - angle;
+    s16 offsetAngle = field_0xc32.y - angle;
 
-    // clamp offsetAngle to  [-0x2000, 0x2000]
-    if (offsetAngle > 0x2000) {
-        offsetAngle = 0x2000;
-    }
-    if (offsetAngle < -0x2000) {
-        offsetAngle = -0x2000;
-    }
+    CLAMP_COW_BODY_ANGLE(offsetAngle);
 
     // round small angles to 0
     if (abs(offsetAngle) < 0x100) {
         offsetAngle = 0;
     }
-    cLib_chaseS(&this->field_0xc3e.y, (offsetAngle * 0.7f), 0x100);
-    cLib_chaseS(&this->field_0xc38.y, (offsetAngle * 0.3f), 0x100);
+    cLib_chaseS(&field_0xc3e.y, offsetAngle * 0.7f, 0x100);
+    cLib_chaseS(&field_0xc38.y, offsetAngle * 0.3f, 0x100);
 }
 
 /* 80658F94-806590E8 000AB4 0154+00 1/1 0/0 0/0 .text            setBodyAngle2__7daCow_cFs */
-void daCow_c::setBodyAngle2(s16 param_0) {
-    // NONMATCHING
+void daCow_c::setBodyAngle2(s16 angle) {
+    s16 offsetAngle = field_0xc32.y - angle;
+
+    CLAMP_COW_BODY_ANGLE(offsetAngle);
+
+    if (abs(offsetAngle) < 0x100) {
+        offsetAngle = 0;
+    }
+
+    cLib_chaseS(&field_0xc38.y, offsetAngle * 0.3f, 0x100);
+    daPy_py_c* player = daPy_getPlayerActorClass();
+    s16 targetAngle = cLib_targetAngleY(&current.pos, &player->current.pos);
+    s16 bodyAngle = field_0xc32.y - targetAngle;
+
+    if (abs(bodyAngle) < 0x5000) {
+        CLAMP_COW_BODY_ANGLE(bodyAngle);
+    } else {
+        bodyAngle = offsetAngle * 0.7f;
+    }
+
+    cLib_chaseS(&field_0xc3e.y, bodyAngle, 0x100);
 }
 
 /* 806590E8-80659114 000C08 002C+00 5/5 0/0 0/0 .text checkProcess__7daCow_cFM7daCow_cFPCvPv_v */
