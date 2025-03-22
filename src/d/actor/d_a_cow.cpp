@@ -1537,58 +1537,52 @@ COMPILER_STRIP_GATE(0x80662E34, &lit_4657);
 /* 80659ADC-8065A0E8 0015FC 060C+00 15/0 0/0 0/0 .text            action_wait__7daCow_cFv */
 void daCow_c::action_wait() {
     f32 rand = cM_rnd();
-    // u64 local_50;
 
-    if (field_0xc5c != 2) {
-        if (field_0xc5c > 1) {
-            if (field_0xc5c > 3) {
+    int nextAction = field_0xc5c;
+    if (nextAction != 2) {
+        if (nextAction < 2) {
+            if (nextAction != 0) {
+                rand = cM_rndF(100.0f);
+                field_0xc58 = rand + 300.0f;
+                field_0xc5c = 1;
+                field_0xc90 = 0;
+                if (!field_0xcaa) {
+                    setBck(0x1a, 2, 12.0f, 1.0f);
+                    field_0xc5c = 2;
+                } else {
+                    setBck(6, 0, 12.0f, 1.0f);
+
+                    mpMorf->setFrame(mpMorf->getEndFrame());
+                    mpMorf->setPlaySpeed(-1.0f);
+
+                    field_0xc5c = 1;
+                }
                 return;
+            } else {
+                if (mpMorf->isStop()) {
+                    setBck(0x1a, 2, 0.0f, 1.0f);
+                    field_0xc5c = 2;
+                }
             }
-            field_0xc38.y = 0;
-            field_0xc3e.y = 0;
-            field_0xc88 = 0;
-            field_0xca8 = 0;
-            return;
-        }
-        if (field_0xc5c == 0) {
-            rand = cM_rndF(100.0f);
-            // local_50 = rand + 300.0f;
-            field_0xc58 = rand + 300.0f;
-            field_0xc5c = 1;
-            field_0xc90 = 0;
-            if (!field_0xcaa) {
-                setBck(0x1a, 2, 12.0f, 1.0f);
-                field_0xc5c = 2;
-                return;
+        } else {
+            if (nextAction < 4) {
+                field_0xc38.y = 0;
+                field_0xc3e.y = 0;
+                field_0xc88 = 0;
+                field_0xca8 = 0;
             }
-            setBck(6, 0, 12.0f, 1.0f);
-
-            mpMorf->setFrame(mpMorf->getEndFrame());
-            mpMorf->setPlaySpeed(-1.0f);
-
-            field_0xc5c = 1;
-
             return;
-        }
-        if (mpMorf->isStop()) {
-            setBck(0x1a, 2, 0.0f, 1.0f);
-            field_0xc5c = 2;
         }
     }
+
     s16 angle = 0;
     if (field_0xc88 > 0x1e) {
         angle = field_0xc32.y - fopAcM_searchPlayerAngleY(this);
         CLAMP(angle, -0x2800, 0x2800);
     }
-    // local_50 = CONCAT44(0x43300000, (int)angle ^ 0x80000000);
-    int iVar2 = angle * 0.9f;
-    // local_48 = (longlong)iVar2;
-    cLib_addCalcAngleS2(&field_0xc3e.y, iVar2, 0x10, 0x100);
-    // uStack_3c = (int)angle ^ 0x80000000;
-    // local_40 = 0x43300000;
-    iVar2 = angle * 0.1f;
-    // local_38 = (longlong)iVar2;
-    cLib_addCalcAngleS2(&field_0xc38.y, iVar2, 0x10, 0x100);
+
+    cLib_addCalcAngleS2(&field_0xc3e.y, angle * 0.9f, 0x10, 0x100);
+    cLib_addCalcAngleS2(&field_0xc38.y, angle * 0.1f, 0x10, 0x100);
 
     if (!field_0xca5) {
         if (checkCowInOwn(0x8000)) {
@@ -1623,20 +1617,19 @@ void daCow_c::action_wait() {
         }
     }
     if (!cLib_calcTimer(&field_0xc58) && !field_0xc88) {
-        if (!checkNearWolf()) {
-            daPy_py_c* playerActor = daPy_getPlayerActorClass();
-            double distanceXZ = current.pos.absXZ(playerActor->current.pos);
-            if (distanceXZ <= 500.0f || rand >= 0.4f) {
-                if (rand >= 0.5f) {
-                    setProcess(&daCow_c::action_shake, 1);
-                } else {
-                    setProcess(&daCow_c::action_eat, 1);
-                }
-            } else {
-                setProcess(&daCow_c::action_moo, 0);
-            }
-        } else {
+        if (checkNearWolf()) {
             setProcess(&daCow_c::action_moo, 0);
+        } else {
+            daPy_py_c* playerActor = daPy_getPlayerActorClass();
+            if (current.pos.absXZ(playerActor->current.pos) > 500.0f && rand < 0.4f) {
+                setProcess(&daCow_c::action_moo, 0);
+            } else {
+                if (rand < 0.5f) {
+                    setProcess(&daCow_c::action_eat, 1);
+                } else {
+                    setProcess(&daCow_c::action_shake, 1);
+                }
+            }
         }
     }
 }
