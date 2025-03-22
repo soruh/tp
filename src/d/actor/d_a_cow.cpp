@@ -549,12 +549,12 @@ void daCow_c::setBodyAngle2(s16 angle) {
 }
 
 /* 806590E8-80659114 000C08 002C+00 5/5 0/0 0/0 .text checkProcess__7daCow_cFM7daCow_cFPCvPv_v */
-bool daCow_c::checkProcess(void (daCow_c::*process)()) {
+int daCow_c::checkProcess(void (daCow_c::*process)()) {
     return this->mProcess == process;
 }
 
 /* 80659114-806591BC 000C34 00A8+00 16/16 0/0 0/0 .text setProcess__7daCow_cFM7daCow_cFPCvPv_vi */
-bool daCow_c::setProcess(void (daCow_c::*process)(), u8 param_1) {
+bool daCow_c::setProcess(void (daCow_c::*process)(), int param_1) {
     field_0xc5c = 3;
     (this->*mProcess)();
     field_0xcaa = param_1;
@@ -636,9 +636,11 @@ void daCow_c::damage_check() {
     mCcStts.Move();
 
     if (field_0xca5 == 0) {
-        if (field_0xc80 == 0) {
+        if (field_0xc80) {
+            field_0xc80--;
+        } else {
             cCcD_ObjHitInf* hitObject = NULL;
-            for (int iSphere = 0; iSphere < sizeof(mSph) / sizeof(dCcD_Sph); iSphere++) {
+            for (int iSphere = 0; iSphere < (int)(sizeof(mSph) / sizeof(dCcD_Sph)); iSphere++) {
                 dCcD_Sph* sphere = &mSph[iSphere];
                 if (sphere->ChkTgHit()) {
                     hitObject = sphere->GetTgHitObj();
@@ -649,35 +651,37 @@ void daCow_c::damage_check() {
             if (hitObject) {
                 field_0xc80 = 10;
 
-                if (!checkProcess(&daCow_c::action_crazy)) {
-                    if (!checkProcess(&daCow_c::action_angry)) {
-                        if (!hitObject->ChkAtType(COW_ATTACK_TYPES)) {
+                if (checkProcess(&daCow_c::action_crazy)) {
+                    if (field_0xc9f == 8) {
+                        if (field_0xc61 == 0) {
+                            if (hitObject->ChkAtType(COW_ATTACK_TYPES)) {
+                                field_0xc8c = 0x96;
+                            } else {
+                                field_0xc8c += 0x3c;
+                            }
+                            if (field_0xc8c >= 0x95) {
+                                field_0xc61 = 5;
+                            }
+                        }
+                    }
+                } else {
+                    if (checkProcess(&daCow_c::action_angry)) {
+                        field_0xc98 = 200;
+                    } else {
+                        if (hitObject->ChkAtType(COW_ATTACK_TYPES)) {
+                            setProcess(&daCow_c::action_damage, 0);
+                        } else {
                             field_0xc8c += 0x3c;
-                            if (field_0xc8c < 0x96) {
+                            if (field_0xc8c >= 0x96) {
+                                setProcess(&daCow_c::action_damage, 0);
+                            } else {
                                 field_0xc88 = 0x5a;
 
                                 if (!checkProcess(&daCow_c::action_wait)) {
                                     speedF = 0.0;
                                     setProcess(&daCow_c::action_wait, 0);
                                 }
-                            } else {
-                                setProcess(&daCow_c::action_damage, 0);
                             }
-                        } else {
-                            setProcess(&daCow_c::action_damage, 0);
-                        }
-                    } else {
-                        field_0xc98 = 200;
-                    }
-                } else if (field_0xc9f == 8) {
-                    if (field_0xc61 == 0) {
-                        if (!hitObject->ChkAtType(COW_ATTACK_TYPES)) {
-                            field_0xc8c += 0x3c;
-                        } else {
-                            field_0xc8c = 0x96;
-                        }
-                        if (field_0xc8c > 0x95) {
-                            field_0xc61 = 5;
                         }
                     }
                 }
@@ -687,8 +691,6 @@ void daCow_c::damage_check() {
                 mSph[2].ClrTgHit();
                 STATIC_ASSERT(sizeof(mSph) / sizeof(dCcD_Sph) == 3);
             }
-        } else {
-            field_0xc80++;
         }
     }
 }
