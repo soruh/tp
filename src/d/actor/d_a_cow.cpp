@@ -4,6 +4,7 @@
  */
 
 #include "d/actor/d_a_cow.h"
+#include "SSystem/SComponent/c_lib.h"
 #include "d/actor/d_a_player.h"
 #include "d/d_com_inf_game.h"
 #include "dol2asm.h"
@@ -502,24 +503,24 @@ bool daCow_c::checkThrow() {
     return false;
 }
 
-/* ############################################################################################## */
-/* 80662DF0-80662DF4 000040 0004+00 2/3 0/0 0/0 .rodata          @4205 */
-SECTION_RODATA static f32 const lit_4205 = 7.0f / 10.0f;
-COMPILER_STRIP_GATE(0x80662DF0, &lit_4205);
-
-/* 80662DF4-80662DF8 000044 0004+00 2/2 0/0 0/0 .rodata          @4206 */
-SECTION_RODATA static f32 const lit_4206 = 3.0f / 10.0f;
-COMPILER_STRIP_GATE(0x80662DF4, &lit_4206);
-
-/* 80662DF8-80662E00 000048 0008+00 2/5 0/0 0/0 .rodata          @4208 */
-SECTION_RODATA static u8 const lit_4208[8] = {
-    0x43, 0x30, 0x00, 0x00, 0x80, 0x00, 0x00, 0x00,
-};
-COMPILER_STRIP_GATE(0x80662DF8, &lit_4208);
-
 /* 80658E98-80658F94 0009B8 00FC+00 3/3 0/0 0/0 .text            setBodyAngle__7daCow_cFs */
-void daCow_c::setBodyAngle(s16 param_0) {
-    // NONMATCHING
+void daCow_c::setBodyAngle(s16 angle) {
+    short offsetAngle = field_0xc32.y - angle;
+
+    // clamp offsetAngle to  [-0x2000, 0x2000]
+    if (offsetAngle > 0x2000) {
+        offsetAngle = 0x2000;
+    }
+    if (offsetAngle < -0x2000) {
+        offsetAngle = -0x2000;
+    }
+
+    // round small angles to 0
+    if (abs(offsetAngle) < 0x100) {
+        offsetAngle = 0;
+    }
+    cLib_chaseS(&this->field_0xc3e.y, (offsetAngle * 0.7f), 0x100);
+    cLib_chaseS(&this->field_0xc38.y, (offsetAngle * 0.3f), 0x100);
 }
 
 /* 80658F94-806590E8 000AB4 0154+00 1/1 0/0 0/0 .text            setBodyAngle2__7daCow_cFs */
