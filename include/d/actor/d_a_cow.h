@@ -28,7 +28,7 @@ public:
     /* 80658CA4 */ bool checkNadeNade();
     /* 80658CD0 */ void setSeSnort();
     /* 80658D3C */ void setRushVibration(int);
-    /* 80658DB8 */ void checkThrow();
+    /* 80658DB8 */ bool checkThrow();
     /* 80658E98 */ void setBodyAngle(s16);
     /* 80658F94 */ void setBodyAngle2(s16);
     /* 806590E8 */ void checkProcess(void (daCow_c::*)());

@@ -483,67 +483,23 @@ void daCow_c::setRushVibration(int i_vibmode) {
 
 UNK_REL_DATA;
 
-/* 80662F78-80662FB8 000020 0040+00 0/1 0/0 0/0 .data            cc_sph_src__21@unnamed@d_a_cow_cpp@
- */
-#pragma push
-#pragma force_active on
-SECTION_DATA static u8 data_80662F78[64] = {
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0xFB, 0xFD, 0xFB, 0x00, 0x00, 0x00, 0x11, 0x00, 0x00, 0x00, 0x79, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x04, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x42, 0x70, 0x00, 0x00,
-};
-#pragma pop
-
-/* 80662FB8-80662FBA 000060 0002+00 4/5 0/0 0/0 .data            pen_dir__21@unnamed@d_a_cow_cpp@ */
-SECTION_DATA static u16 data_80662FB8 = 0xC000;
-
-/* 80662FBA-80662FBC 000062 0002+00 1/2 0/0 0/0 .data            gate_dir__21@unnamed@d_a_cow_cpp@
- */
-SECTION_DATA static u16 data_80662FBA = 0x8000;
-
-/* 80662FBC-80662FC0 000064 0004+00 0/2 0/0 0/0 .data l_CowRoomPosY__21@unnamed@d_a_cow_cpp@ */
-#pragma push
-#pragma force_active on
-SECTION_DATA static f32 data_80662FBC = 15000.0f;
-#pragma pop
-
-/* 80662FC0-80663010 000068 0050+00 1/3 0/0 0/0 .data l_CowRoomPosX__21@unnamed@d_a_cow_cpp@ */
-SECTION_DATA static u8 data_80662FC0[80] = {
-    0xC6, 0x25, 0xA0, 0x00, 0xC6, 0x25, 0xA0, 0x00, 0xC6, 0x28, 0xC0, 0x00, 0xC6, 0x28, 0xC0, 0x00,
-    0xC6, 0x2B, 0xE0, 0x00, 0xC6, 0x2B, 0xE0, 0x00, 0xC6, 0x2F, 0x00, 0x00, 0xC6, 0x2F, 0x00, 0x00,
-    0xC6, 0x32, 0x20, 0x00, 0xC6, 0x32, 0x20, 0x00, 0xC6, 0x35, 0x40, 0x00, 0xC6, 0x35, 0x40, 0x00,
-    0xC6, 0x38, 0x60, 0x00, 0xC6, 0x38, 0x60, 0x00, 0xC6, 0x3B, 0x80, 0x00, 0xC6, 0x3B, 0x80, 0x00,
-    0xC6, 0x3E, 0xA0, 0x00, 0xC6, 0x3E, 0xA0, 0x00, 0xC6, 0x41, 0xC0, 0x00, 0xC6, 0x41, 0xC0, 0x00,
-};
-
-/* 80663010-80663018 0000B8 0008+00 1/3 0/0 0/0 .data l_CowRoomPosZ__21@unnamed@d_a_cow_cpp@ */
-SECTION_DATA static u8 data_80663010[8] = {
-    0xC6, 0x99, 0x7C, 0x00, 0xC6, 0xA3, 0x7C, 0x00,
-};
-
-/* 80663018-80663024 0000C0 000C+00 1/2 0/0 0/0 .data gWolfBustersID__21@unnamed@d_a_cow_cpp@ */
-SECTION_DATA static u8 data_80663018[12] = {
-    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
-};
-
-/* 80663024-80663030 -00001 000C+00 1/1 0/0 0/0 .data            @4181 */
-SECTION_DATA static void* lit_4181[3] = {
-    (void*)NULL,
-    (void*)0xFFFFFFFF,
-    (void*)action_thrown__7daCow_cFv,
-};
-
-/* 80663030-8066303C -00001 000C+00 1/1 0/0 0/0 .data            @4186 */
-SECTION_DATA static void* lit_4186[3] = {
-    (void*)NULL,
-    (void*)0xFFFFFFFF,
-    (void*)action_thrown__7daCow_cFv,
-};
-
 /* 80658DB8-80658E98 0008D8 00E0+00 6/6 0/0 0/0 .text            checkThrow__7daCow_cFv */
-void daCow_c::checkThrow() {
-    // NONMATCHING
+bool daCow_c::checkThrow() {
+    if (mFlags != 0) {
+        if ((mFlags & 1) != 0) {
+            setProcess(&daCow_c::action_thrown, 0);
+            initCrazyBeforeCatch(0);
+            this->mFlags &= ~0x0001;
+            return true;
+        }
+        if ((mFlags & 2) != 0) {
+            setProcess(&daCow_c::action_thrown, 0);
+            initCrazyCatch(0);
+            this->mFlags &= ~0x0002;
+            return true;
+        }
+    }
+    return false;
 }
 
 /* ############################################################################################## */
