@@ -357,16 +357,20 @@ int daCow_c::checkBck(int param_0) {
 
 /* 80658830-80658A68 000350 0238+00 1/1 0/0 0/0 .text            setEffect__7daCow_cFv */
 void daCow_c::setEffect() {
+    cXyz vector_1;
+    cXyz vector_2;
+    cXyz vector_3;
+    cXyz vector_4;
+
+    cXyz* vector_ptr_1;
+    cXyz* vector_ptr_2;
+    cXyz* vector_ptr_3;
+
+    static Vec runScale = {2.0f, 2.0f, 2.0f};
+
     if (mShouldSetEffect != 0) {
         if (mShouldSetEffect == 1) {
-            cXyz vector_1;
-            cXyz vector_2;
-            cXyz vector_3;
-            cXyz vector_4;
-
-            if ((mMoreFlags & 1) == 0) {
-                mShouldSetEffect = 0;
-            } else {
+            if ((mMoreFlags & 1) != 0) {
                 cXyz offset(0.0f, -70.0f, 25.0f);
 
                 offset.x = 10.0f;
@@ -375,11 +379,9 @@ void daCow_c::setEffect() {
                 cLib_offsetPos(&vector_1, &current.pos, field_0xc32.y, &offset);
                 offset.x = -25.0;
                 cLib_offsetPos(&vector_1, &current.pos, field_0xc32.y, &offset);
+            } else {
+                mShouldSetEffect = 0;
             }
-
-            cXyz* vector_ptr_1;
-            cXyz* vector_ptr_2;
-            cXyz* vector_ptr_3;
 
             if (!mShouldSetEffect) {
                 vector_ptr_1 = NULL;
@@ -401,11 +403,10 @@ void daCow_c::setEffect() {
                                    vector_ptr_3, &field_0xc32, NULL, fopAcM_GetRoomNo(this), 1.0,
                                    speedF);
 
-            static Vec runScale = {2.0f, 2.0f, 2.0f};
-
             for (int i = 0; i < 3; i = i + 1) {
                 for (int j = 0; j < 2; j = j + 1) {
                     JPABaseEmitter* emitter = mParticle.getRightEmitter(i, j);
+
                     if (emitter) {
                         emitter->setGlobalScale(runScale);
                         emitter->setRate(1.3);
@@ -413,7 +414,6 @@ void daCow_c::setEffect() {
                 }
             }
         }
-
     } else {
         fopAcM_effSmokeSet1(&this->field_0xd38, &this->field_0xd3c, &current.pos, NULL, 2.0f,
                             &tevStr, 1);
