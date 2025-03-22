@@ -1,12 +1,11 @@
 /**
  * @file d_a_cow.cpp
- * 
-*/
+ *
+ */
 
 #include "d/actor/d_a_cow.h"
-#include "dolphin/types.h"
 #include "dol2asm.h"
-
+#include "dolphin/types.h"
 
 //
 // Forward References:
@@ -581,7 +580,8 @@ void daCow_c::setRushVibration(int param_0) {
     // NONMATCHING
 }
 
-/* ############################################################################################## */
+/* ##############################################################################################
+ */
 /* 80662F58-80662F64 000000 000C+00 13/13 0/0 0/0 .data            cNullVec__6Z2Calc */
 SECTION_DATA static u8 cNullVec__6Z2Calc[12] = {
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -1329,29 +1329,27 @@ SECTION_DATA static void* lit_8188[3] = {
 
 /* 80663390-806633B0 -00001 0020+00 1/0 0/0 0/0 .data            daCow_MethodTable */
 static actor_method_class daCow_MethodTable = {
-    (process_method_func)daCow_Create__FPv,
-    (process_method_func)daCow_Delete__FPv,
-    (process_method_func)daCow_Execute__FPv,
-    (process_method_func)daCow_IsDelete__FPv,
+    (process_method_func)daCow_Create__FPv,  (process_method_func)daCow_Delete__FPv,
+    (process_method_func)daCow_Execute__FPv, (process_method_func)daCow_IsDelete__FPv,
     (process_method_func)daCow_Draw__FPv,
 };
 
 /* 806633B0-806633E0 -00001 0030+00 0/0 0/0 1/0 .data            g_profile_COW */
 extern actor_process_profile_definition g_profile_COW = {
-  fpcLy_CURRENT_e,        // mLayerID
-  7,                      // mListID
-  fpcPi_CURRENT_e,        // mListPrio
-  PROC_COW,               // mProcName
-  &g_fpcLf_Method.base,  // sub_method
-  sizeof(daCow_c),        // mSize
-  0,                      // mSizeOther
-  0,                      // mParameters
-  &g_fopAc_Method.base,   // sub_method
-  692,                    // mPriority
-  &daCow_MethodTable,     // sub_method
-  0x00040100,             // mStatus
-  fopAc_NPC_e,            // mActorType
-  fopAc_CULLBOX_CUSTOM_e, // cullType
+    fpcLy_CURRENT_e,         // mLayerID
+    7,                       // mListID
+    fpcPi_CURRENT_e,         // mListPrio
+    PROC_COW,                // mProcName
+    &g_fpcLf_Method.base,    // sub_method
+    sizeof(daCow_c),         // mSize
+    0,                       // mSizeOther
+    0,                       // mParameters
+    &g_fopAc_Method.base,    // sub_method
+    692,                     // mPriority
+    &daCow_MethodTable,      // sub_method
+    0x00040100,              // mStatus
+    fopAc_NPC_e,             // mActorType
+    fopAc_CULLBOX_CUSTOM_e,  // cullType
 };
 
 /* 806633E0-806633EC 000488 000C+00 2/2 0/0 0/0 .data            __vt__10cCcD_GStts */

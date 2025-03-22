@@ -113,5 +113,4 @@ private:
 
 STATIC_ASSERT(sizeof(daCow_c) == 0xd40);
 
-
 #endif /* D_A_COW_H */
