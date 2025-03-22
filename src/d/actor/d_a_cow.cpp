@@ -15,256 +15,256 @@
 // Forward References:
 //
 
-extern "C" void checkBck__7daCow_cFi();
-extern "C" void setEffect__7daCow_cFv();
-extern "C" void __dt__4cXyzFv();
-extern "C" void isChaseCowGame__7daCow_cFv();
-extern "C" void setCarryStatus__7daCow_cFv();
-extern "C" void setActetcStatus__7daCow_cFv();
-extern "C" void checkNadeNadeFinish__7daCow_cFv();
-extern "C" void checkNadeNade__7daCow_cFv();
-extern "C" void setSeSnort__7daCow_cFv();
-extern "C" void setRushVibration__7daCow_cFi();
-extern "C" void checkThrow__7daCow_cFv();
-extern "C" void setBodyAngle__7daCow_cFs();
-extern "C" void setBodyAngle2__7daCow_cFs();
-extern "C" void checkProcess__7daCow_cFM7daCow_cFPCvPv_v();
-extern "C" void setProcess__7daCow_cFM7daCow_cFPCvPv_vi();
-extern "C" void damage_check__7daCow_cFv();
-extern "C" void setEnterCow20__7daCow_cFv();
-extern "C" void setEnterCow10__7daCow_cFv();
-extern "C" void setGroundAngle__7daCow_cFv();
-extern "C" void __dt__8cM3dGPlaFv();
-extern "C" static int s_near_cow__FPvPv();
-extern "C" static void s_angry_cow__FPvPv();
-extern "C" static void s_angry_cow2__FPvPv();
-extern "C" void checkRun__7daCow_cFv();
-extern "C" void checkNearCowRun__7daCow_cFv();
-extern "C" void action_wait__7daCow_cFv();
-extern "C" void action_eat__7daCow_cFv();
-extern "C" void action_moo__7daCow_cFv();
-extern "C" void action_shake__7daCow_cFv();
-extern "C" void checkNearWolf__7daCow_cFv();
-extern "C" void checkPlayerWait__7daCow_cFv();
-extern "C" void checkPlayerSurprise__7daCow_cFv();
-extern "C" void checkPlayerPos__7daCow_cFv();
-extern "C" void checkBeforeBg__7daCow_cFv();
-extern "C" void checkOutOfGate__7daCow_cF4cXyz();
-extern "C" void getCowshedAngle__7daCow_cFv();
-extern "C" void getCowshedDist__7daCow_cFv();
-extern "C" void checkCowIn__7daCow_cFff();
-extern "C" void checkCowInOwn__7daCow_cFi();
-extern "C" void action_run__7daCow_cFv();
-extern "C" void checkCurringPen__7daCow_cFv();
-extern "C" void setCowInCage__7daCow_cFv();
-extern "C" void setEnterCount__7daCow_cFv();
-extern "C" void action_enter__7daCow_cFv();
-extern "C" void isAngry__7daCow_cFv();
-extern "C" void isGuardFad__7daCow_cFv();
-extern "C" void setAngryHit__7daCow_cFv();
-extern "C" void checkBeforeBgAngry__7daCow_cFs();
-extern "C" void setRedTev__7daCow_cFv();
-extern "C" void setAngryTurn__7daCow_cFv();
-extern "C" void action_angry__7daCow_cFv();
-extern "C" void calcCatchPos__7daCow_cFfi();
-extern "C" void executeCrazyWait__7daCow_cFv();
-extern "C" void executeCrazyDash__7daCow_cFv();
-extern "C" void initCrazyBeforeCatch__7daCow_cFi();
-extern "C" void executeCrazyBeforeCatch__7daCow_cFv();
-extern "C" void initCrazyCatch__7daCow_cFi();
-extern "C" void executeCrazyCatch__7daCow_cFv();
-extern "C" void initCrazyThrow__7daCow_cFi();
-extern "C" void executeCrazyThrow__7daCow_cFv();
-extern "C" void initCrazyAttack__7daCow_cFi();
-extern "C" void executeCrazyAttack__7daCow_cFv();
-extern "C" void initCrazyAway__7daCow_cFi();
-extern "C" void executeCrazyAway__7daCow_cFv();
-extern "C" void executeCrazyEnd__7daCow_cFv();
-extern "C" void initCrazyBack__7daCow_cFi();
-extern "C" void executeCrazyBack__7daCow_cFv();
-extern "C" void action_crazy__7daCow_cFv();
-extern "C" void executeCrazyBack2__7daCow_cFv();
-extern "C" void action_thrown__7daCow_cFv();
-extern "C" void checkWolfBusters__7daCow_cFv();
-extern "C" void action_wolf__7daCow_cFv();
-extern "C" void action_damage__7daCow_cFv();
-extern "C" void action__7daCow_cFv();
-extern "C" void setMtx__7daCow_cFv();
-extern "C" void setAttnPos__7daCow_cFv();
-extern "C" void setCollisions__7daCow_cFv();
-extern "C" void Execute__7daCow_cFv();
+// extern "C" void checkBck__7daCow_cFi();
+// extern "C" void setEffect__7daCow_cFv();
+// extern "C" void __dt__4cXyzFv();
+// extern "C" void isChaseCowGame__7daCow_cFv();
+// extern "C" void setCarryStatus__7daCow_cFv();
+// extern "C" void setActetcStatus__7daCow_cFv();
+// extern "C" void checkNadeNadeFinish__7daCow_cFv();
+// extern "C" void checkNadeNade__7daCow_cFv();
+// extern "C" void setSeSnort__7daCow_cFv();
+// extern "C" void setRushVibration__7daCow_cFi();
+// extern "C" void checkThrow__7daCow_cFv();
+// extern "C" void setBodyAngle__7daCow_cFs();
+// extern "C" void setBodyAngle2__7daCow_cFs();
+// extern "C" void checkProcess__7daCow_cFM7daCow_cFPCvPv_v();
+// extern "C" void setProcess__7daCow_cFM7daCow_cFPCvPv_vi();
+// extern "C" void damage_check__7daCow_cFv();
+// extern "C" void setEnterCow20__7daCow_cFv();
+// extern "C" void setEnterCow10__7daCow_cFv();
+// extern "C" void setGroundAngle__7daCow_cFv();
+// extern "C" void __dt__8cM3dGPlaFv();
+// extern "C" static int s_near_cow__FPvPv();
+// extern "C" static void s_angry_cow__FPvPv();
+// extern "C" static void s_angry_cow2__FPvPv();
+// extern "C" void checkRun__7daCow_cFv();
+// extern "C" void checkNearCowRun__7daCow_cFv();
+// extern "C" void action_wait__7daCow_cFv();
+// extern "C" void action_eat__7daCow_cFv();
+// extern "C" void action_moo__7daCow_cFv();
+// extern "C" void action_shake__7daCow_cFv();
+// extern "C" void checkNearWolf__7daCow_cFv();
+// extern "C" void checkPlayerWait__7daCow_cFv();
+// extern "C" void checkPlayerSurprise__7daCow_cFv();
+// extern "C" void checkPlayerPos__7daCow_cFv();
+// extern "C" void checkBeforeBg__7daCow_cFv();
+// extern "C" void checkOutOfGate__7daCow_cF4cXyz();
+// extern "C" void getCowshedAngle__7daCow_cFv();
+// extern "C" void getCowshedDist__7daCow_cFv();
+// extern "C" void checkCowIn__7daCow_cFff();
+// extern "C" void checkCowInOwn__7daCow_cFi();
+// extern "C" void action_run__7daCow_cFv();
+// extern "C" void checkCurringPen__7daCow_cFv();
+// extern "C" void setCowInCage__7daCow_cFv();
+// extern "C" void setEnterCount__7daCow_cFv();
+// extern "C" void action_enter__7daCow_cFv();
+// extern "C" void isAngry__7daCow_cFv();
+// extern "C" void isGuardFad__7daCow_cFv();
+// extern "C" void setAngryHit__7daCow_cFv();
+// extern "C" void checkBeforeBgAngry__7daCow_cFs();
+// extern "C" void setRedTev__7daCow_cFv();
+// extern "C" void setAngryTurn__7daCow_cFv();
+// extern "C" void action_angry__7daCow_cFv();
+// extern "C" void calcCatchPos__7daCow_cFfi();
+// extern "C" void executeCrazyWait__7daCow_cFv();
+// extern "C" void executeCrazyDash__7daCow_cFv();
+// extern "C" void initCrazyBeforeCatch__7daCow_cFi();
+// extern "C" void executeCrazyBeforeCatch__7daCow_cFv();
+// extern "C" void initCrazyCatch__7daCow_cFi();
+// extern "C" void executeCrazyCatch__7daCow_cFv();
+// extern "C" void initCrazyThrow__7daCow_cFi();
+// extern "C" void executeCrazyThrow__7daCow_cFv();
+// extern "C" void initCrazyAttack__7daCow_cFi();
+// extern "C" void executeCrazyAttack__7daCow_cFv();
+// extern "C" void initCrazyAway__7daCow_cFi();
+// extern "C" void executeCrazyAway__7daCow_cFv();
+// extern "C" void executeCrazyEnd__7daCow_cFv();
+// extern "C" void initCrazyBack__7daCow_cFi();
+// extern "C" void executeCrazyBack__7daCow_cFv();
+// extern "C" void action_crazy__7daCow_cFv();
+// extern "C" void executeCrazyBack2__7daCow_cFv();
+// extern "C" void action_thrown__7daCow_cFv();
+// extern "C" void checkWolfBusters__7daCow_cFv();
+// extern "C" void action_wolf__7daCow_cFv();
+// extern "C" void action_damage__7daCow_cFv();
+// extern "C" void action__7daCow_cFv();
+// extern "C" void setMtx__7daCow_cFv();
+// extern "C" void setAttnPos__7daCow_cFv();
+// extern "C" void setCollisions__7daCow_cFv();
+// extern "C" void Execute__7daCow_cFv();
 extern "C" static void daCow_Execute__FPv();
-extern "C" void CreateHeap__7daCow_cFv();
-extern "C" void __dt__12J3DFrameCtrlFv();
-extern "C" void createHeapCallBack__7daCow_cFP10fopAc_ac_c();
-extern "C" void initialize__7daCow_cFv();
-extern "C" void create__7daCow_cFv();
-extern "C" void __dt__8dCcD_SphFv();
-extern "C" void __ct__8dCcD_SphFv();
-extern "C" void __dt__8cM3dGSphFv();
-extern "C" void __dt__8cM3dGAabFv();
-extern "C" void __dt__12dBgS_AcchCirFv();
-extern "C" void __dt__10dCcD_GSttsFv();
-extern "C" void __dt__12dBgS_ObjAcchFv();
+// extern "C" void CreateHeap__7daCow_cFv();
+// extern "C" void __dt__12J3DFrameCtrlFv();
+// extern "C" void createHeapCallBack__7daCow_cFP10fopAc_ac_c();
+// extern "C" void initialize__7daCow_cFv();
+// extern "C" void create__7daCow_cFv();
+// extern "C" void __dt__8dCcD_SphFv();
+// extern "C" void __ct__8dCcD_SphFv();
+// extern "C" void __dt__8cM3dGSphFv();
+// extern "C" void __dt__8cM3dGAabFv();
+// extern "C" void __dt__12dBgS_AcchCirFv();
+// extern "C" void __dt__10dCcD_GSttsFv();
+// extern "C" void __dt__12dBgS_ObjAcchFv();
 extern "C" static void daCow_Create__FPv();
-extern "C" void ctrlJoint__7daCow_cFP8J3DJointP8J3DModel();
-extern "C" void ctrlJointCallBack__7daCow_cFP8J3DJointi();
-extern "C" void Draw__7daCow_cFv();
+// extern "C" void ctrlJoint__7daCow_cFP8J3DJointP8J3DModel();
+// extern "C" void ctrlJointCallBack__7daCow_cFP8J3DJointi();
+// extern "C" void Draw__7daCow_cFv();
 extern "C" static void daCow_Draw__FPv();
-extern "C" void Delete__7daCow_cFv();
+// extern "C" void Delete__7daCow_cFv();
 extern "C" static void daCow_Delete__FPv();
 extern "C" static bool daCow_IsDelete__FPv();
-extern "C" void __dt__10cCcD_GSttsFv();
-extern "C" void func_80662CB0(void* _this, int*);
-extern "C" void __sinit_d_a_cow_cpp();
-extern "C" static void func_80662D60();
-extern "C" static void func_80662D68();
-extern "C" void getShapeAngle__7daCow_cFv();
-extern "C" void checkNowWolf__9daPy_py_cFv();
-extern "C" extern char const* const d_a_cow__stringBase0;
+// extern "C" void __dt__10cCcD_GSttsFv();
+// extern "C" void func_80662CB0(void* _this, int*);
+// extern "C" void __sinit_d_a_cow_cpp();
+// extern "C" static void func_80662D60();
+// extern "C" static void func_80662D68();
+// extern "C" void getShapeAngle__7daCow_cFv();
+// extern "C" void checkNowWolf__9daPy_py_cFv();
+// extern "C" extern char const* const d_a_cow__stringBase0;
 
 //
 // External References:
-//
+// //
 
-extern "C" void mDoMtx_YrotS__FPA4_fs();
-extern "C" void mDoMtx_YrotM__FPA4_fs();
-extern "C" void mDoMtx_ZrotM__FPA4_fs();
-extern "C" void transS__14mDoMtx_stack_cFRC4cXyz();
-extern "C" void transM__14mDoMtx_stack_cFfff();
-extern "C" void ZXYrotM__14mDoMtx_stack_cFRC5csXyz();
-extern "C" void play__14mDoExt_baseAnmFv();
-extern "C" void init__13mDoExt_btpAnmFP16J3DMaterialTableP16J3DAnmTexPatterniifss();
-extern "C" void entry__13mDoExt_btpAnmFP16J3DMaterialTables();
-extern "C" void
-__ct__16mDoExt_McaMorfSOFP12J3DModelDataP25mDoExt_McaMorfCallBack1_cP25mDoExt_McaMorfCallBack2_cP15J3DAnmTransformifiiP10Z2CreatureUlUl();
-extern "C" void setAnm__16mDoExt_McaMorfSOFP15J3DAnmTransformiffff();
-extern "C" void play__16mDoExt_McaMorfSOFUlSc();
-extern "C" void entryDL__16mDoExt_McaMorfSOFv();
-extern "C" void modelCalc__16mDoExt_McaMorfSOFv();
-extern "C" void mDoLib_project__FP3VecP3Vec();
-extern "C" void __ct__10fopAc_ac_cFv();
-extern "C" void fopAc_IsActor__FPv();
-extern "C" void fopAcM_SearchByName__FsPP10fopAc_ac_c();
-extern "C" void fopAcM_delete__FP10fopAc_ac_c();
-extern "C" void fopAcM_create__FsUlPC4cXyziPC5csXyzPC4cXyzSc();
-extern "C" void fopAcM_entrySolidHeap__FP10fopAc_ac_cPFP10fopAc_ac_c_iUl();
-extern "C" void fopAcM_setCullSizeBox__FP10fopAc_ac_cffffff();
-extern "C" void fopAcM_posMoveF__FP10fopAc_ac_cPC4cXyz();
-extern "C" void fopAcM_searchActorAngleY__FPC10fopAc_ac_cPC10fopAc_ac_c();
-extern "C" void fopAcM_seenActorAngleY__FPC10fopAc_ac_cPC10fopAc_ac_c();
-extern "C" void fopAcM_searchActorDistance__FPC10fopAc_ac_cPC10fopAc_ac_c();
-extern "C" void fopAcM_cancelCarryNow__FP10fopAc_ac_c();
-extern "C" void fopAcM_effSmokeSet1__FPUlPUlPC4cXyzPC5csXyzfPC12dKy_tevstr_ci();
-extern "C" void fopCamM_GetParam__FP12camera_class();
-extern "C" void fpcEx_Search__FPFPvPv_PvPv();
-extern "C" void fpcM_IsCreating__FUi();
-extern "C" void getLayerNo__14dComIfG_play_cFi();
-extern "C" void dComIfG_resLoad__FP30request_of_phase_process_classPCc();
-extern "C" void dComIfG_resDelete__FP30request_of_phase_process_classPCc();
-extern "C" void dComIfGp_getReverb__Fi();
-extern "C" void dComIfGd_setSimpleShadow__FP4cXyzffR13cBgS_PolyInfosfP9_GXTexObj();
-extern "C" void
-dComIfGd_setShadow__FUlScP8J3DModelP4cXyzffffR13cBgS_PolyInfoP12dKy_tevstr_csfP9_GXTexObj();
-extern "C" void isEventBit__11dSv_event_cCFUs();
-extern "C" void getRes__14dRes_control_cFPCclP11dRes_info_ci();
-extern "C" void getRunEventName__16dEvent_manager_cFv();
-extern "C" void init__7dPaPo_cFP9dBgS_Acchff();
-extern "C" void
-setEffectTwo__8dPaPoT_cFPC12dKy_tevstr_cPC4cXyzUlUlPC4cXyzPC4cXyzPC4cXyzPC5csXyzPC4cXyzScff();
-extern "C" void dPath_GetPnt__FPC5dPathi();
-extern "C" void dPath_GetRoomPath__Fii();
-extern "C" void StartShock__12dVibration_cFii4cXyz();
-extern "C" void LockonTarget__12dAttention_cFl();
-extern "C" void LockonTruth__12dAttention_cFv();
-extern "C" void request__10dAttLook_cFP10fopAc_ac_cfffsi();
-extern "C" void LineCross__4cBgSFP11cBgS_LinChk();
-extern "C" void GetTriPla__4cBgSCFRC13cBgS_PolyInfoP8cM3dGPla();
-extern "C" void __ct__12dBgS_AcchCirFv();
-extern "C" void SetWallR__12dBgS_AcchCirFf();
-extern "C" void SetWall__12dBgS_AcchCirFff();
-extern "C" void __dt__9dBgS_AcchFv();
-extern "C" void __ct__9dBgS_AcchFv();
-extern "C" void Set__9dBgS_AcchFP4cXyzP4cXyzP10fopAc_ac_ciP12dBgS_AcchCirP4cXyzP5csXyzP5csXyz();
-extern "C" void CrrPos__9dBgS_AcchFR4dBgS();
-extern "C" void __ct__11dBgS_LinChkFv();
-extern "C" void __dt__11dBgS_LinChkFv();
-extern "C" void Set__11dBgS_LinChkFPC4cXyzPC4cXyzPC10fopAc_ac_c();
-extern "C" void SetObj__16dBgS_PolyPassChkFv();
-extern "C" void __ct__10dCcD_GSttsFv();
-extern "C" void Move__10dCcD_GSttsFv();
-extern "C" void Init__9dCcD_SttsFiiP10fopAc_ac_c();
-extern "C" void __ct__12dCcD_GObjInfFv();
-extern "C" void __dt__12dCcD_GObjInfFv();
-extern "C" void ChkTgHit__12dCcD_GObjInfFv();
-extern "C" void GetTgHitObj__12dCcD_GObjInfFv();
-extern "C" void ChkCoHit__12dCcD_GObjInfFv();
-extern "C" void GetCoHitObj__12dCcD_GObjInfFv();
-extern "C" void Set__8dCcD_SphFRC11dCcD_SrcSph();
-extern "C" void settingTevStruct__18dScnKy_env_light_cFiP4cXyzP12dKy_tevstr_c();
-extern "C" void setLightTevColorType_MAJI__18dScnKy_env_light_cFP12J3DModelDataP12dKy_tevstr_c();
-extern "C" void dTimer_createGetIn2D__Fl4cXyz();
-extern "C" void ClrCcMove__9cCcD_SttsFv();
-extern "C" void GetAc__8cCcD_ObjFv();
-extern "C" void Set__4cCcSFP8cCcD_Obj();
-extern "C" void __pl__4cXyzCFRC3Vec();
-extern "C" void __mi__4cXyzCFRC3Vec();
-extern "C" void cM_atan2s__Fff();
-extern "C" void cM_rnd__Fv();
-extern "C" void cM_rndF__Ff();
-extern "C" void cM_rndFX__Ff();
-extern "C" void __dt__13cBgS_PolyInfoFv();
-extern "C" void __dt__8cM3dGCirFv();
-extern "C" void SetC__8cM3dGSphFRC4cXyz();
-extern "C" void SetR__8cM3dGSphFf();
-extern "C" void cLib_addCalcAngleS__FPsssss();
-extern "C" void cLib_addCalcAngleS2__FPssss();
-extern "C" void cLib_chaseS__FPsss();
-extern "C" void cLib_chaseF__FPfff();
-extern "C" void cLib_chasePos__FP4cXyzRC4cXyzf();
-extern "C" void cLib_chaseAngleS__FPsss();
-extern "C" void cLib_targetAngleY__FPC3VecPC3Vec();
-extern "C" void cLib_offsetPos__FP4cXyzPC4cXyzsPC4cXyz();
-extern "C" void cLib_distanceAngleS__Fss();
-extern "C" void __ct__10Z2CreatureFv();
-extern "C" void init__10Z2CreatureFP3VecP3VecUcUc();
-extern "C" void* __nw__FUl();
-extern "C" void __dl__FPv();
-extern "C" void init__12J3DFrameCtrlFs();
-extern "C" void checkPass__12J3DFrameCtrlFf();
-extern "C" void __construct_array();
-extern "C" void __ptmf_test();
-extern "C" void __ptmf_cmpr();
-extern "C" void __ptmf_scall();
-extern "C" void _savefpr_29();
-extern "C" void _restfpr_29();
-extern "C" void _savegpr_19();
-extern "C" void _savegpr_24();
-extern "C" void _savegpr_25();
-extern "C" void _savegpr_26();
-extern "C" void _savegpr_27();
-extern "C" void _savegpr_28();
-extern "C" void _savegpr_29();
-extern "C" void _restgpr_19();
-extern "C" void _restgpr_24();
-extern "C" void _restgpr_25();
-extern "C" void _restgpr_26();
-extern "C" void _restgpr_27();
-extern "C" void _restgpr_28();
-extern "C" void _restgpr_29();
-extern "C" u8 m_emitterTwoData__8dPaPoT_c[36];
-extern "C" extern void* __vt__8dCcD_Sph[36];
-extern "C" extern void* __vt__9dCcD_Stts[11];
-extern "C" extern void* __vt__12cCcD_SphAttr[25];
-extern "C" extern void* __vt__14cCcD_ShapeAttr[22];
-extern "C" extern void* __vt__9cCcD_Stts[8];
-extern "C" u8 now__14mDoMtx_stack_c[48];
-extern "C" u8 mSimpleTexObj__21dDlst_shadowControl_c[32];
-extern "C" extern u8 g_meter2_info[248];
-extern "C" u8 mCurrentMtx__6J3DSys[48];
-extern "C" u8 sincosTable___5JMath[65536];
-extern "C" extern u8 g_dComIfGoat_gameInfo[4 + 4 /* padding */];
-extern "C" void __register_global_object();
+// extern "C" void mDoMtx_YrotS__FPA4_fs();
+// extern "C" void mDoMtx_YrotM__FPA4_fs();
+// extern "C" void mDoMtx_ZrotM__FPA4_fs();
+// extern "C" void transS__14mDoMtx_stack_cFRC4cXyz();
+// extern "C" void transM__14mDoMtx_stack_cFfff();
+// extern "C" void ZXYrotM__14mDoMtx_stack_cFRC5csXyz();
+// extern "C" void play__14mDoExt_baseAnmFv();
+// extern "C" void init__13mDoExt_btpAnmFP16J3DMaterialTableP16J3DAnmTexPatterniifss();
+// extern "C" void entry__13mDoExt_btpAnmFP16J3DMaterialTables();
+// extern "C" void
+// __ct__16mDoExt_McaMorfSOFP12J3DModelDataP25mDoExt_McaMorfCallBack1_cP25mDoExt_McaMorfCallBack2_cP15J3DAnmTransformifiiP10Z2CreatureUlUl();
+// extern "C" void setAnm__16mDoExt_McaMorfSOFP15J3DAnmTransformiffff();
+// extern "C" void play__16mDoExt_McaMorfSOFUlSc();
+// extern "C" void entryDL__16mDoExt_McaMorfSOFv();
+// extern "C" void modelCalc__16mDoExt_McaMorfSOFv();
+// extern "C" void mDoLib_project__FP3VecP3Vec();
+// extern "C" void __ct__10fopAc_ac_cFv();
+// extern "C" void fopAc_IsActor__FPv();
+// extern "C" void fopAcM_SearchByName__FsPP10fopAc_ac_c();
+// extern "C" void fopAcM_delete__FP10fopAc_ac_c();
+// extern "C" void fopAcM_create__FsUlPC4cXyziPC5csXyzPC4cXyzSc();
+// extern "C" void fopAcM_entrySolidHeap__FP10fopAc_ac_cPFP10fopAc_ac_c_iUl();
+// extern "C" void fopAcM_setCullSizeBox__FP10fopAc_ac_cffffff();
+// extern "C" void fopAcM_posMoveF__FP10fopAc_ac_cPC4cXyz();
+// extern "C" void fopAcM_searchActorAngleY__FPC10fopAc_ac_cPC10fopAc_ac_c();
+// extern "C" void fopAcM_seenActorAngleY__FPC10fopAc_ac_cPC10fopAc_ac_c();
+// extern "C" void fopAcM_searchActorDistance__FPC10fopAc_ac_cPC10fopAc_ac_c();
+// extern "C" void fopAcM_cancelCarryNow__FP10fopAc_ac_c();
+// extern "C" void fopAcM_effSmokeSet1__FPUlPUlPC4cXyzPC5csXyzfPC12dKy_tevstr_ci();
+// extern "C" void fopCamM_GetParam__FP12camera_class();
+// extern "C" void fpcEx_Search__FPFPvPv_PvPv();
+// extern "C" void fpcM_IsCreating__FUi();
+// extern "C" void getLayerNo__14dComIfG_play_cFi();
+// extern "C" void dComIfG_resLoad__FP30request_of_phase_process_classPCc();
+// extern "C" void dComIfG_resDelete__FP30request_of_phase_process_classPCc();
+// extern "C" void dComIfGp_getReverb__Fi();
+// extern "C" void dComIfGd_setSimpleShadow__FP4cXyzffR13cBgS_PolyInfosfP9_GXTexObj();
+// extern "C" void
+// dComIfGd_setShadow__FUlScP8J3DModelP4cXyzffffR13cBgS_PolyInfoP12dKy_tevstr_csfP9_GXTexObj();
+// extern "C" void isEventBit__11dSv_event_cCFUs();
+// extern "C" void getRes__14dRes_control_cFPCclP11dRes_info_ci();
+// extern "C" void getRunEventName__16dEvent_manager_cFv();
+// extern "C" void init__7dPaPo_cFP9dBgS_Acchff();
+// extern "C" void
+// setEffectTwo__8dPaPoT_cFPC12dKy_tevstr_cPC4cXyzUlUlPC4cXyzPC4cXyzPC4cXyzPC5csXyzPC4cXyzScff();
+// extern "C" void dPath_GetPnt__FPC5dPathi();
+// extern "C" void dPath_GetRoomPath__Fii();
+// extern "C" void StartShock__12dVibration_cFii4cXyz();
+// extern "C" void LockonTarget__12dAttention_cFl();
+// extern "C" void LockonTruth__12dAttention_cFv();
+// extern "C" void request__10dAttLook_cFP10fopAc_ac_cfffsi();
+// extern "C" void LineCross__4cBgSFP11cBgS_LinChk();
+// extern "C" void GetTriPla__4cBgSCFRC13cBgS_PolyInfoP8cM3dGPla();
+// extern "C" void __ct__12dBgS_AcchCirFv();
+// extern "C" void SetWallR__12dBgS_AcchCirFf();
+// extern "C" void SetWall__12dBgS_AcchCirFff();
+// extern "C" void __dt__9dBgS_AcchFv();
+// extern "C" void __ct__9dBgS_AcchFv();
+// extern "C" void Set__9dBgS_AcchFP4cXyzP4cXyzP10fopAc_ac_ciP12dBgS_AcchCirP4cXyzP5csXyzP5csXyz();
+// extern "C" void CrrPos__9dBgS_AcchFR4dBgS();
+// extern "C" void __ct__11dBgS_LinChkFv();
+// extern "C" void __dt__11dBgS_LinChkFv();
+// extern "C" void Set__11dBgS_LinChkFPC4cXyzPC4cXyzPC10fopAc_ac_c();
+// extern "C" void SetObj__16dBgS_PolyPassChkFv();
+// extern "C" void __ct__10dCcD_GSttsFv();
+// extern "C" void Move__10dCcD_GSttsFv();
+// extern "C" void Init__9dCcD_SttsFiiP10fopAc_ac_c();
+// extern "C" void __ct__12dCcD_GObjInfFv();
+// extern "C" void __dt__12dCcD_GObjInfFv();
+// extern "C" void ChkTgHit__12dCcD_GObjInfFv();
+// extern "C" void GetTgHitObj__12dCcD_GObjInfFv();
+// extern "C" void ChkCoHit__12dCcD_GObjInfFv();
+// extern "C" void GetCoHitObj__12dCcD_GObjInfFv();
+// extern "C" void Set__8dCcD_SphFRC11dCcD_SrcSph();
+// extern "C" void settingTevStruct__18dScnKy_env_light_cFiP4cXyzP12dKy_tevstr_c();
+// extern "C" void setLightTevColorType_MAJI__18dScnKy_env_light_cFP12J3DModelDataP12dKy_tevstr_c();
+// extern "C" void dTimer_createGetIn2D__Fl4cXyz();
+// extern "C" void ClrCcMove__9cCcD_SttsFv();
+// extern "C" void GetAc__8cCcD_ObjFv();
+// extern "C" void Set__4cCcSFP8cCcD_Obj();
+// extern "C" void __pl__4cXyzCFRC3Vec();
+// extern "C" void __mi__4cXyzCFRC3Vec();
+// extern "C" void cM_atan2s__Fff();
+// extern "C" void cM_rnd__Fv();
+// extern "C" void cM_rndF__Ff();
+// extern "C" void cM_rndFX__Ff();
+// extern "C" void __dt__13cBgS_PolyInfoFv();
+// extern "C" void __dt__8cM3dGCirFv();
+// extern "C" void SetC__8cM3dGSphFRC4cXyz();
+// extern "C" void SetR__8cM3dGSphFf();
+// extern "C" void cLib_addCalcAngleS__FPsssss();
+// extern "C" void cLib_addCalcAngleS2__FPssss();
+// extern "C" void cLib_chaseS__FPsss();
+// extern "C" void cLib_chaseF__FPfff();
+// extern "C" void cLib_chasePos__FP4cXyzRC4cXyzf();
+// extern "C" void cLib_chaseAngleS__FPsss();
+// extern "C" void cLib_targetAngleY__FPC3VecPC3Vec();
+// extern "C" void cLib_offsetPos__FP4cXyzPC4cXyzsPC4cXyz();
+// extern "C" void cLib_distanceAngleS__Fss();
+// extern "C" void __ct__10Z2CreatureFv();
+// extern "C" void init__10Z2CreatureFP3VecP3VecUcUc();
+// extern "C" void* __nw__FUl();
+// extern "C" void __dl__FPv();
+// extern "C" void init__12J3DFrameCtrlFs();
+// extern "C" void checkPass__12J3DFrameCtrlFf();
+// extern "C" void __construct_array();
+// extern "C" void __ptmf_test();
+// extern "C" void __ptmf_cmpr();
+// extern "C" void __ptmf_scall();
+// extern "C" void _savefpr_29();
+// extern "C" void _restfpr_29();
+// extern "C" void _savegpr_19();
+// extern "C" void _savegpr_24();
+// extern "C" void _savegpr_25();
+// extern "C" void _savegpr_26();
+// extern "C" void _savegpr_27();
+// extern "C" void _savegpr_28();
+// extern "C" void _savegpr_29();
+// extern "C" void _restgpr_19();
+// extern "C" void _restgpr_24();
+// extern "C" void _restgpr_25();
+// extern "C" void _restgpr_26();
+// extern "C" void _restgpr_27();
+// extern "C" void _restgpr_28();
+// extern "C" void _restgpr_29();
+// extern "C" u8 m_emitterTwoData__8dPaPoT_c[36];
+// extern "C" extern void* __vt__8dCcD_Sph[36];
+// extern "C" extern void* __vt__9dCcD_Stts[11];
+// extern "C" extern void* __vt__12cCcD_SphAttr[25];
+// extern "C" extern void* __vt__14cCcD_ShapeAttr[22];
+// extern "C" extern void* __vt__9cCcD_Stts[8];
+// extern "C" u8 now__14mDoMtx_stack_c[48];
+// extern "C" u8 mSimpleTexObj__21dDlst_shadowControl_c[32];
+// extern "C" extern u8 g_meter2_info[248];
+// extern "C" u8 mCurrentMtx__6J3DSys[48];
+// extern "C" u8 sincosTable___5JMath[65536];
+// extern "C" extern u8 g_dComIfGoat_gameInfo[4 + 4 /* padding */];
+// extern "C" void __register_global_object();
 
 //
 // Declarations:
@@ -353,7 +353,7 @@ void daCow_c::setBck(int param_0, u8 param_1, f32 param_2, f32 param_3) {
 }
 
 /* 806587D4-80658830 0002F4 005C+00 1/1 0/0 0/0 .text            checkBck__7daCow_cFi */
-int daCow_c::checkBck(int param_0) {
+bool daCow_c::checkBck(int param_0) {
     J3DAnmTransform* animation = (J3DAnmTransform*)dComIfG_getObjectRes("Cow", param_0);
     return mpMorf->getAnm() == animation;
 }
@@ -508,13 +508,15 @@ bool daCow_c::checkThrow() {
     return false;
 }
 
-#define CLAMP_COW_BODY_ANGLE(angle)                                                                \
-    if ((angle) > 0x2000) {                                                                        \
-        (angle) = 0x2000;                                                                          \
+#define CLAMP(val, min, max)                                                                       \
+    if ((val) > (max)) {                                                                           \
+        (val) = (max);                                                                             \
     }                                                                                              \
-    if ((angle) < -0x2000) {                                                                       \
-        (angle) = -0x2000;                                                                         \
+    if ((val) < (min)) {                                                                           \
+        (val) = (min);                                                                             \
     }
+
+#define CLAMP_COW_BODY_ANGLE(angle) CLAMP((angle), -0x2000, 0x2000)
 
 /* 80658E98-80658F94 0009B8 00FC+00 3/3 0/0 0/0 .text            setBodyAngle__7daCow_cFs */
 void daCow_c::setBodyAngle(s16 angle) {
@@ -555,7 +557,7 @@ void daCow_c::setBodyAngle2(s16 angle) {
 }
 
 /* 806590E8-80659114 000C08 002C+00 5/5 0/0 0/0 .text checkProcess__7daCow_cFM7daCow_cFPCvPv_v */
-int daCow_c::checkProcess(void (daCow_c::*process)()) {
+bool daCow_c::checkProcess(void (daCow_c::*process)()) {
     return this->mProcess == process;
 }
 
@@ -1378,8 +1380,8 @@ static int s_near_cow(daCow_c* cow_1, daCow_c* cow_2) {
                 m_near_dist = (float)dVar5;
             }
         }
-        return 0;
     }
+    return 0;
 }
 
 /* ##############################################################################################
@@ -1534,7 +1536,109 @@ COMPILER_STRIP_GATE(0x80662E34, &lit_4657);
 
 /* 80659ADC-8065A0E8 0015FC 060C+00 15/0 0/0 0/0 .text            action_wait__7daCow_cFv */
 void daCow_c::action_wait() {
-    // NONMATCHING
+    f32 rand = cM_rnd();
+    // u64 local_50;
+
+    if (field_0xc5c != 2) {
+        if (field_0xc5c > 1) {
+            if (field_0xc5c > 3) {
+                return;
+            }
+            field_0xc38.y = 0;
+            field_0xc3e.y = 0;
+            field_0xc88 = 0;
+            field_0xca8 = 0;
+            return;
+        }
+        if (field_0xc5c == 0) {
+            rand = cM_rndF(100.0f);
+            // local_50 = rand + 300.0f;
+            field_0xc58 = rand + 300.0f;
+            field_0xc5c = 1;
+            field_0xc90 = 0;
+            if (!field_0xcaa) {
+                setBck(0x1a, 2, 12.0f, 1.0f);
+                field_0xc5c = 2;
+                return;
+            }
+            setBck(6, 0, 12.0f, 1.0f);
+
+            mpMorf->setFrame(mpMorf->getEndFrame());
+            mpMorf->setPlaySpeed(-1.0f);
+
+            field_0xc5c = 1;
+
+            return;
+        }
+        if (mpMorf->isStop()) {
+            setBck(0x1a, 2, 0.0f, 1.0f);
+            field_0xc5c = 2;
+        }
+    }
+    s16 angle = 0;
+    if (field_0xc88 > 0x1e) {
+        angle = field_0xc32.y - fopAcM_searchPlayerAngleY(this);
+        CLAMP(angle, -0x2800, 0x2800);
+    }
+    // local_50 = CONCAT44(0x43300000, (int)angle ^ 0x80000000);
+    int iVar2 = angle * 0.9f;
+    // local_48 = (longlong)iVar2;
+    cLib_addCalcAngleS2(&field_0xc3e.y, iVar2, 0x10, 0x100);
+    // uStack_3c = (int)angle ^ 0x80000000;
+    // local_40 = 0x43300000;
+    iVar2 = angle * 0.1f;
+    // local_38 = (longlong)iVar2;
+    cLib_addCalcAngleS2(&field_0xc38.y, iVar2, 0x10, 0x100);
+
+    if (!field_0xca5) {
+        if (checkCowInOwn(0x8000)) {
+            return;
+        }
+        if (field_0xca8) {
+            field_0xc88 = 0;
+            if (!checkNadeNadeFinish()) {
+                return;
+            }
+            setProcess(&daCow_c::action_moo, 0);
+            return;
+        }
+        if (checkPlayerWait() && (checkPlayerSurprise() || checkPlayerPos())) {
+            setProcess(&daCow_c::action_run, 0);
+            return;
+        }
+        if (checkWolfBusters()) {
+            return;
+        }
+        setActetcStatus();
+        if (checkNadeNade()) {
+            return;
+        }
+        setCarryStatus();
+        if (checkThrow()) {
+            return;
+        }
+        if (checkNearCowRun()) {
+            setProcess(&daCow_c::action_run, 0);
+            return;
+        }
+    }
+    if (!cLib_calcTimer(&field_0xc58) && !field_0xc88) {
+        if (!checkNearWolf()) {
+            daPy_py_c* playerActor = daPy_getPlayerActorClass();
+            double distanceXZ = current.pos.absXZ(playerActor->current.pos);
+            if (distanceXZ <= 500.0f || rand >= 0.4f) {
+                if (rand >= 0.5f) {
+                    setProcess(&daCow_c::action_shake, 1);
+                } else {
+                    setProcess(&daCow_c::action_eat, 1);
+                }
+            } else {
+                setProcess(&daCow_c::action_moo, 0);
+            }
+        } else {
+            setProcess(&daCow_c::action_moo, 0);
+        }
+    }
 }
 
 /* ############################################################################################## */
@@ -1581,13 +1685,15 @@ SECTION_RODATA static f32 const lit_5007 = 3000.0f;
 COMPILER_STRIP_GATE(0x80662E44, &lit_5007);
 
 /* 8065ACC8-8065AD2C 0027E8 0064+00 4/4 0/0 0/0 .text            checkNearWolf__7daCow_cFv */
-void daCow_c::checkNearWolf() {
+bool daCow_c::checkNearWolf() {
     // NONMATCHING
+    return false;
 }
 
 /* 8065AD2C-8065ADB0 00284C 0084+00 5/5 0/0 0/0 .text            checkPlayerWait__7daCow_cFv */
-void daCow_c::checkPlayerWait() {
+bool daCow_c::checkPlayerWait() {
     // NONMATCHING
+    return false;
 }
 
 /* ##############################################################################################
@@ -1598,13 +1704,15 @@ COMPILER_STRIP_GATE(0x80662E48, &lit_5049);
 
 /* 8065ADB0-8065AE88 0028D0 00D8+00 2/2 0/0 0/0 .text            checkPlayerSurprise__7daCow_cFv
  */
-void daCow_c::checkPlayerSurprise() {
+bool daCow_c::checkPlayerSurprise() {
     // NONMATCHING
+    return false;
 }
 
 /* 8065AE88-8065B034 0029A8 01AC+00 2/2 0/0 0/0 .text            checkPlayerPos__7daCow_cFv */
-void daCow_c::checkPlayerPos() {
+bool daCow_c::checkPlayerPos() {
     // NONMATCHING
+    return false;
 }
 
 /* ############################################################################################## */
@@ -1688,8 +1796,9 @@ void daCow_c::getCowshedDist() {
 }
 
 /* 8065BA30-8065BB34 003550 0104+00 2/2 0/0 0/0 .text            checkCowIn__7daCow_cFff */
-void daCow_c::checkCowIn(f32 param_0, f32 param_1) {
+bool daCow_c::checkCowIn(f32 param_0, f32 param_1) {
     // NONMATCHING
+    return false;
 }
 
 /* ##############################################################################################
@@ -1703,7 +1812,7 @@ SECTION_RODATA static f32 const lit_5517 = 220.0f;
 COMPILER_STRIP_GATE(0x80662E70, &lit_5517);
 
 /* 8065BB34-8065BC68 003654 0134+00 5/5 0/0 0/0 .text            checkCowInOwn__7daCow_cFi */
-void daCow_c::checkCowInOwn(int param_0) {
+bool daCow_c::checkCowInOwn(int param_0) {
     // NONMATCHING
 }
 
@@ -1759,8 +1868,9 @@ COMPILER_STRIP_GATE(0x80662E8C, &lit_5714);
 #pragma pop
 
 /* 8065C32C-8065C508 003E4C 01DC+00 1/1 0/0 0/0 .text            checkCurringPen__7daCow_cFv */
-void daCow_c::checkCurringPen() {
+bool daCow_c::checkCurringPen() {
     // NONMATCHING
+    return false;
 }
 
 /* 8065C508-8065C680 004028 0178+00 2/2 0/0 0/0 .text            setCowInCage__7daCow_cFv */
@@ -1817,8 +1927,9 @@ void daCow_c::setAngryHit() {
 
 /* 8065D17C-8065D230 004C9C 00B4+00 1/1 0/0 0/0 .text            checkBeforeBgAngry__7daCow_cFs
  */
-void daCow_c::checkBeforeBgAngry(s16 param_0) {
+bool daCow_c::checkBeforeBgAngry(s16 param_0) {
     // NONMATCHING
+    return false;
 }
 
 /* 8065D230-8065D29C 004D50 006C+00 2/2 0/0 0/0 .text            setRedTev__7daCow_cFv */
@@ -2029,8 +2140,9 @@ void daCow_c::action_thrown() {
 }
 
 /* 806607B8-806608F0 0082D8 0138+00 1/1 0/0 0/0 .text            checkWolfBusters__7daCow_cFv */
-void daCow_c::checkWolfBusters() {
+bool daCow_c::checkWolfBusters() {
     // NONMATCHING
+    return false;
 }
 
 /* ############################################################################################## */
@@ -2174,8 +2286,9 @@ COMPILER_STRIP_GATE(0x80662EE8, &lit_7722);
 #pragma pop
 
 /* 80661940-80661AD0 009460 0190+00 2/2 0/0 0/0 .text            Execute__7daCow_cFv */
-void daCow_c::Execute() {
+int daCow_c::Execute() {
     // NONMATCHING
+    return -1;
 }
 
 /* 80661AD0-80661AF0 0095F0 0020+00 1/0 0/0 0/0 .text            daCow_Execute__FPv */
@@ -2184,8 +2297,9 @@ static void daCow_Execute(void* param_0) {
 }
 
 /* 80661AF0-80661CDC 009610 01EC+00 1/1 0/0 0/0 .text            CreateHeap__7daCow_cFv */
-void daCow_c::CreateHeap() {
+int daCow_c::CreateHeap() {
     // NONMATCHING
+    return -1;
 }
 
 /* 80661CDC-80661D24 0097FC 0048+00 1/0 0/0 0/0 .text            __dt__12J3DFrameCtrlFv */
@@ -2311,8 +2425,9 @@ SECTION_DEAD static char const* const stringBase_80662F4E = "MAKI_OP";
 #pragma pop
 
 /* 8066296C-80662BC4 00A48C 0258+00 1/1 0/0 0/0 .text            Draw__7daCow_cFv */
-void daCow_c::Draw() {
+int daCow_c::Draw() {
     // NONMATCHING
+    return -1;
 }
 
 /* 80662BC4-80662BE4 00A6E4 0020+00 1/0 0/0 0/0 .text            daCow_Draw__FPv */
@@ -2321,8 +2436,9 @@ static void daCow_Draw(void* param_0) {
 }
 
 /* 80662BE4-80662C40 00A704 005C+00 1/1 0/0 0/0 .text            Delete__7daCow_cFv */
-void daCow_c::Delete() {
+int daCow_c::Delete() {
     // NONMATCHING
+    return -1;
 }
 
 /* 80662C40-80662C60 00A760 0020+00 1/0 0/0 0/0 .text            daCow_Delete__FPv */

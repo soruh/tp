@@ -19,7 +19,7 @@ class daCow_c : public fopAc_ac_c {
 public:
     /* 806585CC */ int calcRunAnime(int);
     /* 80658730 */ void setBck(int, u8, f32, f32);
-    /* 806587D4 */ int checkBck(int);
+    /* 806587D4 */ bool checkBck(int);
     /* 80658830 */ void setEffect();
     /* 80658AA4 */ bool isChaseCowGame();
     /* 80658B10 */ void setCarryStatus();
@@ -31,7 +31,7 @@ public:
     /* 80658DB8 */ bool checkThrow();
     /* 80658E98 */ void setBodyAngle(s16);
     /* 80658F94 */ void setBodyAngle2(s16);
-    /* 806590E8 */ int checkProcess(void (daCow_c::*)());
+    /* 806590E8 */ bool checkProcess(void (daCow_c::*)());
     /* 80659114 */ bool setProcess(void (daCow_c::*)(), int);
     /* 806591BC */ void damage_check();
     /* 8065945C */ void setEnterCow20();
@@ -43,25 +43,25 @@ public:
     /* 8065A0E8 */ void action_eat();
     /* 8065A594 */ void action_moo();
     /* 8065A8A4 */ void action_shake();
-    /* 8065ACC8 */ void checkNearWolf();
-    /* 8065AD2C */ void checkPlayerWait();
-    /* 8065ADB0 */ void checkPlayerSurprise();
-    /* 8065AE88 */ void checkPlayerPos();
+    /* 8065ACC8 */ bool checkNearWolf();
+    /* 8065AD2C */ bool checkPlayerWait();
+    /* 8065ADB0 */ bool checkPlayerSurprise();
+    /* 8065AE88 */ bool checkPlayerPos();
     /* 8065B034 */ void checkBeforeBg();
     /* 8065B760 */ void checkOutOfGate(cXyz);
     /* 8065B8A8 */ void getCowshedAngle();
     /* 8065B8D8 */ void getCowshedDist();
-    /* 8065BA30 */ void checkCowIn(f32, f32);
-    /* 8065BB34 */ void checkCowInOwn(int);
+    /* 8065BA30 */ bool checkCowIn(f32, f32);
+    /* 8065BB34 */ bool checkCowInOwn(int);
     /* 8065BC68 */ void action_run();
-    /* 8065C32C */ void checkCurringPen();
+    /* 8065C32C */ bool checkCurringPen();
     /* 8065C508 */ void setCowInCage();
     /* 8065C680 */ void setEnterCount();
     /* 8065C70C */ void action_enter();
     /* 8065CFBC */ bool isAngry();
     /* 8065D03C */ bool isGuardFad();
     /* 8065D0B8 */ void setAngryHit();
-    /* 8065D17C */ void checkBeforeBgAngry(s16);
+    /* 8065D17C */ bool checkBeforeBgAngry(s16);
     /* 8065D230 */ void setRedTev();
     /* 8065D29C */ void setAngryTurn();
     /* 8065D2F0 */ void action_angry();
@@ -84,22 +84,22 @@ public:
     /* 8065FE50 */ void action_crazy();
     /* 8066010C */ void executeCrazyBack2();
     /* 80660544 */ void action_thrown();
-    /* 806607B8 */ void checkWolfBusters();
+    /* 806607B8 */ bool checkWolfBusters();
     /* 806608F0 */ void action_wolf();
     /* 806612DC */ void action_damage();
     /* 806613EC */ void action();
     /* 80661580 */ void setMtx();
     /* 806615EC */ void setAttnPos();
     /* 80661720 */ void setCollisions();
-    /* 80661940 */ void Execute();
-    /* 80661AF0 */ void CreateHeap();
+    /* 80661940 */ int Execute();
+    /* 80661AF0 */ int CreateHeap();
     /* 80661D24 */ void createHeapCallBack(fopAc_ac_c*);
     /* 80661D44 */ void initialize();
     /* 80662228 */ void create();
     /* 80662710 */ void ctrlJoint(J3DJoint*, J3DModel*);
     /* 80662920 */ void ctrlJointCallBack(J3DJoint*, int);
-    /* 8066296C */ void Draw();
-    /* 80662BE4 */ void Delete();
+    /* 8066296C */ int Draw();
+    /* 80662BE4 */ int Delete();
     /* 80662D70 */ static void getShapeAngle(csXyz& out, daCow_c* cow);
 
     // todo: use these
@@ -141,10 +141,7 @@ private:
     /* 0xc44 */ f32 field_0xc44;
     /* 0xc48 */ void (daCow_c::*mProcess)();
     /* 0xc54 */ int field_0xc54;
-    /* 0xc58 */ u8 field_0xc58;  // undefined
-    /* 0xc59 */ u8 field_0xc59;  // undefined
-    /* 0xc5a */ u8 field_0xc5a;  // undefined
-    /* 0xc5b */ u8 field_0xc5b;  // undefined
+    /* 0xc58 */ u32 field_0xc58;
     /* 0xc5c */ u16 field_0xc5c;
     /* 0xc5e */ s8 mAnimationPhase;
     /* 0xc5f */ u8 mPrm0;
