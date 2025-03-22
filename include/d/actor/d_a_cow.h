@@ -100,8 +100,9 @@ public:
     /* 80662920 */ void ctrlJointCallBack(J3DJoint*, int);
     /* 8066296C */ void Draw();
     /* 80662BE4 */ void Delete();
-    /* 80662D70 */ void getShapeAngle();
+    /* 80662D70 */ static void getShapeAngle(csXyz& out, daCow_c* cow);
 
+    // todo: use these
     void setNaderu() { mFlags |= 0x80; }
     void setNaderuFinish() { mFlags |= 0x100; }
     void setCrazyDash() { mFlags |= 4; }
@@ -109,6 +110,8 @@ public:
     void setCrazyCatch() { mFlags |= 2; }
     void setCrazyThrowLeft() { mFlags |= 8; }
     void setCrazyThrowRight() { mFlags |= 0x10; }
+
+    bool getCowIn() { return this->field_0xca5; }
 
 private:
     /* 0x568 */ u16 mFlags;
