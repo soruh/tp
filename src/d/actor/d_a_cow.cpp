@@ -1640,7 +1640,62 @@ void daCow_c::action_eat() {
 
 /* 8065A594-8065A8A4 0020B4 0310+00 9/0 0/0 0/0 .text            action_moo__7daCow_cFv */
 void daCow_c::action_moo() {
-    // NONMATCHING
+    int nextAction = field_0xc5c;
+    if (nextAction != 2) {
+        if (nextAction < 2) {
+            if (nextAction != 0) {
+                if (!field_0xcaa) {
+                    setBck(0xf, 0, 0.0f, 1.0f);
+                    field_0xc5c = 2;
+                } else {
+                    setBck(0xf, 0, 12.0f, 1.0f);
+                    mpMorf->setFrame(mpMorf->getEndFrame());
+                    mpMorf->setPlaySpeed(-1.0f);
+                    field_0xc5c = 1;
+                }
+                return;
+            } else {
+                if (mpMorf->isStop()) {
+                    setBck(0xf, 0, 0.0f, 1.0f);
+                    field_0xc5c = 2;
+                }
+            }
+        } else {
+            return;
+        }
+    }
+
+    if (mpMorf->checkFrame(35.0f)) {
+        mSound.startCreatureVoice(JAISoundID(Z2SE_GOAT_V_CRY), -1);
+    }
+
+    if (!this->field_0xca5) {
+        if (checkNearCowRun() || checkPlayerWait()) {
+            setProcess(&daCow_c::action_wait, 0);
+            return;
+        } else {
+            setCarryStatus();
+            if (checkThrow()) {
+                return;
+            }
+        }
+    }
+    if (mpMorf->isStop()) {
+        if (checkNearWolf()) {
+            setProcess(&daCow_c::action_shake, 1);
+        } else {
+            f32 rand = cM_rnd();
+            if (rand < 0.4) {
+                setProcess(&daCow_c::action_eat, 1);
+            } else {
+                if (rand < 0.7) {
+                    setProcess(&daCow_c::action_shake, 1);
+                } else {
+                    setProcess(&daCow_c::action_wait, 0);
+                }
+            }
+        }
+    }
 }
 
 /* 8065A8A4-8065ACC8 0023C4 0424+00 5/0 0/0 0/0 .text            action_shake__7daCow_cFv */
