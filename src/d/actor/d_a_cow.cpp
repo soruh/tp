@@ -355,166 +355,70 @@ int daCow_c::checkBck(int param_0) {
     return mpMorf->getAnm() == animation;
 }
 
-/* ############################################################################################## */
-/* 80662DD0-80662DD4 000020 0004+00 1/10 0/0 0/0 .rodata          @4087 */
-SECTION_RODATA static f32 const lit_4087 = 10.0f;
-COMPILER_STRIP_GATE(0x80662DD0, &lit_4087);
-
-/* 80662DD4-80662DD8 000024 0004+00 0/1 0/0 0/0 .rodata          @4088 */
-#pragma push
-#pragma force_active on
-SECTION_RODATA static f32 const lit_4088 = -70.0f;
-COMPILER_STRIP_GATE(0x80662DD4, &lit_4088);
-#pragma pop
-
-/* 80662DD8-80662DDC 000028 0004+00 0/1 0/0 0/0 .rodata          @4089 */
-#pragma push
-#pragma force_active on
-SECTION_RODATA static f32 const lit_4089 = -25.0f;
-COMPILER_STRIP_GATE(0x80662DD8, &lit_4089);
-#pragma pop
-
-/* 80662DDC-80662DE0 00002C 0004+00 0/7 0/0 0/0 .rodata          @4090 */
-#pragma push
-#pragma force_active on
-SECTION_RODATA static f32 const lit_4090 = 2.0f;
-COMPILER_STRIP_GATE(0x80662DDC, &lit_4090);
-#pragma pop
-
-/* 80663460-80663464 000008 0001+03 6/6 0/0 0/0 .bss             @1109 */
-static u8 lit_1109[1 + 3 /* padding */];
-
-/* 80663464-80663468 00000C 0001+03 0/0 0/0 0/0 .bss             @1107 */
-#pragma push
-#pragma force_active on
-static u8 lit_1107[1 + 3 /* padding */];
-#pragma pop
-
-/* 80663468-8066346C 000010 0001+03 0/0 0/0 0/0 .bss             @1105 */
-#pragma push
-#pragma force_active on
-static u8 lit_1105[1 + 3 /* padding */];
-#pragma pop
-
-/* 8066346C-80663470 000014 0001+03 0/0 0/0 0/0 .bss             @1104 */
-#pragma push
-#pragma force_active on
-static u8 lit_1104[1 + 3 /* padding */];
-#pragma pop
-
-/* 80663470-80663474 000018 0001+03 0/0 0/0 0/0 .bss             @1099 */
-#pragma push
-#pragma force_active on
-static u8 lit_1099[1 + 3 /* padding */];
-#pragma pop
-
-/* 80663474-80663478 00001C 0001+03 0/0 0/0 0/0 .bss             @1097 */
-#pragma push
-#pragma force_active on
-static u8 lit_1097[1 + 3 /* padding */];
-#pragma pop
-
-/* 80663478-8066347C 000020 0001+03 0/0 0/0 0/0 .bss             @1095 */
-#pragma push
-#pragma force_active on
-static u8 lit_1095[1 + 3 /* padding */];
-#pragma pop
-
-/* 8066347C-80663480 000024 0001+03 0/0 0/0 0/0 .bss             @1094 */
-#pragma push
-#pragma force_active on
-static u8 lit_1094[1 + 3 /* padding */];
-#pragma pop
-
-/* 80663480-80663484 000028 0001+03 0/0 0/0 0/0 .bss             @1057 */
-#pragma push
-#pragma force_active on
-static u8 lit_1057[1 + 3 /* padding */];
-#pragma pop
-
-/* 80663484-80663488 00002C 0001+03 0/0 0/0 0/0 .bss             @1055 */
-#pragma push
-#pragma force_active on
-static u8 lit_1055[1 + 3 /* padding */];
-#pragma pop
-
-/* 80663488-8066348C 000030 0001+03 0/0 0/0 0/0 .bss             @1053 */
-#pragma push
-#pragma force_active on
-static u8 lit_1053[1 + 3 /* padding */];
-#pragma pop
-
-/* 8066348C-80663490 000034 0001+03 0/0 0/0 0/0 .bss             @1052 */
-#pragma push
-#pragma force_active on
-static u8 lit_1052[1 + 3 /* padding */];
-#pragma pop
-
-/* 80663490-80663494 000038 0001+03 0/0 0/0 0/0 .bss             @1014 */
-#pragma push
-#pragma force_active on
-static u8 lit_1014[1 + 3 /* padding */];
-#pragma pop
-
-/* 80663494-80663498 00003C 0001+03 0/0 0/0 0/0 .bss             @1012 */
-#pragma push
-#pragma force_active on
-static u8 lit_1012[1 + 3 /* padding */];
-#pragma pop
-
-/* 80663498-8066349C 000040 0001+03 0/0 0/0 0/0 .bss             @1010 */
-#pragma push
-#pragma force_active on
-static u8 lit_1010[1 + 3 /* padding */];
-#pragma pop
-
-/* 8066349C-806634A0 000044 0001+03 0/0 0/0 0/0 .bss             @1009 */
-#pragma push
-#pragma force_active on
-static u8 lit_1009[1 + 3 /* padding */];
-#pragma pop
-
-/* 806634A0-806634AC 000048 000C+00 0/1 0/0 0/0 .bss             @3960 */
-#pragma push
-#pragma force_active on
-static u8 lit_3960[12];
-#pragma pop
-
-/* 806634AC-806634B8 000054 000C+00 5/7 0/0 0/0 .bss             pen_pos__21@unnamed@d_a_cow_cpp@ */
-static u8 data_806634AC[12];
-
-/* 806634B8-806634C4 000060 000C+00 0/1 0/0 0/0 .bss             @3961 */
-#pragma push
-#pragma force_active on
-static u8 lit_3961[12];
-#pragma pop
-
-/* 806634C4-806634D0 00006C 000C+00 1/2 0/0 0/0 .bss             gate_pos__21@unnamed@d_a_cow_cpp@
- */
-static u8 data_806634C4[12];
-
-/* 806634D0-806634D4 000078 0004+00 3/3 0/0 0/0 .bss l_CowRoomNo__21@unnamed@d_a_cow_cpp@ */
-static u8 data_806634D0[4];
-
-/* 806634D4-806634D8 00007C 0004+00 1/1 0/0 0/0 .bss             l_CowType__21@unnamed@d_a_cow_cpp@
- */
-static u8 data_806634D4[4];
-
-/* 806634D8-806634E8 000080 000C+04 0/1 0/0 0/0 .bss             @4021 */
-#pragma push
-#pragma force_active on
-static u8 lit_4021[12 + 4 /* padding */];
-#pragma pop
-
-/* 806634E8-806634F4 000090 000C+00 0/1 0/0 0/0 .bss             runScale$4020 */
-#pragma push
-#pragma force_active on
-static u8 runScale[12];
-#pragma pop
-
 /* 80658830-80658A68 000350 0238+00 1/1 0/0 0/0 .text            setEffect__7daCow_cFv */
 void daCow_c::setEffect() {
-    // NONMATCHING
+    if (mShouldSetEffect != 0) {
+        if (mShouldSetEffect == 1) {
+            cXyz vector_1;
+            cXyz vector_2;
+            cXyz vector_3;
+            cXyz vector_4;
+
+            if ((mMoreFlags & 1) == 0) {
+                mShouldSetEffect = 0;
+            } else {
+                cXyz offset(0.0f, -70.0f, 25.0f);
+
+                offset.x = 10.0f;
+                cLib_offsetPos(&vector_4, &current.pos, field_0xc32.y, &offset);
+                offset.x = 0.0;
+                cLib_offsetPos(&vector_1, &current.pos, field_0xc32.y, &offset);
+                offset.x = -25.0;
+                cLib_offsetPos(&vector_1, &current.pos, field_0xc32.y, &offset);
+            }
+
+            cXyz* vector_ptr_1;
+            cXyz* vector_ptr_2;
+            cXyz* vector_ptr_3;
+
+            if (!mShouldSetEffect) {
+                vector_ptr_1 = NULL;
+            } else {
+                vector_ptr_1 = &vector_2;
+            }
+            if (!mShouldSetEffect) {
+                vector_ptr_2 = NULL;
+            } else {
+                vector_ptr_2 = &vector_1;
+            }
+            if (!mShouldSetEffect) {
+                vector_ptr_3 = NULL;
+            } else {
+                vector_ptr_3 = &vector_4;
+            }
+
+            mParticle.setEffectTwo(&tevStr, &current.pos, 0, 0, vector_ptr_3, vector_ptr_2,
+                                   vector_ptr_3, &field_0xc32, NULL, fopAcM_GetRoomNo(this), 1.0,
+                                   speedF);
+
+            static Vec runScale = {2.0f, 2.0f, 2.0f};
+
+            for (int i = 0; i < 3; i = i + 1) {
+                for (int j = 0; j < 2; j = j + 1) {
+                    JPABaseEmitter* emitter = mParticle.getRightEmitter(i, j);
+                    if (emitter) {
+                        emitter->setGlobalScale(runScale);
+                        emitter->setRate(1.3);
+                    }
+                }
+            }
+        }
+
+    } else {
+        fopAcM_effSmokeSet1(&this->field_0xd38, &this->field_0xd3c, &current.pos, NULL, 2.0f,
+                            &tevStr, 1);
+    }
+    mShouldSetEffect = 0;
 }
 
 /* 80658A68-80658AA4 000588 003C+00 3/3 0/0 0/0 .text            __dt__4cXyzFv */

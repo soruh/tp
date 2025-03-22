@@ -3,6 +3,7 @@
 
 #include "d/d_bg_s_acch.h"
 #include "d/d_cc_d.h"
+#include "d/d_particle_copoly.h"
 #include "d/d_path.h"
 #include "f_op/f_op_actor_mng.h"
 
@@ -148,7 +149,7 @@ private:
     /* 0xc62 */ u8 field_0xc62;
     /* 0xc63 */ u8 field_0xc63;
     /* 0xc64 */ u32 field_0xc64;
-    /* 0xc68 */ u8 field_0xc68;  // undefined
+    /* 0xc68 */ u8 mMoreFlags;  // todo: what is this
     /* 0xc69 */ u8 field_0xc69;
     /* 0xc6a */ u8 field_0xc6a;  // undefined
     /* 0xc6b */ u8 field_0xc6b;  // undefined
@@ -186,9 +187,12 @@ private:
     /* 0xcac */ f32 field_0xcac;
     /* 0xcb0 */ f32 field_0xcb0;
     /* 0xcb4 */ u8 field_0xcb4;
-    /* 0xcb5 */ u8 field_0xcb5;
-
-    /* 0xc5F */ u8 field_0xc5F[0xd40 - 0xcb6];
+    /* 0xcb5 */ bool mShouldSetEffect;
+    /* 0xcb6 */ u8 field_0xcb6;
+    /* 0xcb7 */ u8 field_0xcb7;
+    /* 0xcb8 */ dPaPoT_c mParticle;
+    /* 0xd38 */ u32 field_0xd38;
+    /* 0xd3C */ u32 field_0xd3c;
 };
 
 STATIC_ASSERT(sizeof(daCow_c) == 0xd40);
