@@ -345,13 +345,14 @@ int daCow_c::calcRunAnime(int resetAnimation) {
 
 /* 80658730-806587D4 000250 00A4+00 20/20 0/0 0/0 .text            setBck__7daCow_cFiUcff */
 void daCow_c::setBck(int param_0, u8 param_1, f32 param_2, f32 param_3) {
-    J3DAnmTransform* transform = (J3DAnmTransform*)dComIfG_getObjectRes("Cow", param_0);
-    mpMorf->setAnm(transform, param_1, param_2, param_3, 0.0f, -1.0f);
+    J3DAnmTransform* animation = (J3DAnmTransform*)dComIfG_getObjectRes("Cow", param_0);
+    mpMorf->setAnm(animation, param_1, param_2, param_3, 0.0f, -1.0f);
 }
 
 /* 806587D4-80658830 0002F4 005C+00 1/1 0/0 0/0 .text            checkBck__7daCow_cFi */
-void daCow_c::checkBck(int param_0) {
-    // NONMATCHING
+int daCow_c::checkBck(int param_0) {
+    J3DAnmTransform* animation = (J3DAnmTransform*)dComIfG_getObjectRes("Cow", param_0);
+    return mpMorf->getAnm() == animation;
 }
 
 /* ############################################################################################## */
