@@ -1700,7 +1700,65 @@ void daCow_c::action_moo() {
 
 /* 8065A8A4-8065ACC8 0023C4 0424+00 5/0 0/0 0/0 .text            action_shake__7daCow_cFv */
 void daCow_c::action_shake() {
-    // NONMATCHING
+    int nextAction = field_0xc5c;
+    if (nextAction != 2) {
+        if (nextAction < 2) {
+            if (nextAction != 0) {
+                if (!field_0xcaa) {
+                    setBck(6, 0, 12.0f, 1.0f);
+                    field_0xc5c = 2;
+                } else {
+                    setBck(0x15, 2, 12.0f, 1.0f);
+                    field_0xc5c = 1;
+                }
+                return;
+            } else {
+                if (mpMorf->isStop()) {
+                    setBck(0x15, 2, 0.0f, 1.0f);
+                    field_0xc5c = 2;
+                }
+            }
+        } else {
+            return;
+        }
+    }
+
+    if (mpMorf->checkFrame(68.0f)) {
+        mSound.startCreatureVoice(JAISoundID(Z2SE_GOAT_V_NOSE), -1);
+    }
+
+    if (!field_0xca5) {
+        if (checkNearCowRun() || checkPlayerWait()) {
+            setProcess(&daCow_c::action_wait, 0);
+            return;
+        }
+        setCarryStatus();
+        if (checkThrow()) {
+            return;
+        }
+        setActetcStatus();
+        if (checkNadeNade()) {
+            setProcess(&daCow_c::action_wait, 1);
+            return;
+        }
+    }
+    if (mpMorf->isLoop()) {
+        if (!checkNearWolf()) {
+            setProcess(&daCow_c::action_moo, 1);
+        } else {
+            f32 rand = cM_rnd();
+            if (current.pos.absXZ(daPy_getPlayerActorClass()->current.pos) > 500.0f && rand < 0.4f)
+            {
+                setProcess(&daCow_c::action_moo, 1);
+            } else {
+                if (rand < 0.5f) {
+                    setProcess(&daCow_c::action_wait, 1);
+                } else {
+                    setProcess(&daCow_c::action_eat, 0);
+                }
+            }
+        }
+    }
 }
 
 /* ##############################################################################################
