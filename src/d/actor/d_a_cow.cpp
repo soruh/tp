@@ -469,7 +469,9 @@ bool daCow_c::checkNadeNade() {
 
 /* 80658CD0-80658D3C 0007F0 006C+00 3/3 0/0 0/0 .text            setSeSnort__7daCow_cFv */
 void daCow_c::setSeSnort() {
-    // NONMATCHING
+    if (mpMorf->checkFrame(1.0f)) {
+        mSound.startCreatureVoice(JAISoundID(0x50079), -1);
+    }
 }
 
 /* 80658D3C-80658DB8 00085C 007C+00 2/2 0/0 0/0 .text            setRushVibration__7daCow_cFi */
