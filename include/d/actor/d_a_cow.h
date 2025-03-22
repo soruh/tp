@@ -24,7 +24,7 @@ public:
     /* 80658AA4 */ bool isChaseCowGame();
     /* 80658B10 */ void setCarryStatus();
     /* 80658C18 */ void setActetcStatus();
-    /* 80658C78 */ void checkNadeNadeFinish();
+    /* 80658C78 */ bool checkNadeNadeFinish();
     /* 80658CA4 */ void checkNadeNade();
     /* 80658CD0 */ void setSeSnort();
     /* 80658D3C */ void setRushVibration(int);

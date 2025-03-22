@@ -430,7 +430,7 @@ void daCow_c::setCarryStatus() {
 
     if (fabsf(carryPosition.x) < xMax && carryPosition.z > 0.0f && carryPosition.z < zMax) {
         // todo: what does this mean
-        attention_info.flags = attention_info.flags | 0x10;  // in debug this is 0x80
+        attention_info.flags |= 0x10;  // in debug this is 0x80
     }
     return;
 }
@@ -440,14 +440,19 @@ void daCow_c::setActetcStatus() {
     if (!field_0xca8) {
         s32 playerAngle = fopAcM_seenPlayerAngleY(this);
         if (playerAngle < 0x6000 && playerAngle > 0x2000) {
-            attention_info.flags = attention_info.flags | 0x80;  // in debug this is 0x800
+            attention_info.flags |= 0x80;  // in debug this is 0x800
         }
     }
 }
 
 /* 80658C78-80658CA4 000798 002C+00 3/3 0/0 0/0 .text            checkNadeNadeFinish__7daCow_cFv */
-void daCow_c::checkNadeNadeFinish() {
-    // NONMATCHING
+bool daCow_c::checkNadeNadeFinish() {
+    if (mFlags & 0x100) {
+        mFlags &= 0xfeff;
+        field_0xca8 = 0;
+        return true;
+    }
+    return false;
 }
 
 /* 80658CA4-80658CD0 0007C4 002C+00 5/5 0/0 0/0 .text            checkNadeNade__7daCow_cFv */
