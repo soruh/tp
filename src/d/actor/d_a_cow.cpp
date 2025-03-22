@@ -385,8 +385,8 @@ void daCow_c::setEffect() {
 
             static cXyz runScale(2.0f, 2.0f, 2.0f);
 
-            for (int i = 0; i < 3; i = i + 1) {
-                for (int j = 0; j < 2; j = j + 1) {
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 2; j++) {
                     JPABaseEmitter* emitter = mParticle.getEmitterTwo(i, j, 0);
 
                     if (emitter) {
