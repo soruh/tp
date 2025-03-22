@@ -6,6 +6,7 @@
 #include "d/actor/d_a_cow.h"
 #include "SSystem/SComponent/c_lib.h"
 #include "d/actor/d_a_player.h"
+#include "d/d_cc_uty.h"
 #include "d/d_com_inf_game.h"
 #include "dol2asm.h"
 #include "dolphin/types.h"
@@ -1354,9 +1355,10 @@ static s16 m_view_angle_wide;
 /* 806634FA 0002+00 data_806634FA m_view_angle */
 static s16 m_view_angle;
 
-#define IS_VALID_COW_INTERACTION(cow_1, cow_2)                                                     \
-    (fopAcM_IsActor((cow_1)) && !fpcM_IsCreating(fopAcM_GetID((cow_1))) &&                         \
-     fopAcM_GetName((cow_1)) == PROC_COW && (cow_1) != (cow_2))
+#define IS_COW(actor) (fopAcM_GetName((actor)) == PROC_COW)
+#define IS_VALID_COW_INTERACTION(cow_1, actor)                                                     \
+    (fopAcM_IsActor((cow_1)) && !fpcM_IsCreating(fopAcM_GetID((cow_1))) && IS_COW((cow_1)) &&      \
+     (cow_1) != (actor))
 
 /* 8065972C-80659814 00124C 00E8+00 2/2 0/0 0/0 .text            s_near_cow__FPvPv */
 static int s_near_cow(daCow_c* cow_1, daCow_c* cow_2) {
@@ -1390,20 +1392,26 @@ COMPILER_STRIP_GATE(0x80662E00, &lit_4446);
 static s16 m_angry_cow;
 
 /* 80659814-806598D4 001334 00C0+00 1/1 0/0 0/0 .text            s_angry_cow__FPvPv */
-static int s_angry_cow(daCow_c* cow_1, daCow_c* cow_2) {
-    if (IS_VALID_COW_INTERACTION(cow_1, cow_2)) {
+static void* s_angry_cow(void* param_1, void* param_2) {
+    daCow_c* cow_1 = (daCow_c*)param_1;
+    fopAc_ac_c* other_actor = (fopAc_ac_c*)param_2;
+
+    if (IS_VALID_COW_INTERACTION(cow_1, other_actor)) {
         if (cow_1->isAngry() ||
-            (cow_1->isGuardFad() && fopAcM_searchActorDistance(cow_1, cow_2) < 500.f))
+            (cow_1->isGuardFad() && fopAcM_searchActorDistance(cow_1, other_actor) < 500.f))
         {
             m_angry_cow = true;
         }
     }
-    return 0;
+    return NULL;
 }
 
 /* 806598D4-80659970 0013F4 009C+00 1/1 0/0 0/0 .text            s_angry_cow2__FPvPv */
-static daCow_c* s_angry_cow2(daCow_c* cow_1, daCow_c* cow_2) {
-    if (IS_VALID_COW_INTERACTION(cow_1, cow_2)) {
+static void* s_angry_cow2(void* param_1, void* param_2) {
+    daCow_c* cow_1 = (daCow_c*)param_1;
+    fopAc_ac_c* other_actor = (fopAc_ac_c*)param_2;
+
+    if (IS_VALID_COW_INTERACTION(cow_1, other_actor)) {
         if (cow_1->isAngry()) {
             m_angry_cow = true;
             return cow_1;
@@ -1413,13 +1421,44 @@ static daCow_c* s_angry_cow2(daCow_c* cow_1, daCow_c* cow_2) {
 }
 
 /* 80659970-806599C0 001490 0050+00 1/1 0/0 0/0 .text            checkRun__7daCow_cFv */
-void daCow_c::checkRun() {
-    // NONMATCHING
+bool daCow_c::checkRun() {
+    return checkProcess(&daCow_c::action_run);
 }
 
 /* 806599C0-80659ADC 0014E0 011C+00 4/4 0/0 0/0 .text            checkNearCowRun__7daCow_cFv */
-void daCow_c::checkNearCowRun() {
-    // NONMATCHING
+bool daCow_c::checkNearCowRun() {
+    if (field_0xca5) {
+        return false;
+    }
+
+    m_angry_cow = false;
+    fpcM_Search(&s_angry_cow, this);
+
+    if (m_angry_cow) {
+        return true;
+    }
+
+    if (!isChaseCowGame()) {
+        return false;
+    }
+
+    for (int iSphere = 0; iSphere < (int)(sizeof(mSph) / sizeof(dCcD_Sph)); iSphere++) {
+        cCcD_Obj* obj = mSph[iSphere].GetCoHitObj();
+        if (!obj) {
+            continue;
+        }
+
+        daCow_c* cow = (daCow_c*)dCc_GetAc(obj->GetAc());
+        if (cow && IS_COW(cow) && !cow->getNoNearCheckTimer() && cow->checkRun()) {
+            s16 angle = fopAcM_searchActorAngleY(this, cow);
+            int angleDifference = cLib_distanceAngleS(angle, field_0xc32.y);
+            if (angleDifference >= 0x1000 && angleDifference < 0x7000) {
+                return true;
+            }
+        }
+    }
+
+    return false;
 }
 
 /* ############################################################################################## */

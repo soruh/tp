@@ -37,8 +37,8 @@ public:
     /* 8065945C */ void setEnterCow20();
     /* 80659540 */ void setEnterCow10();
     /* 80659630 */ void setGroundAngle();
-    /* 80659970 */ void checkRun();
-    /* 806599C0 */ void checkNearCowRun();
+    /* 80659970 */ bool checkRun();
+    /* 806599C0 */ bool checkNearCowRun();
     /* 80659ADC */ void action_wait();
     /* 8065A0E8 */ void action_eat();
     /* 8065A594 */ void action_moo();
@@ -111,7 +111,8 @@ public:
     void setCrazyThrowLeft() { mFlags |= 8; }
     void setCrazyThrowRight() { mFlags |= 0x10; }
 
-    bool getCowIn() { return this->field_0xca5; }
+    bool getCowIn() { return field_0xca5; }
+    bool getNoNearCheckTimer() { return mNoNearCheckTimer; }
 
 private:
     /* 0x568 */ u16 mFlags;
