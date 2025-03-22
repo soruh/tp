@@ -1354,54 +1354,55 @@ static s16 m_view_angle_wide;
 /* 806634FA 0002+00 data_806634FA m_view_angle */
 static s16 m_view_angle;
 
+#define IS_VALID_COW_INTERACTION(cow_1, cow_2)                                                     \
+    (fopAcM_IsActor((cow_1)) && !fpcM_IsCreating(fopAcM_GetID((cow_1))) &&                         \
+     fopAcM_GetName((cow_1)) == PROC_COW && (cow_1) != (cow_2))
+
 /* 8065972C-80659814 00124C 00E8+00 2/2 0/0 0/0 .text            s_near_cow__FPvPv */
-static int s_near_cow(daCow_c* param_1, daCow_c* param_2) {
-    int iVar1;
-    u32 uVar2;
-    short sVar3;
-    char cVar4;
-    double dVar5;
+static int s_near_cow(daCow_c* cow_1, daCow_c* cow_2) {
+    if (IS_VALID_COW_INTERACTION(cow_1, cow_2) && !(cow_1)->getCowIn()) {
+        s16 actorAngleY = fopAcM_searchActorAngleY(cow_2, cow_1);
 
-    if (fopAcM_IsActor(param_1)) {
-        if (!fpcM_IsCreating(fopAcM_GetID(param_1))) {
-            if (fopAcM_GetName(param_1) == PROC_COW && param_1 != param_2) {
-                if (!param_1->getCowIn()) {
-                    s16 actorAngleY = fopAcM_searchActorAngleY(param_2, param_1);
+        // todo
+        csXyz stackAngle;
+        daCow_c::getShapeAngle(stackAngle, cow_2);
 
-                    csXyz stackAngle;
-                    daCow_c::getShapeAngle(stackAngle, param_2);
+        actorAngleY = cLib_distanceAngleS(actorAngleY, stackAngle.y);
 
-                    actorAngleY = cLib_distanceAngleS(actorAngleY, stackAngle.y);
+        if (cLib_distanceAngleS(actorAngleY, m_view_angle) < m_view_angle_wide) {
+            f32 dVar5 = fopAcM_searchActorDistance(cow_1, cow_2);
 
-                    if (cLib_distanceAngleS(actorAngleY, m_view_angle) < m_view_angle_wide) {
-                        f32 dVar5 = fopAcM_searchActorDistance(param_1, param_2);
-
-                        if (dVar5 < (double)m_near_dist) {
-                            m_near_dist = (float)dVar5;
-                        }
-                    }
-                }
+            if (dVar5 < (double)m_near_dist) {
+                m_near_dist = (float)dVar5;
             }
         }
+        return 0;
     }
-    return 0;
 }
 
-/* ############################################################################################## */
+/* ##############################################################################################
+ */
 /* 80662E00-80662E04 000050 0004+00 1/7 0/0 0/0 .rodata          @4446 */
 SECTION_RODATA static f32 const lit_4446 = 500.0f;
 COMPILER_STRIP_GATE(0x80662E00, &lit_4446);
 
 /* 806634FC-80663500 0000A4 0002+02 4/4 0/0 0/0 .bss             m_angry_cow */
-static u8 m_angry_cow[2 + 2 /* padding */];
+static s16 m_angry_cow;
 
 /* 80659814-806598D4 001334 00C0+00 1/1 0/0 0/0 .text            s_angry_cow__FPvPv */
-static void s_angry_cow(void* param_0, void* param_1) {
-    // NONMATCHING
+static int s_angry_cow(daCow_c* cow_1, daCow_c* cow_2) {
+    if (IS_VALID_COW_INTERACTION(cow_1, cow_2)) {
+        if (cow_1->isAngry() ||
+            (cow_1->isGuardFad() && fopAcM_searchActorDistance(cow_1, cow_2) < 500.f))
+        {
+            m_angry_cow = true;
+        }
+    }
+    return 0;
 }
 
 /* 806598D4-80659970 0013F4 009C+00 1/1 0/0 0/0 .text            s_angry_cow2__FPvPv */
-static void s_angry_cow2(void* param_0, void* param_1) {
+static void s_angry_cow2(void* param_1, void* param_0) {
     // NONMATCHING
 }
 
@@ -1528,7 +1529,8 @@ void daCow_c::action_shake() {
     // NONMATCHING
 }
 
-/* ############################################################################################## */
+/* ##############################################################################################
+ */
 /* 80662E44-80662E48 000094 0004+00 1/1 0/0 0/0 .rodata          @5007 */
 SECTION_RODATA static f32 const lit_5007 = 3000.0f;
 COMPILER_STRIP_GATE(0x80662E44, &lit_5007);
@@ -1543,12 +1545,14 @@ void daCow_c::checkPlayerWait() {
     // NONMATCHING
 }
 
-/* ############################################################################################## */
+/* ##############################################################################################
+ */
 /* 80662E48-80662E4C 000098 0004+00 2/5 0/0 0/0 .rodata          @5049 */
 SECTION_RODATA static f32 const lit_5049 = 1500.0f;
 COMPILER_STRIP_GATE(0x80662E48, &lit_5049);
 
-/* 8065ADB0-8065AE88 0028D0 00D8+00 2/2 0/0 0/0 .text            checkPlayerSurprise__7daCow_cFv */
+/* 8065ADB0-8065AE88 0028D0 00D8+00 2/2 0/0 0/0 .text            checkPlayerSurprise__7daCow_cFv
+ */
 void daCow_c::checkPlayerSurprise() {
     // NONMATCHING
 }
@@ -1616,12 +1620,14 @@ void daCow_c::checkBeforeBg() {
     // NONMATCHING
 }
 
-/* ############################################################################################## */
+/* ##############################################################################################
+ */
 /* 80662E68-80662E6C 0000B8 0004+00 1/1 0/0 0/0 .rodata          @5409 */
 SECTION_RODATA static f32 const lit_5409 = 1100.0f;
 COMPILER_STRIP_GATE(0x80662E68, &lit_5409);
 
-/* 8065B760-8065B8A8 003280 0148+00 6/6 0/0 0/0 .text            checkOutOfGate__7daCow_cF4cXyz */
+/* 8065B760-8065B8A8 003280 0148+00 6/6 0/0 0/0 .text            checkOutOfGate__7daCow_cF4cXyz
+ */
 void daCow_c::checkOutOfGate(cXyz param_0) {
     // NONMATCHING
 }
@@ -1641,7 +1647,8 @@ void daCow_c::checkCowIn(f32 param_0, f32 param_1) {
     // NONMATCHING
 }
 
-/* ############################################################################################## */
+/* ##############################################################################################
+ */
 /* 80662E6C-80662E70 0000BC 0004+00 1/4 0/0 0/0 .rodata          @5516 */
 SECTION_RODATA static f32 const lit_5516 = 250.0f;
 COMPILER_STRIP_GATE(0x80662E6C, &lit_5516);
@@ -1655,7 +1662,8 @@ void daCow_c::checkCowInOwn(int param_0) {
     // NONMATCHING
 }
 
-/* ############################################################################################## */
+/* ##############################################################################################
+ */
 /* 80662E74-80662E78 0000C4 0004+00 1/3 0/0 0/0 .rodata          @5651 */
 SECTION_RODATA static f32 const lit_5651 = 20.0f;
 COMPILER_STRIP_GATE(0x80662E74, &lit_5651);
@@ -1753,7 +1761,7 @@ bool daCow_c::isAngry() {
 }
 
 /* 8065D03C-8065D0B8 004B5C 007C+00 1/1 0/0 1/1 .text            isGuardFad__7daCow_cFv */
-void daCow_c::isGuardFad() {
+bool daCow_c::isGuardFad() {
     // NONMATCHING
 }
 
@@ -1762,7 +1770,8 @@ void daCow_c::setAngryHit() {
     // NONMATCHING
 }
 
-/* 8065D17C-8065D230 004C9C 00B4+00 1/1 0/0 0/0 .text            checkBeforeBgAngry__7daCow_cFs */
+/* 8065D17C-8065D230 004C9C 00B4+00 1/1 0/0 0/0 .text            checkBeforeBgAngry__7daCow_cFs
+ */
 void daCow_c::checkBeforeBgAngry(s16 param_0) {
     // NONMATCHING
 }
@@ -1841,7 +1850,7 @@ void daCow_c::executeCrazyDash() {
     // NONMATCHING
 }
 
-/* 8065E6BC-8065E6E8 0061DC 002C+00 2/2 0/0 0/0 .text            initCrazyBeforeCatch__7daCow_cFi */
+/* 8065E6BC-8065E6E8 0061DC 002C+00 2/2 0/0 0/0 .text initCrazyBeforeCatch__7daCow_cFi */
 void daCow_c::initCrazyBeforeCatch(int param_0) {
     // NONMATCHING
 }
@@ -1854,7 +1863,7 @@ SECTION_RODATA static f32 const lit_6527 = -220.0f;
 COMPILER_STRIP_GATE(0x80662EB4, &lit_6527);
 #pragma pop
 
-/* 8065E6E8-8065E7D0 006208 00E8+00 2/2 0/0 0/0 .text            executeCrazyBeforeCatch__7daCow_cFv
+/* 8065E6E8-8065E7D0 006208 00E8+00 2/2 0/0 0/0 .text executeCrazyBeforeCatch__7daCow_cFv
  */
 void daCow_c::executeCrazyBeforeCatch() {
     // NONMATCHING
@@ -1873,7 +1882,8 @@ SECTION_RODATA static f32 const lit_6599 = -260.0f;
 COMPILER_STRIP_GATE(0x80662EB8, &lit_6599);
 #pragma pop
 
-/* 8065E888-8065EAF4 0063A8 026C+00 2/2 0/0 0/0 .text            executeCrazyCatch__7daCow_cFv */
+/* 8065E888-8065EAF4 0063A8 026C+00 2/2 0/0 0/0 .text            executeCrazyCatch__7daCow_cFv
+ */
 void daCow_c::executeCrazyCatch() {
     // NONMATCHING
 }
@@ -1898,7 +1908,8 @@ SECTION_RODATA static f32 const lit_6707 = -4.0f;
 COMPILER_STRIP_GATE(0x80662EC0, &lit_6707);
 #pragma pop
 
-/* 8065EBF0-8065F088 006710 0498+00 2/2 0/0 0/0 .text            executeCrazyThrow__7daCow_cFv */
+/* 8065EBF0-8065F088 006710 0498+00 2/2 0/0 0/0 .text            executeCrazyThrow__7daCow_cFv
+ */
 void daCow_c::executeCrazyThrow() {
     // NONMATCHING
 }
@@ -1916,7 +1927,8 @@ SECTION_RODATA static f32 const lit_6765 = 7.0f;
 COMPILER_STRIP_GATE(0x80662EC4, &lit_6765);
 #pragma pop
 
-/* 8065F144-8065F308 006C64 01C4+00 2/2 0/0 0/0 .text            executeCrazyAttack__7daCow_cFv */
+/* 8065F144-8065F308 006C64 01C4+00 2/2 0/0 0/0 .text            executeCrazyAttack__7daCow_cFv
+ */
 void daCow_c::executeCrazyAttack() {
     // NONMATCHING
 }
@@ -1960,7 +1972,8 @@ void daCow_c::action_crazy() {
     // NONMATCHING
 }
 
-/* 8066010C-80660544 007C2C 0438+00 1/1 0/0 0/0 .text            executeCrazyBack2__7daCow_cFv */
+/* 8066010C-80660544 007C2C 0438+00 1/1 0/0 0/0 .text            executeCrazyBack2__7daCow_cFv
+ */
 void daCow_c::executeCrazyBack2() {
     // NONMATCHING
 }
@@ -2227,7 +2240,8 @@ static void daCow_Create(void* param_0) {
     // NONMATCHING
 }
 
-/* 80662710-80662920 00A230 0210+00 1/1 0/0 0/0 .text ctrlJoint__7daCow_cFP8J3DJointP8J3DModel */
+/* 80662710-80662920 00A230 0210+00 1/1 0/0 0/0 .text ctrlJoint__7daCow_cFP8J3DJointP8J3DModel
+ */
 void daCow_c::ctrlJoint(J3DJoint* param_0, J3DModel* param_1) {
     // NONMATCHING
 }
@@ -2343,6 +2357,7 @@ static void func_80662D68() {
     // NONMATCHING
 }
 
+// todo
 /* 80662D70-80662D84 00A890 0014+00 1/1 0/0 0/0 .text            getShapeAngle__7daCow_cFv */
 void daCow_c::getShapeAngle(csXyz& out, daCow_c* cow) {
     out = cow->field_0xc32;

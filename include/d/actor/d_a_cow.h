@@ -59,7 +59,7 @@ public:
     /* 8065C680 */ void setEnterCount();
     /* 8065C70C */ void action_enter();
     /* 8065CFBC */ bool isAngry();
-    /* 8065D03C */ void isGuardFad();
+    /* 8065D03C */ bool isGuardFad();
     /* 8065D0B8 */ void setAngryHit();
     /* 8065D17C */ void checkBeforeBgAngry(s16);
     /* 8065D230 */ void setRedTev();
