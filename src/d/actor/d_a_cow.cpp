@@ -4,6 +4,7 @@
  */
 
 #include "d/actor/d_a_cow.h"
+#include "d/d_com_inf_game.h"
 #include "dol2asm.h"
 #include "dolphin/types.h"
 
@@ -11,7 +12,6 @@
 // Forward References:
 //
 
-extern "C" void setBck__7daCow_cFiUcff();
 extern "C" void checkBck__7daCow_cFi();
 extern "C" void setEffect__7daCow_cFv();
 extern "C" void __dt__4cXyzFv();
@@ -256,7 +256,6 @@ extern "C" extern void* __vt__12cCcD_SphAttr[25];
 extern "C" extern void* __vt__14cCcD_ShapeAttr[22];
 extern "C" extern void* __vt__9cCcD_Stts[8];
 extern "C" u8 now__14mDoMtx_stack_c[48];
-extern "C" extern u8 g_dComIfG_gameInfo[122384];
 extern "C" u8 mSimpleTexObj__21dDlst_shadowControl_c[32];
 extern "C" extern u8 g_meter2_info[248];
 extern "C" u8 mCurrentMtx__6J3DSys[48];
@@ -344,29 +343,10 @@ int daCow_c::calcRunAnime(int resetAnimation) {
     return 1;
 }
 
-/* ############################################################################################## */
-/* 80662DC8-80662DCC 000018 0004+00 12/46 0/0 0/0 .rodata          @3998 */
-SECTION_RODATA static u8 const lit_3998[4] = {
-    0x00,
-    0x00,
-    0x00,
-    0x00,
-};
-COMPILER_STRIP_GATE(0x80662DC8, &lit_3998);
-
-/* 80662DCC-80662DD0 00001C 0004+00 1/3 0/0 0/0 .rodata          @3999 */
-SECTION_RODATA static f32 const lit_3999 = -1.0f;
-COMPILER_STRIP_GATE(0x80662DCC, &lit_3999);
-
-/* 80662F18-80662F18 000168 0000+00 0/0 0/0 0/0 .rodata          @stringBase0 */
-#pragma push
-#pragma force_active on
-SECTION_DEAD static char const* const stringBase_80662F18 = "Cow";
-#pragma pop
-
 /* 80658730-806587D4 000250 00A4+00 20/20 0/0 0/0 .text            setBck__7daCow_cFiUcff */
 void daCow_c::setBck(int param_0, u8 param_1, f32 param_2, f32 param_3) {
-    // NONMATCHING
+    J3DAnmTransform* transform = (J3DAnmTransform*)dComIfG_getObjectRes("Cow", param_0);
+    mpMorf->setAnm(transform, param_1, param_2, param_3, 0.0f, -1.0f);
 }
 
 /* 806587D4-80658830 0002F4 005C+00 1/1 0/0 0/0 .text            checkBck__7daCow_cFi */
