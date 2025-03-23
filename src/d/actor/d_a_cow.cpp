@@ -397,8 +397,8 @@ void daCow_c::setEnterCow20() {
         } else {
             spawnAngle.set(0, -0x8000, 0);
         }
-        int roomNumber = fopAcM_GetRoomNo(this);
-        fopAcM_create(0x106, ~0xfb, &spawnPosition, roomNumber, &spawnAngle, 0, -1);
+
+        fopAcM_create(0x106, ~0xfb, &spawnPosition, fopAcM_GetRoomNo(this), &spawnAngle, 0, -1);
     }
 }
 
@@ -482,12 +482,6 @@ static void* s_near_cow(void* param_1, void* param_2) {
     return NULL;
 }
 
-/* ##############################################################################################
- */
-/* 80662E00-80662E04 000050 0004+00 1/7 0/0 0/0 .rodata          @4446 */
-SECTION_RODATA static f32 const lit_4446 = 500.0f;
-COMPILER_STRIP_GATE(0x80662E00, &lit_4446);
-
 /* 806634FC-80663500 0000A4 0002+02 4/4 0/0 0/0 .bss             m_angry_cow */
 static s16 m_angry_cow;
 
@@ -498,7 +492,7 @@ static void* s_angry_cow(void* param_1, void* param_2) {
 
     if (IS_VALID_COW_INTERACTION(cow_1, other_actor)) {
         if (cow_1->isAngry() ||
-            (cow_1->isGuardFad() && fopAcM_searchActorDistance(cow_1, other_actor) < 500.f))
+            (cow_1->isGuardFad() && fopAcM_searchActorDistance(cow_1, other_actor) < 500.0f))
         {
             m_angry_cow = true;
         }
@@ -844,10 +838,10 @@ void daCow_c::action_shake() {
             {
                 setProcess(&daCow_c::action_moo, 1);
             } else {
-                if (rand < 0.5f) {
-                    setProcess(&daCow_c::action_wait, 1);
-                } else {
+                if (rand >= 0.5f) {
                     setProcess(&daCow_c::action_eat, 0);
+                } else {
+                    setProcess(&daCow_c::action_wait, 1);
                 }
             }
         }
@@ -1228,8 +1222,6 @@ void daCow_c::action_run() {
                     }
                     return;
                 }
-
-                // cursor
 
                 bool havePlayerPos = checkPlayerPos();
 
