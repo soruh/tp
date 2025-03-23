@@ -2875,16 +2875,14 @@ void daCow_c::action() {
 
 /* 80661580-806615EC 0090A0 006C+00 1/1 0/0 0/0 .text            setMtx__7daCow_cFv */
 void daCow_c::setMtx() {
-    // NONMATCHING
+    if (mpMorf) {
+        mDoMtx_stack_c::transS(current.pos);
+        mDoMtx_stack_c::ZXYrotM(field_0xc2c);
+        mDoMtx_stack_c::ZXYrotM(field_0xc32);
+        mpMorf->getModel()->setBaseTRMtx(mDoMtx_stack_c::get());
+        mpMorf->modelCalc();
+    }
 }
-
-/* ############################################################################################## */
-/* 80662EE0-80662EE4 000130 0004+00 0/1 0/0 0/0 .rodata          @7624 */
-#pragma push
-#pragma force_active on
-SECTION_RODATA static f32 const lit_7624 = 18.0f;
-COMPILER_STRIP_GATE(0x80662EE0, &lit_7624);
-#pragma pop
 
 /* 806615EC-80661720 00910C 0134+00 1/1 0/0 0/0 .text            setAttnPos__7daCow_cFv */
 void daCow_c::setAttnPos() {
