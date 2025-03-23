@@ -3062,21 +3062,31 @@ void daCow_c::executeCrazyDash() {
 
 /* 8065E6BC-8065E6E8 0061DC 002C+00 2/2 0/0 0/0 .text initCrazyBeforeCatch__7daCow_cFi */
 void daCow_c::initCrazyBeforeCatch(int param_0) {
-    // NONMATCHING
+    field_0xc9f = 2;
+    speedF = 0.0f;
+    field_0xc3e.z = 0;
+    field_0xc63 = 1;
+    gravity = 0.0f;
 }
-
-/* ############################################################################################## */
-/* 80662EB4-80662EB8 000104 0004+00 0/3 0/0 0/0 .rodata          @6527 */
-#pragma push
-#pragma force_active on
-SECTION_RODATA static f32 const lit_6527 = -220.0f;
-COMPILER_STRIP_GATE(0x80662EB4, &lit_6527);
-#pragma pop
 
 /* 8065E6E8-8065E7D0 006208 00E8+00 2/2 0/0 0/0 .text executeCrazyBeforeCatch__7daCow_cFv
  */
 void daCow_c::executeCrazyBeforeCatch() {
-    // NONMATCHING
+    calcCatchPos(-220.0f, 1);
+    if (this->mFlags & 2) {
+        initCrazyCatch(0);
+        mFlags &= ~2;
+        dComIfGp_getVibration().StartShock(8, 0x1f, cXyz(0.0f, 1.0f, 0.0f));
+    } else {
+        if (this->mFlags & 4) {
+            if (daPy_getPlayerActorClass()->speedF == 0.0f) {
+                initCrazyAttack(0);
+            } else {
+                initCrazyAttack(1);
+            }
+            mFlags &= ~4;
+        }
+    }
 }
 
 /* 8065E7D0-8065E888 0062F0 00B8+00 3/3 0/0 0/0 .text            initCrazyCatch__7daCow_cFi */
