@@ -593,10 +593,6 @@ f32 fopAcM_searchActorDistanceXZ2(const fopAc_ac_c* i_actorA, const fopAc_ac_c* 
     return (*posB - *posA).abs2XZ();
 }
 
-BOOL daPy_py_c::checkNowWolf() {
-    return dComIfGp_getLinkPlayer()->checkWolf();
-}
-
 /* 8001AAE0-8001AC40 015420 0160+00 0/0 0/0 2/2 .text
  * fopAcM_rollPlayerCrash__FPC10fopAc_ac_cfUlffif               */
 BOOL fopAcM_rollPlayerCrash(fopAc_ac_c const* i_crashActor, f32 i_range, u32 i_flag, f32 i_max_y,
@@ -1331,8 +1327,8 @@ fpc_ProcID fopAcM_createItemForMidBoss(const cXyz* i_pos, int i_itemNo, int i_ro
 fopAc_ac_c* fopAcM_createItemForDirectGet(const cXyz* i_pos, int i_itemNo, int i_roomNo,
                                           const csXyz* i_angle, const cXyz* i_scale, f32 i_speedF,
                                           f32 i_speedY) {
-    return fopAcM_fastCreateItem(i_pos, i_itemNo, i_roomNo, i_angle, i_scale, &i_speedF, &i_speedY, -1,
-                                 0x7, NULL);
+    return fopAcM_fastCreateItem(i_pos, i_itemNo, i_roomNo, i_angle, i_scale, &i_speedF, &i_speedY,
+                                 -1, 0x7, NULL);
 }
 
 /* 8001C1FC-8001C240 016B3C 0044+00 0/0 2/2 3/3 .text
@@ -1340,8 +1336,8 @@ fopAc_ac_c* fopAcM_createItemForDirectGet(const cXyz* i_pos, int i_itemNo, int i
 fopAc_ac_c* fopAcM_createItemForSimpleDemo(const cXyz* i_pos, int i_itemNo, int i_roomNo,
                                            const csXyz* i_angle, const cXyz* i_scale, f32 i_speedF,
                                            f32 i_speedY) {
-    return fopAcM_fastCreateItem(i_pos, i_itemNo, i_roomNo, i_angle, i_scale, &i_speedF, &i_speedY, -1,
-                                 0x4, NULL);
+    return fopAcM_fastCreateItem(i_pos, i_itemNo, i_roomNo, i_angle, i_scale, &i_speedF, &i_speedY,
+                                 -1, 0x4, NULL);
 }
 
 /* 8001C240-8001C3E0 016B80 01A0+00 1/1 1/1 17/17 .text

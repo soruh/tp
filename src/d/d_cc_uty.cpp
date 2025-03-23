@@ -6,15 +6,11 @@
 #include "d/d_cc_uty.h"
 #include "SSystem/SComponent/c_math.h"
 #include "Z2AudioLib/Z2Creature.h"
-#include "d/d_cc_d.h"
 #include "d/actor/d_a_player.h"
-#include "d/d_s_play.h"
+#include "d/d_cc_d.h"
 #include "d/d_com_inf_game.h"
+#include "d/d_s_play.h"
 #include "f_op/f_op_actor_mng.h"
-
-BOOL daPy_py_c::checkNowWolf() {
-    return dComIfGp_getLinkPlayer()->checkWolf();
-}
 
 /* 803AC418-803AC500 009538 00E8+00 1/1 0/0 0/0 .data            plCutLRC */
 static int plCutLRC[58] = {
@@ -243,7 +239,8 @@ static u8 at_power_get(dCcU_AtInfo* i_AtInfo) {
             power = 40;
         }
     } else if (i_AtInfo->mPowerType == 7) {
-        if (i_AtInfo->mpCollider->ChkAtType(AT_TYPE_THROW_OBJ | AT_TYPE_20000 | AT_TYPE_IRON_BALL)) {
+        if (i_AtInfo->mpCollider->ChkAtType(AT_TYPE_THROW_OBJ | AT_TYPE_20000 | AT_TYPE_IRON_BALL))
+        {
             power = 50;
         } else if (i_AtInfo->mpCollider->ChkAtType(AT_TYPE_ARROW)) {
             power = 27;
