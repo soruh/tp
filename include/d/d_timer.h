@@ -11,6 +11,7 @@ class JKRExpHeap;
 s32 dTimer_createStockTimer();
 s32 dTimer_createTimer(s32 i_mode, u32 i_limitMs, u8 i_type, u8 param_3, f32 param_4, f32 param_5,
                        f32 param_6, f32 param_7);
+u32 dTimer_createGetIn2D(s32 param_0, cXyz i_pos);
 int dTimer_getRestTimeMs();
 u8 dTimer_isStart();
 u8 dTimer_isReadyFlag();
@@ -63,9 +64,10 @@ public:
     bool isVisible() { return mTimerVisible; }
 
     f32 acc(s16 param_0, s16 param_1, s16 param_2) {
-        return ((f32)(param_1 - param_2) * (f32)(param_1 - param_2)) / ((f32)(param_0 - param_2) * (f32)(param_0 - param_2));
+        return ((f32)(param_1 - param_2) * (f32)(param_1 - param_2)) /
+               ((f32)(param_0 - param_2) * (f32)(param_0 - param_2));
     }
-    
+
     void setTimerTrans(f32 x, f32 y) {
         mTimerTransX = x;
         mTimerTransY = y;
