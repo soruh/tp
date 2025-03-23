@@ -2815,44 +2815,175 @@ bool daCow_c::checkWolfBusters() {
     return false;
 }
 
-/* ############################################################################################## */
-/* 80662EC8-80662ECC 000118 0004+00 0/0 0/0 0/0 .rodata          @6980 */
-#pragma push
-#pragma force_active on
-SECTION_RODATA static f32 const lit_6980 = 11.0f;
-COMPILER_STRIP_GATE(0x80662EC8, &lit_6980);
-#pragma pop
-
-/* 80662ECC-80662ED0 00011C 0004+00 0/2 0/0 0/0 .rodata          @7493 */
-#pragma push
-#pragma force_active on
-SECTION_RODATA static f32 const lit_7493 = 90.0f;
-COMPILER_STRIP_GATE(0x80662ECC, &lit_7493);
-#pragma pop
-
-/* 80662ED0-80662ED4 000120 0004+00 0/1 0/0 0/0 .rodata          @7494 */
-#pragma push
-#pragma force_active on
-SECTION_RODATA static f32 const lit_7494 = 36.0f;
-COMPILER_STRIP_GATE(0x80662ED0, &lit_7494);
-#pragma pop
-
-/* 80662ED4-80662ED8 000124 0004+00 0/1 0/0 0/0 .rodata          @7495 */
-#pragma push
-#pragma force_active on
-SECTION_RODATA static f32 const lit_7495 = 150.0f;
-COMPILER_STRIP_GATE(0x80662ED4, &lit_7495);
-#pragma pop
+#define N_WOLF_BUSTERS 3
+extern fpc_ProcID gWolfBustersID[N_WOLF_BUSTERS];
 
 /* 806608F0-806612DC 008410 09EC+00 2/0 0/0 0/0 .text            action_wolf__7daCow_cFv */
 void daCow_c::action_wolf() {
-    // NONMATCHING
+    daPy_py_c* player = daPy_getPlayerActorClass();
+    daNpc_Aru_c* aru;
+
+    if (!fopAcM_SearchByName(PROC_NPC_ARU, (fopAc_ac_c**)&aru)) {
+        return;
+    }
+
+    cXyz aruPos = aru->current.pos;
+
+    s16 aruAngle = cLib_targetAngleY(&current.pos, &aru->current.pos);
+    int uVar3 = field_0xc5c;
+    if (uVar3 == 2) {
+        return;
+    }
+    if (uVar3 > 1) {
+        if (uVar3 > 3) {
+            return;
+        }
+        field_0xc98 = 0;
+        field_0xc94 = 0;
+        field_0xc90 = 0;
+        field_0xcb0 = 0.0;
+        field_0xc3e.z = 0;
+        field_0xc38.y = 0;
+        field_0xc3e.y = 0;
+
+        attention_info.flags &= ~0x1;
+
+        // todo: clean up
+        int iWolfBuster = 0;
+        for (int i = N_WOLF_BUSTERS; i != 0; i -= 1) {
+            if (gWolfBustersID[iWolfBuster] == fopAcM_GetID(this)) {
+                break;
+            }
+            iWolfBuster += 1;
+        }
+        gWolfBustersID[iWolfBuster] = -1;
+        return;
+    }
+    if (uVar3 == 0) {
+        field_0xc5c = 1;
+        field_0xc9f = 0;
+        calcRunAnime(1);
+        attention_info.flags |= 1;
+        mSound.startCreatureVoice(JAISoundID(Z2SE_GOAT_V_ANGRY), -1);
+        field_0xc98 = cM_rndF(90.0f) + 90.0f;
+        return;
+    }
+    if (field_0xc90) {
+        field_0xc90--;
+    }
+    if (field_0xc98) {
+        field_0xc98--;
+    }
+
+    calcRunAnime(0);
+
+    if (daPy_getPlayerActorClass()->checkNowWolf()) {
+        setProcess(&daCow_c::action_run, 0);
+        field_0xc9e = 1;
+        return;
+    }
+
+    if (checkOutOfGate(current.pos)) {
+        setProcess(&daCow_c::action_run, 0);
+        field_0xc9e = 1;
+        return;
+    }
+
+    int bVar1 = field_0xc9f;
+    if (bVar1 == 1) {
+        if (cM_rnd() >= 0.5f) {
+            aruAngle -= 0x3000;
+        } else {
+            aruAngle += 0x3000;
+        }
+
+        field_0xc20 = aruPos;
+
+        field_0xc20.x += cM_ssin(aruAngle) * 500.0f;
+        field_0xc20.z += cM_scos(aruAngle) * 500.0f;
+        field_0xc72 = cLib_targetAngleY(&current.pos, &field_0xc20);
+        field_0xc9f = 2;
+        field_0xc90 = 0x96;
+    } else {
+        if (bVar1 == 0) {
+            cLib_chaseF(&speedF, 36.0f, 1.0f);
+            cLib_addCalcAngleS2(&current.angle.y, aruAngle, 8, 0x400);
+            shape_angle.y = current.angle.y;
+            field_0xc32.y = current.angle.y;
+            setBodyAngle2(aruAngle);
+
+            if (aruPos.absXZ(current.pos) < 500.0f) {
+                field_0xc9f = 1;
+            }
+            // goto LAB_80661240;
+            cLib_chaseS(&field_0xc3e.z, 0, 0x400);
+            return;
+        }
+        if (bVar1 > 2) {
+            // goto LAB_80661240;
+            cLib_chaseS(&field_0xc3e.z, 0, 0x400);
+            return;
+        }
+
+        // LAB_80661240;
+        // cLib_chaseS(&field_0xc3e.z, 0, 0x400);
+        // return;
+    }
+    field_0xc72 = cLib_targetAngleY(&current.pos, &field_0xc20);
+
+    f32 fVar13 = current.pos.absXZ(aru->current.pos) / 100.0f;
+
+    if (fVar13 < 7.0f) {
+        fVar13 = 7.0f;
+    }
+
+    cLib_chaseF(&speedF, fVar13, 1.0f);
+    cLib_addCalcAngleS2(&current.angle.y, field_0xc72, 8, 0x200);
+
+    shape_angle.y = current.angle.y;
+    field_0xc32.y = current.angle.y;
+
+    setBodyAngle2(field_0xc72);
+
+    if (!field_0xc90) {
+        field_0xc9f = 1;
+    } else {
+        if (current.pos.absXZ(field_0xc20) < 100.0f || mAcch.ChkWallHit()) {
+            field_0xc9f = 1;
+        }
+    }
+
+    if (current.pos.absXZ(aru->current.pos) < 700.0f) {
+        if (!checkOutOfGate(current.pos)) {
+            if (abs(fopAcM_searchPlayerAngleY(this) - field_0xc32.y) < 0x2000) {
+                field_0xca0 = 0;
+                field_0xca1 = 1;
+                setProcess(&daCow_c::action_angry, 0);
+                return;
+            }
+        }
+    }
+    if (!field_0xc98) {
+        field_0xc98 = (int)(cM_rndF(90.0f) + 150.0f);
+        if (!checkOutOfGate(current.pos)) {
+            m_angry_cow = 0;
+            if (!fpcEx_Search(s_angry_cow2, this)) {
+                if (abs(fopAcM_searchPlayerAngleY(this) - field_0xc32.y) < 0x2000) {
+                    setProcess(&daCow_c::action_angry, 0);
+                    return;
+                }
+            }
+        }
+    }
 }
 
 /* 806612DC-806613EC 008DFC 0110+00 2/0 0/0 0/0 .text            action_damage__7daCow_cFv */
 void daCow_c::action_damage() {
     int uVar1 = field_0xc5c;
-    if (uVar1 != 2 && uVar1 < 2) {
+    if (uVar1 == 2) {
+        return;
+    }
+    if (uVar1 < 2) {
         if (uVar1 != 0) {
             setBck(0x18, 0, 3.0f, 1.0f);
             field_0xc5c = 1;
