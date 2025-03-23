@@ -2513,7 +2513,7 @@ void daCow_c::action_enter() {
             } else {
                 calcRunAnime(1);
                 field_0xc6c = 1;
-                this->field_0xc9f = 0;
+                field_0xc9f = 0;
                 for (int iSphere = 0; iSphere < N_COW_COLLIDERS; iSphere++) {
                     mSph[iSphere].OffCoSetBit();
                     mCcStts.ClrCcMove();
@@ -2651,7 +2651,278 @@ COMPILER_STRIP_GATE(0x80662EAC, &lit_6257);
 
 /* 8065D2F0-8065DC08 004E10 0918+00 7/0 0/0 0/0 .text            action_angry__7daCow_cFv */
 void daCow_c::action_angry() {
-    // NONMATCHING
+    daPy_py_c* player = daPy_getPlayerActorClass();
+    f32 playerDistance = fopAcM_searchPlayerDistance(this);
+    s16 playerAngle = fopAcM_searchPlayerAngleY(this);
+
+    s16 targetZ = 0;
+    int uVar3 = field_0xc5c;
+    if (uVar3 == 2) {
+        return;
+    }
+    if (uVar3 > 1) {
+        if (uVar3 > 3) {
+            return;
+        }
+        field_0xc94 = 0;
+        field_0xc90 = 0;
+        field_0xcb0 = 0.0f;
+        field_0xc3e.z = 0;
+        field_0xc38.y = 0;
+        field_0xc3e.y = 0;
+
+        attention_info.flags &= ~1;
+        return;
+    }
+    if (uVar3 == 0) {
+        calcRunAnime(1);
+        field_0xc5c = 1;
+        if (field_0xca0 == 0) {
+            field_0xc9f = 0;
+            field_0xc90 = 0x14;
+            field_0xca0 = 1;
+        } else {
+            field_0xc9f = 1;
+        }
+        field_0xc98 = 200;
+        field_0xcb0 = 1.0f;
+        field_0xcb4 = 0;
+        if (field_0xca1 == 0) {
+            speedF = 75.0f;
+        } else {
+            speedF = 60.0f;
+        }
+
+        mSound.startCreatureVoice(Z2SE_GOAT_V_ANGRY, -1);
+        field_0xc84 = 0;
+        return;
+    }
+    setSeSnort();
+
+    if (player->checkHorseRide()) {
+        attention_info.flags &= ~1;
+    } else {
+        attention_info.flags |= 1;
+    }
+    if (field_0xc9f == 1) {
+        setCarryStatus();
+    }
+    if (checkThrow()) {
+        dComIfGp_getVibration().StartShock(4, 0x1f, cXyz(0.0f, 1.0f, 0.0f));
+        field_0xc9e = 1;
+        return;
+    }
+    if (field_0xc84 == 0) {
+        if (!player->checkHorseRide() && mSph[0].ChkCoHit()) {
+            if (fopAcM_GetName(mSph[0].GetCoHitObj()->GetAc()) == PROC_ALINK) {
+                cXyz pos = daPy_getPlayerActorClass()->current.pos;
+                pos.y += 100.0f;
+                cXyz pos2;
+                mDoMtx_stack_c::transS(pos);
+                mDoMtx_stack_c::YrotM(shape_angle.y);
+                mDoMtx_stack_c::transM(0.0f, 0.0f, 200.0f);
+                mDoMtx_stack_c::multVecZero(&pos2);
+
+                dBgS_LinChk linkChck;
+                linkChck.Set(&pos, &pos2, this);
+
+                s16 angle;
+                if (dComIfG_Bgsp().LineCross(&linkChck)) {
+                    angle = shape_angle.y + -0x8000;
+                } else {
+                    angle = shape_angle.y;
+                }
+
+                field_0xc84 = 0x1e;
+                daPy_getPlayerActorClass()->setThrowDamage(angle, 35.0f, 40.0f, 0, 0, 0);
+            }
+        }
+    }
+    if (field_0xc98 == 0) {
+        if (field_0xc9f != 5) {
+            setProcess(&daCow_c::action_run, 0);
+            field_0xc9e = 1;
+            return;
+        }
+    }
+    if (field_0xc84) {
+        field_0xc84--;
+    }
+    if (field_0xc98) {
+        field_0xc98--;
+    }
+    if (field_0xc94) {
+        field_0xc94--;
+    }
+    if (field_0xc90) {
+        field_0xc90--;
+    }
+    setRedTev();
+    if (checkCowInOwn(0x4000)) {
+        return;
+    }
+    if (field_0xca1 != 0) {
+        if (checkOutOfGate(daPy_getPlayerActorClass()->current.pos)) {
+            setProcess(&daCow_c::action_run, 0);
+            field_0xc9e = 1;
+            return;
+        } else {
+            if (checkOutOfGate(current.pos)) {
+                setProcess(&daCow_c::action_run, 0);
+                field_0xc9e = 1;
+                return;
+            }
+        }
+    }
+    int bVar1 = field_0xc9f;
+    if (bVar1 != 3) {
+        if (bVar1 < 3) {
+            if (bVar1 == 1) {
+                calcRunAnime(0);
+                mShouldSetEffect = 1;
+                targetZ = 0x2000;
+                f32 targetSpeed = 50.0f;
+                if (player->getSpeedF() >= 15.0) {
+                    targetSpeed = player->getSpeedF() + 35.0;
+
+                    if (field_0xca1) {
+                        if (targetSpeed > 60.0) {
+                            targetSpeed = 60.0;
+                        }
+                    } else {
+                        if (targetSpeed > 75.0) {
+                            targetSpeed = 75.0;
+                        }
+                    }
+                } else {
+                    targetSpeed = 50.0f;
+                }
+                cLib_chaseF(&speedF, targetSpeed, 4.0f);
+
+                if (checkBeforeBgAngry(0x6000)) {
+                    current.angle.y = field_0xc32.y;
+                    field_0xc9f = 2;
+                    return;
+                }
+                if (field_0xc94 == 0) {
+                    field_0xc72 = playerAngle;
+                    s32 angleToPlayer = cLib_distanceAngleS(playerAngle, field_0xc32.y);
+
+                    if (player->getSpeedF() <= 5.0) {
+                        if (playerDistance >= 500.0) {
+                            if ((playerDistance >= 1500.0) && angleToPlayer > 0x57ff) {
+                                current.angle.y = field_0xc32.y;
+                                field_0xc9f = 2;
+                                return;
+                            }
+                        } else {
+                            field_0xc94 = 0x23;
+                        }
+                    } else {
+                        if (playerDistance >= 350.0) {
+                            if ((playerDistance < 1200.0) && angleToPlayer > 0x3fff) {
+                                setAngryTurn();
+                                return;
+                            }
+                        } else {
+                            field_0xc94 = 10;
+                        }
+                    }
+                } else {
+                    field_0xc72 = current.angle.y;
+                }
+
+                int lockedOn;
+                if (field_0xca1 && field_0xc94 && dComIfGp_getAttention().LockonTruth() &&
+                    dComIfGp_getAttention().LockonTarget(0) &&
+                    cLib_distanceAngleS(playerAngle, field_0xc32.y) < 0x800)
+                {
+                    field_0xc72 = playerAngle;
+                    lockedOn = true;
+                } else {
+                    lockedOn = false;
+                }
+                if (lockedOn) {
+                    cLib_chaseAngleS(&current.angle.y, field_0xc72, 0x800);
+                } else {
+                    cLib_addCalcAngleS2(&current.angle.y, field_0xc72, 0x10, 0x400);
+                }
+                cLib_addCalcAngleS2(&shape_angle.y, current.angle.y, 4, 0x800);
+                field_0xc32.y = shape_angle.y;
+            } else if (bVar1 == 0) {
+                calcRunAnime(0);
+                mShouldSetEffect = 1;
+                targetZ = 0x2000;
+                if (checkBeforeBgAngry(0)) {
+                    current.angle.y = (field_0xc32).y;
+                    field_0xc9f = 2;
+                } else {
+                    if (field_0xc90 == 0) {
+                        field_0xc9f = 1;
+                    }
+                }
+                cLib_addCalcAngleS2(&shape_angle.y, current.angle.y, 8, 0x800);
+                field_0xc32.y = shape_angle.y;
+            } else {
+                calcRunAnime(0);
+                if (checkBeforeBgAngry(0)) {
+                    speedF = 0.0f;
+                }
+                if (cLib_chaseF(&speedF, 0.0f, 4.0f)) {
+                    field_0xc9f = 3;
+                    field_0xc72 = playerAngle;
+                    current.angle.y = field_0xc32.y;
+                }
+            }
+
+            cLib_chaseS(&field_0xc3e.z, targetZ, 0x400);
+            return;
+        }
+        if (bVar1 == 5) {
+            mpMorf->setPlaySpeed(1.0f);
+
+            playerAngle = fopAcM_searchPlayerAngleY(this);
+            cLib_chaseAngleS(&field_0xc32.y, playerAngle, 0x800);
+
+            targetZ = field_0xc32.y;
+            shape_angle.y = targetZ;
+            current.angle.y = targetZ;
+
+            if (this->mpMorf->isStop()) {
+                field_0xc9f = 1;
+                calcRunAnime(1);
+            }
+            return;
+        }
+        if (bVar1 > 4) {
+            cLib_chaseS(&field_0xc3e.z, targetZ, 0x400);
+            return;
+        } else {
+            calcRunAnime(0);
+            if (field_0xc90) {
+                cLib_chaseS(&field_0xc3e.z, targetZ, 0x400);
+                return;
+            }
+        }
+    }
+
+    calcRunAnime(0);
+    speedF = 15.0f;
+    cLib_addCalcAngleS2(&current.angle.y, field_0xc72, 8, 0x400);
+    targetZ = current.angle.y;
+    shape_angle.y = targetZ;
+    (field_0xc32).y = targetZ;
+    setBodyAngle(field_0xc72);
+    s16 angleDist = cLib_distanceAngleS(field_0xc72, field_0xc32.y);
+    if (angleDist < 0x200 && field_0xc3e.y < 0x200) {
+        if (field_0xc9f == 4) {
+            setProcess(&daCow_c::action_run, 0);
+        } else {
+            field_0xc9f = 1;
+            field_0xc38.y = 0;
+            field_0xc3e.y = 0;
+        }
+    }
 }
 
 /* 8065DC08-8065DE70 005728 0268+00 4/4 0/0 0/0 .text            calcCatchPos__7daCow_cFfi */
@@ -2785,15 +3056,6 @@ void daCow_c::executeCrazyBack() {
     // NONMATCHING
 }
 
-/* ############################################################################################## */
-/* 80662F18-80662F18 000168 0000+00 0/0 0/0 0/0 .rodata          @stringBase0 */
-#pragma push
-#pragma force_active on
-SECTION_DEAD static char const* const stringBase_80662F23 = "WILDGOAT";
-SECTION_DEAD static char const* const stringBase_80662F2C = "WILDGOAT_SUCCESS";
-SECTION_DEAD static char const* const stringBase_80662F3D = "WILDGOAT_FAILURE";
-#pragma pop
-
 /* 8065FE50-8066010C 007970 02BC+00 4/0 0/0 0/0 .text            action_crazy__7daCow_cFv */
 void daCow_c::action_crazy() {
     int uVar1 = field_0xc5c;
@@ -2818,7 +3080,7 @@ void daCow_c::action_crazy() {
                 field_0xca6 = 1;
 
                 dComIfGoat_SetThrow(this);
-                this->field_0xcac = 1;
+                field_0xcac = 1;
                 fopAcM_OnStatus(this, 0x100);
             } else {
                 if (field_0xc94) {
