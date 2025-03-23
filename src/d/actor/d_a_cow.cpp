@@ -3113,57 +3113,61 @@ void daCow_c::executeCrazyCatch() {
     f32 fVar2 = -220.0f;
     int bVar1 = field_0xc60;
 
-    if (bVar1 == 2) {
+    if (bVar1 != 2) {
+        if (bVar1 < 2) {
+            mShouldSetEffect = 1;
+            if (!field_0xc60 && mpMorf->isStop()) {
+                setBck(5, 2, 0.0f, 1.0f);
+                field_0xc60 = 1;
+            }
+
+            if (daPy_getPlayerActorClass()->speedF == 0.0f) {
+                setBck(0x10, 0, 0.0f, 1.0f);
+                field_0xc60 = 2;
+            }
+        } else if (bVar1 < 5) {
+            fVar2 = -260.0f;
+
+            if (!field_0xc90) {
+                if (field_0xc60 == 3) {
+                    setBck(0x12, 2, 0.0f, 1.0f);
+                    field_0xc90 = 0x3c;
+                    field_0xc60 = 4;
+                } else {
+                    setBck(0x11, 2, 0.0f, 1.0f);
+                    field_0xc90 = 0x3c;
+                    field_0xc60 = 3;
+                }
+            }
+        }
+
+    } else {
         fVar2 = -260.0f;
         if (mpMorf->isStop()) {
             setBck(0x12, 2, 0.0f, 1.0f);
             field_0xc60 = 4;
         }
-    } else if (bVar1 < 2) {
-        mShouldSetEffect = 1;
-        if (!field_0xc60 && mpMorf->isStop()) {
-            setBck(5, 2, 0.0f, 1.0f);
-            field_0xc60 = 1;
-        }
-
-        if (daPy_getPlayerActorClass()->speedF == 0.0f) {
-            setBck(0x10, 0, 0.0f, 1.0f);
-            field_0xc60 = 2;
-        }
-    } else if (bVar1 < 5) {
-        fVar2 = -260.0f;
-
-        if (!field_0xc90) {
-            if (field_0xc60 == 3) {
-                setBck(0x12, 2, 0.0f, 1.0f);
-                field_0xc90 = 0x3c;
-                field_0xc60 = 4;
-            } else {
-                setBck(0x11, 2, 0.0f, 1.0f);
-                field_0xc90 = 0x3c;
-                field_0xc60 = 3;
-            }
-        }
     }
-    if (mFlags == 0) {
-        calcCatchPos(fVar2, 1);
-    } else {
-        if ((mFlags & 8) == 0) {
-            if ((mFlags & 0x10) == 0) {
-                if ((mFlags & 4) != 0) {
+
+    if (mFlags != 0) {
+        if (mFlags & 8) {
+            initCrazyThrow(0);
+        } else {
+            if (mFlags & 0x10) {
+                initCrazyThrow(1);
+            } else {
+                if (mFlags & 4) {
                     if (daPy_getPlayerActorClass()->speedF == 0.0f) {
                         initCrazyAttack(0);
                     } else {
                         initCrazyAttack(1);
                     }
                 }
-            } else {
-                initCrazyThrow(1);
             }
-        } else {
-            initCrazyThrow(0);
         }
         mFlags = 0;
+    } else {
+        calcCatchPos(fVar2, 1);
     }
 }
 
