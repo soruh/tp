@@ -1957,107 +1957,88 @@ void daCow_c::checkBeforeBg() {
                 } else {
                     field_0xc61 = 2;
                 }
-                return;
-            }
-            if (planeTri[2]) {
+            } else if (planeTri[2]) {
                 if (field_0xc60 <= 3) {
                     field_0xc61 = 3;
                 } else {
                     field_0xc61 = 1;
                 }
-                return;
-            }
-            s16 difference = z[0] - field_0xc32.y;
-            if (abs(difference) < 0x7801) {
-                if (difference <= 0) {
+            } else {
+                s16 difference = z[0] - field_0xc32.y;
+                if (abs(difference) < 0x7801) {
+                    if (difference <= 0) {
+                        field_0xc61 = 3;
+                    } else {
+                        field_0xc61 = 4;
+                    }
+                } else if ((field_0xc60 & 1) == 0) {
                     field_0xc61 = 3;
                 } else {
                     field_0xc61 = 4;
                 }
-                return;
             }
-            if ((field_0xc60 & 1) == 0) {
-                field_0xc61 = 3;
-            } else {
-                field_0xc61 = 4;
-            }
-            return;
-        }
-        if (planeTri[1]) {
+        } else if (planeTri[1]) {
             if (field_0xc60 != 2) {
                 if (field_0xc60 < 2) {
                     field_0xc61 = 4;
                     field_0xc54 = 10;
-                    return;
-                }
-                if (field_0xc60 < 4) {
+                } else if (field_0xc60 < 4) {
                     field_0xc61 = 2;
-                    return;
                 }
-            }
-            if (y[1] < 600.0) {
+            } else if (y[1] < 600.0) {
                 field_0xc61 = 2;
             } else {
                 field_0xc61 = 0;
             }
-            return;
-        }
-        if (!planeTri[2]) {
+        } else if (!planeTri[2]) {
             if (field_0xc60 == 2) {
                 field_0xc61 = 1;
-                return;
-            }
-            if (field_0xc60 < 2) {
+            } else if (field_0xc60 < 2) {
                 if (field_0xc60 == 0) {
                     field_0xc61 = 3;
                 } else {
                     field_0xc61 = 4;
                 }
-                return;
-            }
-            if (field_0xc60 <= 3) {
-                field_0xc61 = 2;
             } else {
-                field_0xc61 = 0;
+                if (field_0xc60 <= 3) {
+                    field_0xc61 = 2;
+                } else {
+                    field_0xc61 = 0;
+                }
             }
-            return;
-        }
-        if (field_0xc60 == 2) {
+        } else if (field_0xc60 == 2) {
             field_0xc61 = 1;
-            return;
-        }
-        if (field_0xc60 > 1) {
+        } else if (field_0xc60 > 1) {
             if (y[2] < 600.0) {
                 field_0xc61 = 1;
             } else {
                 field_0xc61 = 0;
             }
-            return;
+        } else {
+            field_0xc61 = 3;
+            field_0xc54 = 10;
         }
-        field_0xc61 = 3;
-        field_0xc54 = 10;
-        return;
-    }
-
-    if (field_0xc61 == 3) {
-        field_0xc61 = 3;
     } else {
-        if (field_0xc61 < 3) {
-            if (field_0xc61 == 1) {
-                field_0xc61 = 3;
-            }
-            if (field_0xc61 != 0) {
-                field_0xc61 = 4;
-            }
-        } else if (field_0xc61 < 5) {
-            field_0xc61 = 4;
-        } else if ((field_0xc60 & 1) == 0) {
+        if (field_0xc61 == 3) {
             field_0xc61 = 3;
         } else {
-            field_0xc61 = 4;
+            if (field_0xc61 < 3) {
+                if (field_0xc61 == 1) {
+                    field_0xc61 = 3;
+                }
+                if (field_0xc61 != 0) {
+                    field_0xc61 = 4;
+                }
+            } else if (field_0xc61 < 5) {
+                field_0xc61 = 4;
+            } else if ((field_0xc60 & 1) == 0) {
+                field_0xc61 = 3;
+            } else {
+                field_0xc61 = 4;
+            }
         }
+        field_0xc54 = 10;
     }
-    field_0xc54 = 10;
 }
 
 /* ##############################################################################################
