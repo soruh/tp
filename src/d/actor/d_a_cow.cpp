@@ -5,6 +5,7 @@
 
 #include "d/actor/d_a_cow.h"
 #include "SSystem/SComponent/c_lib.h"
+#include "d/actor/d_a_npc_aru.h"
 #include "d/actor/d_a_player.h"
 #include "d/d_cc_uty.h"
 #include "d/d_com_inf_game.h"
@@ -12,6 +13,7 @@
 #include "d/d_timer.h"
 #include "dol2asm.h"
 #include "dolphin/types.h"
+#include "f_op/f_op_actor_mng.h"
 #include "m_Do/m_Do_lib.h"
 
 //
@@ -2382,31 +2384,143 @@ void daCow_c::setEnterCount() {
     }
 }
 
-/* ############################################################################################## */
-/* 80662E90-80662E94 0000E0 0004+00 0/2 0/0 0/0 .rodata          @5963 */
-#pragma push
-#pragma force_active on
-SECTION_RODATA static f32 const lit_5963 = 80.0f;
-COMPILER_STRIP_GATE(0x80662E90, &lit_5963);
-#pragma pop
-
-/* 80662E94-80662E98 0000E4 0004+00 0/1 0/0 0/0 .rodata          @5964 */
-#pragma push
-#pragma force_active on
-SECTION_RODATA static f32 const lit_5964 = 2000.0f;
-COMPILER_STRIP_GATE(0x80662E94, &lit_5964);
-#pragma pop
-
-/* 80662E98-80662E9C 0000E8 0004+00 0/1 0/0 0/0 .rodata          @5965 */
-#pragma push
-#pragma force_active on
-SECTION_RODATA static f32 const lit_5965 = 1.5f;
-COMPILER_STRIP_GATE(0x80662E98, &lit_5965);
-#pragma pop
-
 /* 8065C70C-8065CFBC 00422C 08B0+00 2/0 0/0 0/0 .text            action_enter__7daCow_cFv */
 void daCow_c::action_enter() {
-    // NONMATCHING
+    cXyz penDistance = current.pos - pen_pos;
+    f32 penDistanceAbs = penDistance.absXZ();
+    cXyz penDistanceNow = penDistance;
+    mDoMtx_stack_c::YrotS(0x4000);
+    mDoMtx_stack_c::multVecSR(&penDistanceNow, &penDistanceNow);
+
+    int nextAction = field_0xc5c;
+    if (nextAction != 2) {
+        if (nextAction < 2) {
+            if (nextAction == 0) {
+                calcRunAnime(1);
+                field_0xc6c = 1;
+                this->field_0xc9f = 0;
+                for (int iSphere = 0; iSphere < 3; iSphere++) {
+                    mSph[iSphere].OffCoSetBit();
+                    mCcStts.ClrCcMove();
+                }
+            } else {
+                f32 fVar2 = 30.0f;
+                int bVar1 = field_0xc9f;
+                if (bVar1 == 2) {
+                    s16 targetAngle = cLib_targetAngleY(&current.pos, &field_0xc20);
+                    cLib_addCalcAngleS2(&current.angle.y, targetAngle, 4, 0x100);
+                    cLib_addCalcAngleS2(&shape_angle.y, current.angle.y, 8, 0x800);
+
+                    field_0xc32.y = shape_angle.y;
+
+                    if (current.pos.abs(field_0xc20) < 50.0f) {
+                        setBck(0xf, 0, 12.0f, 1.0f);
+                        this->speedF = 0;
+                        field_0xc9f = 3;
+                    }
+                    if (checkCurringPen()) {
+                        field_0xc9f = 4;
+                        setCowInCage();
+                    }
+                } else if (bVar1 < 2) {
+                    if (bVar1 == 0) {
+                        calcRunAnime(0);
+
+                        if (penDistanceAbs >= 80.0f) {
+                            field_0xc72 = getCowshedAngle();
+                            if (penDistanceAbs >= 200.0f) {
+                                cLib_addCalcAngleS2(&current.angle.y, field_0xc72, 8, 0x800);
+                                cLib_addCalcAngleS2(&shape_angle.y, current.angle.y, 8, 0x800);
+                            } else {
+                                cLib_addCalcAngleS2(&current.angle.y, field_0xc72, 4, 0x1000);
+                                cLib_addCalcAngleS2(&shape_angle.y, current.angle.y, 4, 0x1000);
+                            }
+                            field_0xc32.y = shape_angle.y;
+                        } else {
+                            setEnterCount();
+                        }
+                    } else {
+                        calcRunAnime(0);
+                        field_0xc72 = 0xc000;
+                        cLib_addCalcAngleS2(&current.angle.y, field_0xc72, 4, 0x800);
+                        cLib_addCalcAngleS2(&shape_angle.y, current.angle.y, 8, 0x800);
+                        field_0xc32.y = shape_angle.y;
+                        if (penDistanceNow.z > 500.0f) {
+                            for (int iSphere = 0; iSphere < 3; iSphere++) {
+                                mSph[iSphere].OnCoSetBit();
+                            }
+                            mSph[0].SetCoSPrm(0x19);
+                            if (!cLib_calcTimer(&field_0xc90)) {
+                                f32 rand1 = cM_rndFX(5.0f);
+                                f32 rand2 = cM_rndFX(4.0f);
+
+                                penDistanceNow.set(rand2 * 40.0f, 0.0f, rand1 * 40.0f + 2000.0f);
+                                mDoMtx_stack_c::YrotS(-0x4000);
+                                mDoMtx_stack_c::multVecSR(&penDistanceNow, &penDistanceNow);
+
+                                field_0xc20 = pen_pos + penDistance;
+
+                                setBck(0x1b, 2, 12.0f, 1.0f);
+                                this->speedF = 0x40400000;
+                                field_0xc9f = 2;
+
+                                if (dMeter2Info_getNowCount() == dMeter2Info_getMaxCount() &&
+                                    field_0xca9)
+                                {
+                                    daNpc_Aru_c* aru =
+                                        (daNpc_Aru_c*)fopAcM_SearchByName(PROC_NPC_ARU);
+                                    if (aru) {
+                                        aru->setLastIn();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } else if (bVar1 == 4) {
+                    this->speedF = 0;
+                    field_0xca5 = 1;
+
+                    setProcess(&daCow_c::action_wait, 0);
+                    mAcchCir.SetWall(100.0f, 110.0f);
+                } else if (bVar1 < 4) {
+                    if (mpMorf->isStop()) {
+                        if (current.pos.abs(field_0xc20) <= 100.0f) {
+                            setBck(0xf, 0, 12.0f, 1.0f);
+                        } else {
+                            field_0xc9f = 2;
+                            this->speedF = 0x40400000;
+                            setBck(0x1b, 2, 12.0f, 1.0f);
+                        }
+                    }
+                    if (checkCurringPen()) {
+                        field_0xc9f = 4;
+                        setCowInCage();
+                    }
+                }
+                if (field_0xc9f < 2) {
+                    m_near_dist = 200.0f;
+                    m_view_angle = 0;
+                    m_view_angle_wide = 0x2000;
+                    fpcM_Search(s_near_cow, this);
+                    if (m_near_dist < 200.0f) {
+                        fVar2 = 2.0f;
+                    }
+                    if (fVar2 <= 30.0f) {
+                        if (fVar2 < 0.0f) {
+                            fVar2 = 2.0f;
+                        }
+                    } else {
+                        fVar2 = fVar2 - 1.0f;
+                    }
+                    cLib_chaseF(&this->speedF, fVar2, 1.5f);
+                }
+            }
+        }
+    }
+
+    for (int iSphere = 0; iSphere < 3; iSphere++) {
+        this->mSph[iSphere].OffTgSetBit();
+    }
 }
 
 /* 8065CFBC-8065D03C 004ADC 0080+00 4/4 0/0 1/1 .text            isAngry__7daCow_cFv */
