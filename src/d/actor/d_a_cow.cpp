@@ -2572,8 +2572,18 @@ void daCow_c::setAngryHit() {
 
 /* 8065D17C-8065D230 004C9C 00B4+00 1/1 0/0 0/0 .text            checkBeforeBgAngry__7daCow_cFs
  */
-bool daCow_c::checkBeforeBgAngry(s16 param_0) {
-    // NONMATCHING
+bool daCow_c::checkBeforeBgAngry(s16 angle) {
+    checkBeforeBg();
+
+    if (field_0xc6c < 1000.0f) {
+        s16 angleDistance = cLib_distanceAngleS(field_0xc70, field_0xc32.y);
+        if (field_0xc6c < (fabsf(cM_ssin(angleDistance) * 250.0f) + 200.0f) &&
+            angleDistance >= angle)
+        {
+            speedF = 0.0f;
+            return true;
+        }
+    }
     return false;
 }
 

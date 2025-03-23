@@ -155,8 +155,7 @@ private:
     /* 0xc6a */ u8 field_0xc6a;  // undefined
     /* 0xc6b */ u8 field_0xc6b;  // undefined
     /* 0xc6c */ f32 field_0xc6c;
-    /* 0xc70 */ u8 field_0xc70;  // undefined
-    /* 0xc71 */ u8 field_0xc71;  // undefined
+    /* 0xc70 */ s16 field_0xc70;
     /* 0xc72 */ s16 field_0xc72;
     /* 0xc74 */ s16 field_0xc74;
     /* 0xc76 */ u16 field_0xc76;
