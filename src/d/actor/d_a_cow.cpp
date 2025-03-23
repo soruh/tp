@@ -3228,12 +3228,10 @@ int daCow_c::Draw() {
 
     } else {
         f32 fVar1 = 800.0f;
-        bool bVar2 = true;
-        if (!checkProcess(&daCow_c::action_crazy) && !checkProcess(&daCow_c::action_thrown)) {
-            bVar2 = false;
-        }
 
-        if (bVar2 && field_0xc9f == 4) {
+        if ((checkProcess(&daCow_c::action_crazy) || checkProcess(&daCow_c::action_thrown)) &&
+            field_0xc9f == 4)
+        {
             fVar1 = 1500.0f;
         }
 
