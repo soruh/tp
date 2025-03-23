@@ -3023,12 +3023,6 @@ void daCow_c::getShapeAngle(csXyz& out, daCow_c* cow) {
     out = cow->field_0xc32;
 }
 
-/* 80662D84-80662D9C 00A8A4 0018+00 5/5 0/0 0/0 .text            checkNowWolf__9daPy_py_cFv */
-// void daPy_py_c::checkNowWolf() {
-extern "C" void checkNowWolf__9daPy_py_cFv() {
-    // NONMATCHING
-}
-
 /* ############################################################################################## */
 /* 80663558-8066355C 000100 0004+00 0/0 0/0 0/0 .bss
  * sInstance__40JASGlobalInstance<19JASDefaultBankTable>        */

@@ -1,9 +1,9 @@
 #ifndef D_A_D_A_PLAYER_H
 #define D_A_D_A_PLAYER_H
 
+#include "d/d_com_inf_game.h"
 #include "d/d_drawlist.h"
 #include "f_op/f_op_actor.h"
-#include "d/d_com_inf_game.h"
 
 struct ResTIMG;
 
@@ -700,7 +700,10 @@ public:
     cXyz* getRightFootPosP() { return &mRightFootPos; }
     cXyz* getLeftFootPosP() { return &mLeftFootPos; }
     BOOL checkCopyRodThrowAfter() const { return checkNoResetFlg3(FLG3_COPY_ROD_THROW_AFTER); }
-    BOOL checkRide() const { return checkHorseRide() || checkBoarRide() || checkSpinnerRide() || checkCanoeRide() || checkBoardRide(); }
+    BOOL checkRide() const {
+        return checkHorseRide() || checkBoarRide() || checkSpinnerRide() || checkCanoeRide() ||
+               checkBoardRide();
+    }
     cXyz getRightHandPos() const { return mRightHandPos; }
     const cXyz getLeftHandPos() const { return mLeftHandPos; }
     const cXyz getItemPos() const { return mItemPos; }
@@ -913,13 +916,16 @@ public:
     bool getGrabPutStart() const { return checkResetFlg0(RFLG0_GRAB_PUT_START); }
     bool checkSwimUp() const { return checkNoResetFlg0(FLG0_SWIM_UP); }
     BOOL checkHorseZelda() const { return checkNoResetFlg2(FLG2_HORSE_ZELDA); }
-    BOOL checkSpecialHorseRide() { return checkNoResetFlg2(daPy_FLG2(FLG2_HORSE_ZELDA | FLG2_UNK_1000000 | FLG2_BOAR_SINGLE_BATTLE)); }
+    BOOL checkSpecialHorseRide() {
+        return checkNoResetFlg2(
+            daPy_FLG2(FLG2_HORSE_ZELDA | FLG2_UNK_1000000 | FLG2_BOAR_SINGLE_BATTLE));
+    }
     BOOL checkBoardNoFootAngle() const { return checkResetFlg1(RFLG1_UNK_40); }
     bool checkGrabThrow() const { return checkResetFlg0(RFLG0_GRAB_THROW); }
     bool checkMidnaAtnPos() const { return checkNoResetFlg1(FLG1_MIDNA_ATN_POS); }
     bool checkMidnaHairAtnPos() const { return checkNoResetFlg1(FLG1_MIDNA_HAIR_ATN_POS); }
     bool checkCowGameLash() const { return checkNoResetFlg0(FLG0_COW_GAME_LEASH); }
-    
+
     void onBossRoomWait() { onEndResetFlg0(ERFLG0_BOSS_ROOM_WAIT); }
     void onBeeFollow() { onEndResetFlg0(ERFLG0_BEE_FOLLOW); }
     void onForceAutoJump() { onEndResetFlg0(ERFLG0_FORCE_AUTO_JUMP); }
@@ -937,12 +943,14 @@ public:
     u32 getFootOnGround() const { return checkResetFlg1(daPy_RFLG1(RFLG1_UNK_10 | RFLG1_UNK_20)); }
 
     void offWolfEnemyHangBite() { offNoResetFlg2(FLG2_WOLF_ENEMY_HANG_BITE); }
-    bool onWolfEnemyHangBite(fopAc_ac_c* param_0) { return onWolfEnemyBiteAll(param_0, FLG2_WOLF_ENEMY_HANG_BITE); }
+    bool onWolfEnemyHangBite(fopAc_ac_c* param_0) {
+        return onWolfEnemyBiteAll(param_0, FLG2_WOLF_ENEMY_HANG_BITE);
+    }
 
     u32 checkItemSightBgHit() const { return checkResetFlg0(RFLG0_UNK_2000000); }
 
     void setCanoeSlider() { mSpecialMode = 0x2D; }
-    
+
     void offCanoeSlider() {
         if (checkCanoeSlider()) {
             mSpecialMode = 0;
@@ -1043,7 +1051,9 @@ public:
     void onEnemyDead() { onEndResetFlg0(ERFLG0_ENEMY_DEAD); }
     void offDkCaught2() { offNoResetFlg0(FLG0_UNK_20000); }
 
-    u32 checkBoarSingleBattle() const { return checkNoResetFlg2(daPy_FLG2(FLG2_UNK_1000000 | FLG2_BOAR_SINGLE_BATTLE)); }
+    u32 checkBoarSingleBattle() const {
+        return checkNoResetFlg2(daPy_FLG2(FLG2_UNK_1000000 | FLG2_BOAR_SINGLE_BATTLE));
+    }
     u32 checkWolfDashAutoJump() const { return checkNoResetFlg2(FLG2_WOLF_DASH_AUTO_JUMP); }
 
     void changeOriginalDemo() {
@@ -1058,13 +1068,9 @@ public:
         mDemo.setParam2(i_param2);
     }
 
-    void changeDemoParam1(s16 i_param1) {
-        mDemo.setParam1(i_param1);
-    }
+    void changeDemoParam1(s16 i_param1) { mDemo.setParam1(i_param1); }
 
-    void i_changeDemoParam2(s16 i_param2) {
-        mDemo.setParam2(i_param2);
-    }
+    void i_changeDemoParam2(s16 i_param2) { mDemo.setParam2(i_param2); }
 
     void changeDemoPos0(const cXyz* i_posP) { mDemo.setPos0(i_posP); }
 
@@ -1077,7 +1083,9 @@ public:
     static int getLastSceneDamage() { return (dComIfGs_getLastSceneMode() >> 4) & 0x7F; }
     static u8 getLastSceneSwordAtUpTime() { return (dComIfGs_getLastSceneMode() >> 11) & 0xFF; }
 
-    static BOOL checkNormalSwordEquip() { return dComIfGs_getSelectEquipSword() == fpcNm_ITEM_SWORD; }
+    static BOOL checkNormalSwordEquip() {
+        return dComIfGs_getSelectEquipSword() == fpcNm_ITEM_SWORD;
+    }
 
     inline static u32 i_getLastSceneMode();
     inline static u32 getLastSceneMode();
@@ -1087,8 +1095,10 @@ public:
     inline static bool checkLightMasterSwordEquip();
     inline BOOL i_checkSwordGet();
     inline bool i_checkShieldGet() const;
-    inline static BOOL checkNowWolf();
-    inline static u32 i_checkNowWolf() { return ((daPy_py_c*)dComIfGp_getLinkPlayer())->checkWolf(); }
+    inline static BOOL checkNowWolf() { return dComIfGp_getLinkPlayer()->checkWolf(); };
+    inline static u32 i_checkNowWolf() {
+        return ((daPy_py_c*)dComIfGp_getLinkPlayer())->checkWolf();
+    }
     inline bool checkZoraWearFlg() const;
     inline bool checkMagicArmorWearFlg() const;
     inline static BOOL i_checkFirstMidnaDemo() { return dComIfGs_isEventBit(0xc10); }
@@ -1101,7 +1111,9 @@ public:
     // static void onWolfEnemyCatch(fopAc_ac_c* i_actorP) { onWolfEnemyBiteAll(i_actorP,8);}
 
     bool checkWolfEnemyCatchOwn(fopAc_ac_c* i_actorP) { return checkWolfEnemyBiteAllOwn(i_actorP); }
-    bool checkWolfEnemyHangBiteOwn(fopAc_ac_c* i_actorP) const { return checkWolfEnemyBiteAllOwn(i_actorP); }
+    bool checkWolfEnemyHangBiteOwn(fopAc_ac_c* i_actorP) const {
+        return checkWolfEnemyBiteAllOwn(i_actorP);
+    }
     bool checkWolfEnemyLeftThrow() const { return checkNoResetFlg2(FLG2_WOLF_ENEMY_LEFT_THROW); }
 
     void onWolfLightDropGet() {
@@ -1111,9 +1123,7 @@ public:
 
     BOOL checkClimbEndHang() { return checkResetFlg0(RFLG0_UNK_40000); }
 
-    void onForceHorseGetOff() {
-        onEndResetFlg2(ERFLG2_UNK_2);
-    }
+    void onForceHorseGetOff() { onEndResetFlg2(ERFLG2_UNK_2); }
 
     static daMidna_c* m_midnaActor;
 };
