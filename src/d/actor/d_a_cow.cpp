@@ -2956,7 +2956,24 @@ void daCow_c::calcCatchPos(f32 distance, int someBool) {
 
 /* 8065DE70-8065DF40 005990 00D0+00 1/1 0/0 0/0 .text            executeCrazyWait__7daCow_cFv */
 void daCow_c::executeCrazyWait() {
-    // NONMATCHING
+    if (mFlags & 0x20) {
+        mFlags &= ~0x0200;
+    }
+    if (mFlags & 0x200) {
+        field_0xca6 = 0;
+        mFlags &= ~0x0200;
+    }
+    if (mFlags & 0x40) {
+        field_0xc9f = 1;
+        speedF = 30.0f;
+        setBck(0x14, 2, 12.0, 1.0f);
+        field_0xca6 = 0;
+        mFlags = 0;
+
+        mAcchCir.SetWall(100.0f, 110.0f);
+        field_0xc90 = 0x1e;
+        fopAcM_OffStatus(this, 0x100);
+    }
 }
 
 /* ############################################################################################## */
