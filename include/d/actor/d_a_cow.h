@@ -152,7 +152,7 @@ private:
     /* 0xc62 */ u8 field_0xc62;
     /* 0xc63 */ u8 field_0xc63;
     /* 0xc64 */ u32 field_0xc64;
-    /* 0xc68 */ u8 mMoreFlags;  // todo: what is this
+    /* 0xc68 */ u8 field_0xc68;
     /* 0xc69 */ u8 field_0xc69;
     /* 0xc6a */ u8 field_0xc6a;  // undefined
     /* 0xc6b */ u8 field_0xc6b;  // undefined

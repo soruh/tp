@@ -116,7 +116,7 @@ void daCow_c::setEffect() {
 
     if (mShouldSetEffect) {
         if (mShouldSetEffect == 1) {
-            if ((mMoreFlags & 1)) {
+            if ((field_0xc68 & 1)) {
                 cXyz offset(0.0f, 10.0f, -70.0f);
 
                 offset.x = 25.0f;
@@ -3095,7 +3095,7 @@ void daCow_c::setCollisions() {
 
 /* 80661940-80661AD0 009460 0190+00 2/2 0/0 0/0 .text            Execute__7daCow_cFv */
 int daCow_c::Execute() {
-    mMoreFlags++;
+    field_0xc68++;
     field_0xc62 = 0;
 
     attention_info.flags &= ~0x10;
