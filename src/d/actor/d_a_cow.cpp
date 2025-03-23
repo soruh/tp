@@ -562,7 +562,7 @@ void daCow_c::setBodyAngle2(s16 angle) {
 }
 
 /* 806590E8-80659114 000C08 002C+00 5/5 0/0 0/0 .text checkProcess__7daCow_cFM7daCow_cFPCvPv_v */
-bool daCow_c::checkProcess(void (daCow_c::*process)()) {
+BOOL daCow_c::checkProcess(void (daCow_c::*process)()) {
     return this->mProcess == process;
 }
 
@@ -2538,7 +2538,15 @@ bool daCow_c::isAngry() {
 
 /* 8065D03C-8065D0B8 004B5C 007C+00 1/1 0/0 1/1 .text            isGuardFad__7daCow_cFv */
 bool daCow_c::isGuardFad() {
-    // NONMATCHING
+    if (checkProcess(&daCow_c::action_wolf)) {
+        return true;
+    } else {
+        if ((u32)daPy_getPlayerActorClass()->checkNowWolf() != (u32)0) {
+            return isAngry();
+        } else {
+            return false;
+        }
+    }
 }
 
 /* 8065D0B8-8065D17C 004BD8 00C4+00 0/0 0/0 1/1 .text            setAngryHit__7daCow_cFv */

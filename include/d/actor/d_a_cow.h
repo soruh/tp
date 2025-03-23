@@ -31,7 +31,7 @@ public:
     /* 80658DB8 */ bool checkThrow();
     /* 80658E98 */ void setBodyAngle(s16);
     /* 80658F94 */ void setBodyAngle2(s16);
-    /* 806590E8 */ bool checkProcess(void (daCow_c::*)());
+    /* 806590E8 */ BOOL checkProcess(void (daCow_c::*)());
     /* 80659114 */ bool setProcess(void (daCow_c::*)(), int);
     /* 806591BC */ void damage_check();
     /* 8065945C */ void setEnterCow20();
