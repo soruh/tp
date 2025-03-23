@@ -2989,7 +2989,7 @@ int daCow_c::CreateHeap() {
 
     for (u16 iJoint = 0; iJoint < modelData->getJointNum(); iJoint++) {
         if (iJoint == 1 || iJoint == 8 || iJoint == 0) {
-            modelData->getJointNodePointer(iJoint)->setCallBack(ctrlJointCallBack);
+            modelData->getJointNodePointer(iJoint)->setCallBack(daCow_c::ctrlJointCallBack);
         }
     }
     setBck(0x1a, 2, 0.0f, 1.0f);
@@ -3017,8 +3017,8 @@ extern "C" void __dt__12J3DFrameCtrlFv() {
 
 /* 80661D24-80661D44 009844 0020+00 1/1 0/0 0/0 .text createHeapCallBack__7daCow_cFP10fopAc_ac_c
  */
-int createHeapCallBack(fopAc_ac_c*) {
-    // NONMATCHING
+int daCow_c::createHeapCallBack(fopAc_ac_c* actor) {
+    return static_cast<daCow_c*>(actor)->CreateHeap();
 }
 
 /* ############################################################################################## */
@@ -3081,7 +3081,7 @@ int daCow_c::create() {
         if (res != cPhs_COMPLEATE_e) {
             return res;
         }
-        if (!fopAcM_entrySolidHeap(_this, createHeapCallBack, 0x1df0)) {
+        if (!fopAcM_entrySolidHeap(_this, daCow_c::createHeapCallBack, 0x1df0)) {
             return cPhs_ERROR_e;
         }
         if (!initialize()) {
@@ -3140,13 +3140,20 @@ static int daCow_Create(void* param_0) {
 
 /* 80662710-80662920 00A230 0210+00 1/1 0/0 0/0 .text ctrlJoint__7daCow_cFP8J3DJointP8J3DModel
  */
-void daCow_c::ctrlJoint(J3DJoint* param_0, J3DModel* param_1) {
+void daCow_c::ctrlJoint(J3DJoint* joint, J3DModel* model) {
     // NONMATCHING
 }
 
 /* 80662920-8066296C 00A440 004C+00 1/1 0/0 0/0 .text ctrlJointCallBack__7daCow_cFP8J3DJointi */
-int ctrlJointCallBack(J3DJoint* param_0, int param_1) {
-    // NONMATCHING
+int daCow_c::ctrlJointCallBack(J3DJoint* joint, int param_1) {
+    if (!param_1) {
+        J3DModel* model = j3dSys.getModel();
+        daCow_c* cow = (daCow_c*)model->getUserArea();
+        if (cow) {
+            cow->ctrlJoint(joint, model);
+        }
+    }
+    return 1;
 }
 
 /* ############################################################################################## */

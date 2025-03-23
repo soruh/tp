@@ -93,11 +93,11 @@ public:
     /* 80661720 */ void setCollisions();
     /* 80661940 */ int Execute();
     /* 80661AF0 */ int CreateHeap();
-    // /* 80661D24 */ void createHeapCallBack(fopAc_ac_c*);
+    /* 80661D24 */ static int createHeapCallBack(fopAc_ac_c*);
     /* 80661D44 */ int initialize();
     /* 80662228 */ int create();
     /* 80662710 */ void ctrlJoint(J3DJoint*, J3DModel*);
-    // /* 80662920 */ int ctrlJointCallBack(J3DJoint*, int);
+    /* 80662920 */ static int ctrlJointCallBack(J3DJoint*, int);
     /* 8066296C */ int Draw();
     /* 80662BE4 */ int Delete();
     /* 80662D70 */ static void getShapeAngle(csXyz& out, daCow_c* cow);
@@ -194,9 +194,6 @@ private:
     /* 0xd38 */ u32 field_0xd38;
     /* 0xd3C */ u32 field_0xd3c;
 };
-
-int createHeapCallBack(fopAc_ac_c*);
-int ctrlJointCallBack(J3DJoint*, int);
 
 STATIC_ASSERT(sizeof(daCow_c) == 0xd40);
 
