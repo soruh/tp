@@ -112,7 +112,9 @@ int daCow_c::checkBck(int param_0) {
 
 /* 80658830-80658A68 000350 0238+00 1/1 0/0 0/0 .text            setEffect__7daCow_cFv */
 void daCow_c::setEffect() {
-    cXyz vectors[3];
+    cXyz c;
+    cXyz b;
+    cXyz a;
 
     if (mShouldSetEffect) {
         if (mShouldSetEffect == 1) {
@@ -120,11 +122,11 @@ void daCow_c::setEffect() {
                 cXyz offset(0.0f, 10.0f, -70.0f);
 
                 offset.x = 25.0f;
-                cLib_offsetPos(&vectors[0], &current.pos, field_0xc32.y, &offset);
+                cLib_offsetPos(&a, &current.pos, field_0xc32.y, &offset);
                 offset.x = 0.0f;
-                cLib_offsetPos(&vectors[2], &current.pos, field_0xc32.y, &offset);
+                cLib_offsetPos(&c, &current.pos, field_0xc32.y, &offset);
                 offset.x = -25.0f;
-                cLib_offsetPos(&vectors[2], &current.pos, field_0xc32.y, &offset);
+                cLib_offsetPos(&c, &current.pos, field_0xc32.y, &offset);
             } else {
                 mShouldSetEffect = 0;
             }
@@ -132,9 +134,9 @@ void daCow_c::setEffect() {
             int roomNumber = fopAcM_GetRoomNo(this);
 
             mParticle.setEffectTwo(&tevStr, &current.pos, 0, 0,
-                                   mShouldSetEffect ? &vectors[0] : NULL,  //
-                                   mShouldSetEffect ? &vectors[2] : NULL,  //
-                                   mShouldSetEffect ? &vectors[1] : NULL,  //
+                                   mShouldSetEffect ? &a : NULL,  //
+                                   mShouldSetEffect ? &c : NULL,  //
+                                   mShouldSetEffect ? &b : NULL,  //
                                    &field_0xc32, NULL, roomNumber, 1.0f, speedF);
 
             static cXyz runScale(2.0f, 2.0f, 2.0f);
