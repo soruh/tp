@@ -1880,44 +1880,184 @@ SECTION_RODATA static u8 const lit_5133[6 + 2 /* padding */] = {
 COMPILER_STRIP_GATE(0x80662E4C, &lit_5133);
 #pragma pop
 
-/* 80662E54-80662E58 0000A4 0004+00 0/4 0/0 0/0 .rodata          @5362 */
-#pragma push
-#pragma force_active on
-SECTION_RODATA static f32 const lit_5362 = 110.0f;
-COMPILER_STRIP_GATE(0x80662E54, &lit_5362);
-#pragma pop
-
-/* 80662E58-80662E5C 0000A8 0004+00 0/4 0/0 0/0 .rodata          @5363 */
-#pragma push
-#pragma force_active on
-SECTION_RODATA static f32 const lit_5363 = 1000.0f;
-COMPILER_STRIP_GATE(0x80662E58, &lit_5363);
-#pragma pop
-
-/* 80662E5C-80662E60 0000AC 0004+00 0/3 0/0 0/0 .rodata          @5364 */
-#pragma push
-#pragma force_active on
-SECTION_RODATA static f32 const lit_5364 = 700.0f;
-COMPILER_STRIP_GATE(0x80662E5C, &lit_5364);
-#pragma pop
-
-/* 80662E60-80662E64 0000B0 0004+00 0/3 0/0 0/0 .rodata          @5365 */
-#pragma push
-#pragma force_active on
-SECTION_RODATA static f32 const lit_5365 = 800.0f;
-COMPILER_STRIP_GATE(0x80662E60, &lit_5365);
-#pragma pop
-
-/* 80662E64-80662E68 0000B4 0004+00 0/1 0/0 0/0 .rodata          @5366 */
-#pragma push
-#pragma force_active on
-SECTION_RODATA static f32 const lit_5366 = 560.0f;
-COMPILER_STRIP_GATE(0x80662E64, &lit_5366);
-#pragma pop
-
 /* 8065B034-8065B760 002B54 072C+00 2/2 0/0 0/0 .text            checkBeforeBg__7daCow_cFv */
 void daCow_c::checkBeforeBg() {
-    // NONMATCHING
+    s16 x[3] = {0, -0x2000, 0x2000};
+    f32 y[3];
+    s16 z[3];
+
+    cM3dGPla planes[3];
+
+    cXyz a;
+    cXyz b = current.pos;
+    b.y += 110.0f;
+    cXyz c;
+
+    bool planeTri[3] = {false, false, false};
+
+    f32 f1 = 1000.0;
+    f32 f2 = 700.0;
+
+    if (checkCowIn(1000.0f, 0.0f)) {
+        f1 = 800.0;
+        f2 = 560.0;
+    }
+
+    if (speedF != 0.0f) {
+        for (int iPlane = 0; iPlane < 3; iPlane++) {
+            c = b;
+            if (iPlane == 0) {
+                c.x += f1 * cM_ssin(field_0xc32.y + x[0]);
+                c.z += f1 * cM_scos(field_0xc32.y + x[0]);
+            } else {
+                c.x += f2 * cM_ssin(field_0xc32.y + x[iPlane]);
+                c.z += f2 * cM_scos(field_0xc32.y + x[iPlane]);
+            }
+
+            dBgS_LinChk linChk;
+            linChk.Set(&b, &c, this);
+            if (dComIfG_Bgsp().LineCross(&linChk)) {
+                planeTri[iPlane] = dComIfG_Bgsp().GetTriPla(linChk, &planes[iPlane]);
+                if (fabs(planes[iPlane].mNormal.y) >= cM_ssin(0x6000)) {
+                    a = current.pos - linChk.GetCross();
+                    y[iPlane] = a.absXZ();
+                    z[iPlane] = cM_atan2s(planes[iPlane].mNormal.x, planes[iPlane].mNormal.z);
+                } else {
+                    planeTri[iPlane] = false;
+                }
+            }
+        }
+    }
+
+    field_0xc6c = 1000.0f;
+    if (planeTri[0] && y[0] < field_0xc6c) {
+        field_0xc6c = y[0];
+        field_0xc70 = z[0];
+    }
+
+    field_0xca2 = 0;
+    if (planeTri[0]) {
+        field_0xca2 |= 1;
+    }
+    if (planeTri[1]) {
+        field_0xca2 |= 2;
+    }
+    if (planeTri[2]) {
+        field_0xca2 |= 4;
+    }
+    if (cLib_calcTimer(&field_0xc54)) {
+        return;
+    }
+
+    if (!planeTri[1] || !planeTri[2]) {
+        if (planeTri[0]) {
+            if (planeTri[1]) {
+                if (field_0xc60 <= 3) {
+                    field_0xc61 = 4;
+                } else {
+                    field_0xc61 = 2;
+                }
+                return;
+            }
+            if (planeTri[2]) {
+                if (field_0xc60 <= 3) {
+                    field_0xc61 = 3;
+                } else {
+                    field_0xc61 = 1;
+                }
+                return;
+            }
+            s16 difference = z[0] - field_0xc32.y;
+            if (abs(difference) < 0x7801) {
+                if (difference <= 0) {
+                    field_0xc61 = 3;
+                } else {
+                    field_0xc61 = 4;
+                }
+                return;
+            }
+            if ((field_0xc60 & 1) == 0) {
+                field_0xc61 = 3;
+            } else {
+                field_0xc61 = 4;
+            }
+            return;
+        }
+        if (planeTri[1]) {
+            if (field_0xc60 != 2) {
+                if (field_0xc60 < 2) {
+                    field_0xc61 = 4;
+                    field_0xc54 = 10;
+                    return;
+                }
+                if (field_0xc60 < 4) {
+                    field_0xc61 = 2;
+                    return;
+                }
+            }
+            if (y[1] < 600.0) {
+                field_0xc61 = 2;
+            } else {
+                field_0xc61 = 0;
+            }
+            return;
+        }
+        if (!planeTri[2]) {
+            if (field_0xc60 == 2) {
+                field_0xc61 = 1;
+                return;
+            }
+            if (field_0xc60 < 2) {
+                if (field_0xc60 == 0) {
+                    field_0xc61 = 3;
+                } else {
+                    field_0xc61 = 4;
+                }
+                return;
+            }
+            if (field_0xc60 <= 3) {
+                field_0xc61 = 2;
+            } else {
+                field_0xc61 = 0;
+            }
+            return;
+        }
+        if (field_0xc60 == 2) {
+            field_0xc61 = 1;
+            return;
+        }
+        if (field_0xc60 > 1) {
+            if (y[2] < 600.0) {
+                field_0xc61 = 1;
+            } else {
+                field_0xc61 = 0;
+            }
+            return;
+        }
+        field_0xc61 = 3;
+        field_0xc54 = 10;
+        return;
+    }
+
+    if (field_0xc61 == 3) {
+        field_0xc61 = 3;
+    } else {
+        if (field_0xc61 < 3) {
+            if (field_0xc61 == 1) {
+                field_0xc61 = 3;
+            }
+            if (field_0xc61 != 0) {
+                field_0xc61 = 4;
+            }
+        } else if (field_0xc61 < 5) {
+            field_0xc61 = 4;
+        } else if ((field_0xc60 & 1) == 0) {
+            field_0xc61 = 3;
+        } else {
+            field_0xc61 = 4;
+        }
+    }
+    field_0xc54 = 10;
 }
 
 /* ##############################################################################################
