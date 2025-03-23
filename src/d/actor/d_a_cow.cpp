@@ -2809,14 +2809,28 @@ void daCow_c::action_thrown() {
     // NONMATCHING
 }
 
-/* 806607B8-806608F0 0082D8 0138+00 1/1 0/0 0/0 .text            checkWolfBusters__7daCow_cFv */
-bool daCow_c::checkWolfBusters() {
-    // NONMATCHING
-    return false;
-}
-
 #define N_WOLF_BUSTERS 3
 extern fpc_ProcID gWolfBustersID[N_WOLF_BUSTERS];
+
+/* 806607B8-806608F0 0082D8 0138+00 1/1 0/0 0/0 .text            checkWolfBusters__7daCow_cFv */
+bool daCow_c::checkWolfBusters() {
+    daNpc_Aru_c* aru;
+
+    if (daPy_getPlayerActorClass()->checkNowWolf() &&
+        fopAcM_SearchByName(PROC_NPC_ARU, (fopAc_ac_c**)&aru))
+    {
+        if (!checkOutOfGate(current.pos) && cM_rnd() >= 0.9f) {
+            for (int iWolfBuster = 0; iWolfBuster < 3; iWolfBuster = iWolfBuster + 1) {
+                if (gWolfBustersID[iWolfBuster] == -1) {
+                    gWolfBustersID[iWolfBuster] = fopAcM_GetID(this);
+                    setProcess(&daCow_c::action_wolf, 0);
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
 
 /* 806608F0-806612DC 008410 09EC+00 2/0 0/0 0/0 .text            action_wolf__7daCow_cFv */
 void daCow_c::action_wolf() {
