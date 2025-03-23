@@ -3014,37 +3014,129 @@ int daCow_c::createHeapCallBack(fopAc_ac_c* actor) {
     return static_cast<daCow_c*>(actor)->CreateHeap();
 }
 
-/* ############################################################################################## */
-/* 80662EEC-80662EF0 00013C 0004+00 0/1 0/0 0/0 .rodata          @7945 */
-#pragma push
-#pragma force_active on
-SECTION_RODATA static f32 const lit_7945 = -100.0f;
-COMPILER_STRIP_GATE(0x80662EEC, &lit_7945);
-#pragma pop
-
-/* 80662EF0-80662EF8 000140 0004+04 0/1 0/0 0/0 .rodata          @7946 */
-#pragma push
-#pragma force_active on
-SECTION_RODATA static f32 const lit_7946[1 + 1 /* padding */] = {
-    1300.0f,
-    /* padding */
-    0.0f,
-};
-COMPILER_STRIP_GATE(0x80662EF0, &lit_7946);
-#pragma pop
-
-/* 80662EF8-80662F00 000148 0008+00 0/1 0/0 0/0 .rodata          @7948 */
-#pragma push
-#pragma force_active on
-SECTION_RODATA static u8 const lit_7948[8] = {
-    0x43, 0x30, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-};
-COMPILER_STRIP_GATE(0x80662EF8, &lit_7948);
-#pragma pop
+static u32 l_CowType;
 
 /* 80661D44-80662228 009864 04E4+00 1/1 0/0 0/0 .text            initialize__7daCow_cFv */
 int daCow_c::initialize() {
-    // NONMATCHING
+    fopAcM_SetMtx(this, mpMorf->getModel()->getBaseTRMtx());
+    mSound.init(&current.pos, &eyePos, 3, 1);
+
+    eventInfo.setArchiveName("Cow");
+    mAcchCir.SetWall(100.0f, 110.0f);
+
+    mAcch.Set(fopAcM_GetPosition_p(this), fopAcM_GetOldPosition_p(this), this, 1, &mAcchCir, &speed,
+              fopAcM_GetAngle_p(this), fopAcM_GetShapeAngle_p(this));
+
+    mCcStts.Init(0xdc, 0, this);
+
+    static dCcD_SrcSph cc_sph_src;
+
+    for (int iSphere = 0; iSphere < 3; iSphere = iSphere + 1) {
+        mSph[iSphere].Set(cc_sph_src);
+        mSph[iSphere].SetStts(&mCcStts);
+    }
+
+    fopAcM_setCullSizeBox(this, -100.0f, -100.0f, -200.0f, 100.0f, 250.0f, 200.0f);
+    fopAcM_OnStatus(this, 0x8000000);
+    mAcch.CrrPos(dComIfG_Bgsp());
+
+    field_0xc44 = mAcch.GetGroundH();
+
+    attention_info.distances[4] = 0x28;
+    attention_info.distances[0] = 0x16;
+    attention_info.distances[7] = 0x30;
+    attention_info.flags = 0;
+    mParticle.init(&mAcch, 60.0f, 200.0f);
+    current.angle.set(0, home.angle.y, 0);
+    field_0xc32 = current.angle;
+    shape_angle = field_0xc32;
+    speedF = 0.0f;
+    speed.set(0.0f, 0.0f, 0.0f);
+
+    if (!mPrm0 && dComIfGs_isTmpBit(0xa08)) {
+        mPrm0 = 4;
+        setCowInCage();
+    }
+
+    if (mPrm0 == 4) {
+        field_0xca5 = 1;
+    } else {
+        if (mPrm0 < 4 && mPrm0 > 2) {
+            int param = fopAcM_GetParam(this);
+            if ((param >> 8) != 0xff) {
+                mPath = dPath_GetRoomPath(param, fopAcM_GetRoomNo(this));
+                field_0xc10 = 0;
+
+                dStage_dPnt_c* point = dPath_GetPnt(mPath, field_0xc10);
+                current.pos = point->m_position;
+
+                setProcess(&daCow_c::action_crazy, 0);
+            }
+            goto LAB_80a585e0;
+        }
+    }
+
+    // todo: what is this?
+    s32 iVar12 = cM_rndF(4.0f) + fopAcM_GetID(this);
+    s32 iVar1 = iVar12 >> 0x1f;
+    iVar1 = (iVar1 * 4 | (iVar12 * 0x40000000 + iVar1) >> 0x1e) - iVar1;
+
+    switch (iVar1) {
+    case 1:
+        setProcess(&daCow_c::action_shake, 0);
+
+        break;
+    case 2:
+        setProcess(&daCow_c::action_moo, 0);
+
+        break;
+    case 3:
+        setProcess(&daCow_c::action_eat, 0);
+
+        break;
+    default:
+        setProcess(&daCow_c::action_wait, 0);
+    }
+
+LAB_80a585e0:
+
+    mAcchCir.SetWallR(100.f);
+    mAcchCir.SetWallH(110.f);
+    gravity = -4.0f;
+
+    f32 rand = cM_rnd();
+    int bVar11 = 0;
+    if (rand >= 0.1f) {
+        if (rand >= 0.9 && !(l_CowType & 2)) {
+            l_CowType |= 2;
+            bVar11 = 2;
+        }
+    } else {
+        if (!(l_CowType & 1)) {
+            l_CowType |= 1;
+            bVar11 = 1;
+        }
+    }
+
+    if (bVar11 == 2) {
+        field_0xc78 = 700.0;
+        field_0xc7c = 15.0;
+    } else if (bVar11 < 2 && bVar11) {
+        field_0xc78 = 1300.0;
+        field_0xc7c = 35.0;
+    } else {
+        field_0xc78 = cM_rndFX(100.0f) + 1000.0f;
+        field_0xc7c = cM_rndFX(5.0f) + 25.0f;
+    }
+
+    field_0xc69 = bVar11;
+    Execute();
+
+    if (!mPrm0) {
+        dMeter2Info_setNowCount(0);
+        dMeter2Info_setMaxCount(dMeter2Info_getMaxCount() + 1);
+    }
+    return 1;
 }
 
 /* 80662228-806623D4 009D48 01AC+00 1/1 0/0 0/0 .text            create__7daCow_cFv */
