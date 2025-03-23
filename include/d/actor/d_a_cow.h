@@ -48,7 +48,7 @@ public:
     /* 8065ADB0 */ bool checkPlayerSurprise();
     /* 8065AE88 */ bool checkPlayerPos();
     /* 8065B034 */ void checkBeforeBg();
-    /* 8065B760 */ void checkOutOfGate(cXyz);
+    /* 8065B760 */ int checkOutOfGate(cXyz);
     /* 8065B8A8 */ void getCowshedAngle();
     /* 8065B8D8 */ void getCowshedDist();
     /* 8065BA30 */ bool checkCowIn(f32, f32);

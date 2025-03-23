@@ -2025,16 +2025,32 @@ void daCow_c::checkBeforeBg() {
     }
 }
 
-/* ##############################################################################################
- */
-/* 80662E68-80662E6C 0000B8 0004+00 1/1 0/0 0/0 .rodata          @5409 */
-SECTION_RODATA static f32 const lit_5409 = 1100.0f;
-COMPILER_STRIP_GATE(0x80662E68, &lit_5409);
+static cXyz pen_pos(-10200.0, 15000.0, -20246.0);
+static cXyz gate_pos(-9246.0, 15000.0, -22763.0);
+
+static s16 gate_dir = -0x8000;
+static s16 pen_dir = -0x4000;
 
 /* 8065B760-8065B8A8 003280 0148+00 6/6 0/0 0/0 .text            checkOutOfGate__7daCow_cF4cXyz
  */
-void daCow_c::checkOutOfGate(cXyz param_0) {
-    // NONMATCHING
+int daCow_c::checkOutOfGate(cXyz pos) {
+    if (!isChaseCowGame()) {
+        return 0;
+    }
+
+    cXyz x = pos - gate_pos;
+    mDoMtx_stack_c::YrotS(gate_dir);
+    mDoMtx_stack_c::multVecSR(&x, &x);
+
+    if (x.z > 0.0f && fabsf(x.x) < 1100.0f) {
+        return 1;
+    }
+
+    x = pos - pen_pos;
+    mDoMtx_stack_c::YrotS(-pen_dir);
+    mDoMtx_stack_c::multVecSR(&x, &x);
+
+    return x.z > 0.0f ? 2 : 0;
 }
 
 /* 8065B8A8-8065B8D8 0033C8 0030+00 3/3 0/0 0/0 .text            getCowshedAngle__7daCow_cFv */
