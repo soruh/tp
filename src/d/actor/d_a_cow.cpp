@@ -3091,7 +3091,20 @@ void daCow_c::executeCrazyBeforeCatch() {
 
 /* 8065E7D0-8065E888 0062F0 00B8+00 3/3 0/0 0/0 .text            initCrazyCatch__7daCow_cFi */
 void daCow_c::initCrazyCatch(int param_0) {
-    // NONMATCHING
+    setBck(0x17, 0, 0.0, 1.0f);
+    field_0xc9f = 3;
+    speedF = 0.0f;
+    field_0xc3e.z = 0;
+    field_0xc60 = 0;
+    calcCatchPos(-220.0, 1);
+
+    for (int iSphere = 0; iSphere < N_COW_COLLIDERS; iSphere++) {
+        mSph[iSphere].OffCoSetBit();
+        mCcStts.ClrCcMove();
+    }
+
+    field_0xc63 = 1;
+    gravity = 0.0;
 }
 
 /* ############################################################################################## */
