@@ -2888,7 +2888,21 @@ COMPILER_STRIP_GATE(0x80662EE0, &lit_7624);
 
 /* 806615EC-80661720 00910C 0134+00 1/1 0/0 0/0 .text            setAttnPos__7daCow_cFv */
 void daCow_c::setAttnPos() {
-    // NONMATCHING
+    if (mpMorf) {
+        if (attention_info.flags & 0x80) {
+            cXyz arg1(0.0f, 0.0f, 0.0f);
+            mDoMtx_stack_c::copy(mpMorf->getModel()->getAnmMtx(9));
+            mDoMtx_stack_c::multVec(&arg1, &eyePos);
+            cXyz pos = eyePos;
+            attention_info.position.set(pos.x, pos.y + 30.0f, pos.z);
+        } else {
+            cXyz arg1(18.0f, 30.0f, 0.0f);
+            mDoMtx_stack_c::copy(mpMorf->getModel()->getAnmMtx(0xb));
+            mDoMtx_stack_c::multVec(&arg1, &eyePos);
+            cXyz pos = eyePos;
+            attention_info.position.set(pos.x, pos.y + 80.0f, pos.z);
+        }
+    }
 }
 
 /* 80663500-80663504 0000A8 0004+00 0/0 0/0 0/0 .bss             m_search_range */
