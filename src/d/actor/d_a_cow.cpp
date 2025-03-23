@@ -2092,19 +2092,24 @@ int daCow_c::checkCowIn(f32 param_1, f32 param_2) {
     return 0;
 }
 
-/* ##############################################################################################
- */
-/* 80662E6C-80662E70 0000BC 0004+00 1/4 0/0 0/0 .rodata          @5516 */
-SECTION_RODATA static f32 const lit_5516 = 250.0f;
-COMPILER_STRIP_GATE(0x80662E6C, &lit_5516);
-
-/* 80662E70-80662E74 0000C0 0004+00 1/1 0/0 0/0 .rodata          @5517 */
-SECTION_RODATA static f32 const lit_5517 = 220.0f;
-COMPILER_STRIP_GATE(0x80662E70, &lit_5517);
-
 /* 8065BB34-8065BC68 003654 0134+00 5/5 0/0 0/0 .text            checkCowInOwn__7daCow_cFi */
-bool daCow_c::checkCowInOwn(int param_0) {
-    // NONMATCHING
+bool daCow_c::checkCowInOwn(int param_1) {
+    if (!isChaseCowGame()) {
+        return false;
+    }
+
+    cXyz diff = current.pos - pen_pos;
+    mDoMtx_stack_c::YrotS(-pen_dir);
+    mDoMtx_stack_c::multVecSR(&diff, &diff);
+    if (diff.z > 250.0f && fabsf(diff.x) < 220.0f &&
+        cLib_distanceAngleS(pen_dir, field_0xc32.y) < param_1)
+    {
+        setProcess(&daCow_c::action_enter, 0);
+        setEnterCount();
+        return true;
+    }
+
+    return false;
 }
 
 /* ##############################################################################################
