@@ -10,6 +10,7 @@
 #include "d/d_com_inf_game.h"
 #include "dol2asm.h"
 #include "dolphin/types.h"
+#include "m_Do/m_Do_lib.h"
 
 //
 // Forward References:
@@ -2303,18 +2304,26 @@ void daCow_c::action_run() {
     }
 }
 
-/* ############################################################################################## */
-/* 80662E8C-80662E90 0000DC 0004+00 0/2 0/0 0/0 .rodata          @5714 */
-#pragma push
-#pragma force_active on
-SECTION_RODATA static f32 const lit_5714 = 2500.0f;
-COMPILER_STRIP_GATE(0x80662E8C, &lit_5714);
-#pragma pop
-
 /* 8065C32C-8065C508 003E4C 01DC+00 1/1 0/0 0/0 .text            checkCurringPen__7daCow_cFv */
 bool daCow_c::checkCurringPen() {
-    // NONMATCHING
-    return false;
+    daPy_py_c* player = daPy_getPlayerActorClass();
+    if (player->current.pos.abs(pen_pos) < 2500.0f) {
+        return false;
+    }
+    cXyz positions;
+
+    camera_class* camera = dComIfGp_getCamera(dComIfGp_getPlayerCameraID(0));
+    int windowId = dComIfGp_getCameraWinID(fopCamM_GetParam(camera));
+    scissor_class* scissor = dComIfGp_getWindow(windowId)->getScissor();
+    mDoLib_project(&current.pos, &positions);
+
+    if (positions.x > 0.0f && positions.x < scissor->width && positions.y > 0.0f &&
+        positions.y < scissor->height)
+    {
+        return false;
+    } else {
+        return true;
+    }
 }
 
 /* 8065C508-8065C680 004028 0178+00 2/2 0/0 0/0 .text            setCowInCage__7daCow_cFv */
