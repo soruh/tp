@@ -2982,7 +2982,7 @@ int daCow_c::CreateHeap() {
                                   0x80000, 0x11020084);
 
     if (!mpMorf || !mpMorf->getModel()) {
-        return 0;
+        return cPhs_INIT_e;
     }
 
     mpMorf->getModel()->setUserArea((u32)this);
@@ -2997,15 +2997,15 @@ int daCow_c::CreateHeap() {
     mpBtp = new mDoExt_btpAnm();
 
     if (mpBtp == NULL) {
-        return 5;
+        return cPhs_ERROR_e;
     }
 
     J3DAnmTexPattern* pattern = (J3DAnmTexPattern*)dComIfG_getObjectRes("Cow", 0x22);
     modelData = mpMorf->getModel()->getModelData();
     if (mpBtp->init(modelData, pattern, 1, 0, 1.0f, 0, -1)) {
-        return 1;
+        return cPhs_LOADING_e;
     } else {
-        return 5;
+        return cPhs_ERROR_e;
     }
 }
 
@@ -3017,7 +3017,7 @@ extern "C" void __dt__12J3DFrameCtrlFv() {
 
 /* 80661D24-80661D44 009844 0020+00 1/1 0/0 0/0 .text createHeapCallBack__7daCow_cFP10fopAc_ac_c
  */
-void daCow_c::createHeapCallBack(fopAc_ac_c* param_0) {
+int createHeapCallBack(fopAc_ac_c*) {
     // NONMATCHING
 }
 
@@ -3050,13 +3050,45 @@ COMPILER_STRIP_GATE(0x80662EF8, &lit_7948);
 #pragma pop
 
 /* 80661D44-80662228 009864 04E4+00 1/1 0/0 0/0 .text            initialize__7daCow_cFv */
-void daCow_c::initialize() {
+int daCow_c::initialize() {
     // NONMATCHING
 }
 
 /* 80662228-806623D4 009D48 01AC+00 1/1 0/0 0/0 .text            create__7daCow_cFv */
 int daCow_c::create() {
-    // NONMATCHING
+    daCow_c* _this;
+    if (fopAcM_CheckCondition(this, 8)) {
+        _this = new daCow_c();
+        fopAcM_OnCondition(this, 8);
+    }
+
+    mPrm0 = fopAcM_GetParam(this);
+
+    if (this->mPrm0 == -1 || this->mPrm0 > 4) {
+        this->mPrm0 = 0;
+    }
+
+    if (mPrm0 == 2) {
+        setEnterCow20();
+        field_0xca6 = 1;
+        return cPhs_ERROR_e;
+    } else if (mPrm0 < 2 && mPrm0 != 0) {
+        setEnterCow10();
+        field_0xca6 = 1;
+        return cPhs_ERROR_e;
+    } else {
+        int res = dComIfG_resLoad(&mPhase, "Cow");
+        if (res != cPhs_COMPLEATE_e) {
+            return res;
+        }
+        if (!fopAcM_entrySolidHeap(_this, createHeapCallBack, 0x1df0)) {
+            return cPhs_ERROR_e;
+        }
+        if (!initialize()) {
+            return cPhs_ERROR_e;
+        }
+        return cPhs_COMPLEATE_e;
+    }
 }
 
 /* 806623D4-806624A0 009EF4 00CC+00 1/1 0/0 0/0 .text            __dt__8dCcD_SphFv */

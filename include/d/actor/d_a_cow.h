@@ -93,8 +93,8 @@ public:
     /* 80661720 */ void setCollisions();
     /* 80661940 */ int Execute();
     /* 80661AF0 */ int CreateHeap();
-    /* 80661D24 */ void createHeapCallBack(fopAc_ac_c*);
-    /* 80661D44 */ void initialize();
+    // /* 80661D24 */ void createHeapCallBack(fopAc_ac_c*);
+    /* 80661D44 */ int initialize();
     /* 80662228 */ int create();
     /* 80662710 */ void ctrlJoint(J3DJoint*, J3DModel*);
     // /* 80662920 */ int ctrlJointCallBack(J3DJoint*, int);
@@ -195,7 +195,8 @@ private:
     /* 0xd3C */ u32 field_0xd3c;
 };
 
-int ctrlJointCallBack(J3DJoint* param_0, int param_1);
+int createHeapCallBack(fopAc_ac_c*);
+int ctrlJointCallBack(J3DJoint*, int);
 
 STATIC_ASSERT(sizeof(daCow_c) == 0xd40);
 
