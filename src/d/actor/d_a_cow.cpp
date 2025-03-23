@@ -2065,9 +2065,31 @@ double daCow_c::getCowshedDist() {
 }
 
 /* 8065BA30-8065BB34 003550 0104+00 2/2 0/0 0/0 .text            checkCowIn__7daCow_cFff */
-bool daCow_c::checkCowIn(f32 param_0, f32 param_1) {
-    // NONMATCHING
-    return false;
+int daCow_c::checkCowIn(f32 param_1, f32 param_2) {
+    if (!isChaseCowGame()) {
+        return 0;
+    }
+
+    double dist = getCowshedDist();
+    if (dist < param_1) {
+        int angle = getCowshedAngle();
+        if (dist < param_2) {
+            if ((s16)angle < pen_dir + 0x2000 && (s16)angle >= pen_dir + -0x2000 &&
+                cLib_distanceAngleS(angle, field_0xc32.y) < 0x1800)
+            {
+                return 1;
+            } else {
+                return 2;
+            }
+        } else {
+            if (((s16)angle < pen_dir + 0x2aaa) && (s16)angle >= pen_dir + -0x2aaa &&
+                cLib_distanceAngleS(angle, field_0xc32.y) < 0x3000)
+            {
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 /* ##############################################################################################
