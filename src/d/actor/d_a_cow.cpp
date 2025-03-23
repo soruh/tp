@@ -2551,7 +2551,23 @@ bool daCow_c::isGuardFad() {
 
 /* 8065D0B8-8065D17C 004BD8 00C4+00 0/0 0/0 1/1 .text            setAngryHit__7daCow_cFv */
 void daCow_c::setAngryHit() {
-    // NONMATCHING
+    if (isAngry()) {
+        field_0xc72 = field_0xc32.y - 0x8000;
+        speedF = 0.0;
+        current.angle.y = field_0xc32.y;
+        calcRunAnime(1);
+
+        if (!daPy_getPlayerActorClass()->checkHorseRide() &&
+            (u32)daPy_getPlayerActorClass()->checkNowWolf() == (u32)0)
+        {
+            field_0xc9f = 3;
+        } else {
+            field_0xc9f = 4;
+            field_0xc90 = 0x1e;
+            field_0xcb0 = 0.0;
+            field_0xcb4 = 2;
+        }
+    }
 }
 
 /* 8065D17C-8065D230 004C9C 00B4+00 1/1 0/0 0/0 .text            checkBeforeBgAngry__7daCow_cFs
