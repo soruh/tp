@@ -3335,10 +3335,37 @@ SECTION_RODATA static f32 const lit_6765 = 7.0f;
 COMPILER_STRIP_GATE(0x80662EC4, &lit_6765);
 #pragma pop
 
-/* 8065F144-8065F308 006C64 01C4+00 2/2 0/0 0/0 .text            executeCrazyAttack__7daCow_cFv
- */
+/* 8065F144-8065F308 006C64 01C4+00 2/2 0/0 0/0 .text            executeCrazyAttack__7daCow_cFv */
 void daCow_c::executeCrazyAttack() {
-    // NONMATCHING
+    int bVar1 = field_0xc61;
+
+    if (bVar1 != 1) {
+        if (bVar1 == 0) {
+            cLib_chaseF(&speedF, 10.0f, 1.0f);
+
+            if (mpMorf->checkFrame(2.0f)) {
+                mSound.startCreatureVoice(JAISoundID(Z2SE_GOAT_V_BREATH_SHAKE), -1);
+            }
+            if (mpMorf->isStop()) {
+                initCrazyAway(0);
+            }
+        } else if (bVar1 < 3 && mpMorf->isStop()) {
+            initCrazyAway(0);
+        }
+    } else {
+        if (mpMorf->checkFrame(2.0f)) {
+            mSound.startCreatureVoice(JAISoundID(Z2SE_GOAT_V_BREATH_SHAKE), -1);
+        }
+
+        if (mpMorf->checkFrame(10.0f)) {
+            if (mPrm0 == 3) {
+                initCrazyAway(0);
+            } else {
+                setBck(0x15, 0, 7.0f, 1.0f);
+                field_0xc61 = 2;
+            }
+        }
+    }
 }
 
 /* 8065F308-8065F37C 006E28 0074+00 1/1 0/0 0/0 .text            initCrazyAway__7daCow_cFi */
