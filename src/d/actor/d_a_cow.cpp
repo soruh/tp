@@ -117,9 +117,9 @@ void daCow_c::setEffect() {
     if (mShouldSetEffect) {
         if (mShouldSetEffect == 1) {
             if ((mMoreFlags & 1) != 0) {
-                cXyz offset(10.0f, -70.0f, 25.0f);
+                cXyz offset(0.0f, 10.0f, -70.0f);
 
-                offset.x = 10.0f;
+                offset.x = 25.0f;
                 cLib_offsetPos(&vectors[0], &current.pos, field_0xc32.y, &offset);
                 offset.x = 0.0f;
                 cLib_offsetPos(&vectors[2], &current.pos, field_0xc32.y, &offset);
@@ -309,10 +309,10 @@ BOOL daCow_c::checkProcess(void (daCow_c::*process)()) {
 
 /* 80659114-806591BC 000C34 00A8+00 16/16 0/0 0/0 .text setProcess__7daCow_cFM7daCow_cFPCvPv_vi */
 bool daCow_c::setProcess(void (daCow_c::*process)(), int param_1) {
-    mState = 3;
+    mMode = 3;
     (this->*mProcess)();
     field_0xcaa = param_1;
-    mState = 0;
+    mMode = 0;
     mProcess = process;
     (this->*mProcess)();
 
@@ -563,30 +563,30 @@ bool daCow_c::checkNearCowRun() {
 void daCow_c::action_wait() {
     f32 rand = cM_rnd();
 
-    int nextAction = mState;
+    int nextAction = mMode;
     if (nextAction != 2) {
         if (nextAction < 2) {
             if (nextAction != 0) {
                 rand = cM_rndF(100.0f);
                 field_0xc58 = rand + 300.0f;
-                mState = 1;
+                mMode = 1;
                 field_0xc90 = 0;
                 if (!field_0xcaa) {
                     setBck(0x1a, 2, 12.0f, 1.0f);
-                    mState = 2;
+                    mMode = 2;
                 } else {
                     setBck(6, 0, 12.0f, 1.0f);
 
                     mpMorf->setFrame(mpMorf->getEndFrame());
                     mpMorf->setPlaySpeed(-1.0f);
 
-                    mState = 1;
+                    mMode = 1;
                 }
                 return;
             } else {
                 if (mpMorf->isStop()) {
                     setBck(0x1a, 2, 0.0f, 1.0f);
-                    mState = 2;
+                    mMode = 2;
                 }
             }
         } else {
@@ -662,7 +662,7 @@ void daCow_c::action_wait() {
 
 /* 8065A0E8-8065A594 001C08 04AC+00 4/0 0/0 0/0 .text            action_eat__7daCow_cFv */
 void daCow_c::action_eat() {
-    int nextAction = mState;
+    int nextAction = mMode;
     if (nextAction != 2) {
         if (nextAction < 2) {
             if (nextAction != 0) {
@@ -671,16 +671,16 @@ void daCow_c::action_eat() {
                 field_0xc90 = 0;
                 if (!field_0xcaa) {
                     setBck(9, 2, 12.0f, 1.0f);
-                    mState = 2;
+                    mMode = 2;
                 } else {
                     setBck(6, 0, 12.0f, 1.0f);
-                    mState = 1;
+                    mMode = 1;
                 }
                 return;
             } else {
                 if (mpMorf->isStop()) {
                     setBck(9, 2, 0.0f, 1.0f);
-                    mState = 2;
+                    mMode = 2;
                 }
             }
         } else {
@@ -731,24 +731,24 @@ void daCow_c::action_eat() {
 
 /* 8065A594-8065A8A4 0020B4 0310+00 9/0 0/0 0/0 .text            action_moo__7daCow_cFv */
 void daCow_c::action_moo() {
-    int nextAction = mState;
+    int nextAction = mMode;
     if (nextAction != 2) {
         if (nextAction < 2) {
             if (nextAction != 0) {
                 if (!field_0xcaa) {
                     setBck(0xf, 0, 0.0f, 1.0f);
-                    mState = 2;
+                    mMode = 2;
                 } else {
                     setBck(0xf, 0, 12.0f, 1.0f);
                     mpMorf->setFrame(mpMorf->getEndFrame());
                     mpMorf->setPlaySpeed(-1.0f);
-                    mState = 1;
+                    mMode = 1;
                 }
                 return;
             } else {
                 if (mpMorf->isStop()) {
                     setBck(0xf, 0, 0.0f, 1.0f);
-                    mState = 2;
+                    mMode = 2;
                 }
             }
         } else {
@@ -791,22 +791,22 @@ void daCow_c::action_moo() {
 
 /* 8065A8A4-8065ACC8 0023C4 0424+00 5/0 0/0 0/0 .text            action_shake__7daCow_cFv */
 void daCow_c::action_shake() {
-    int nextAction = mState;
+    int nextAction = mMode;
     if (nextAction != 2) {
         if (nextAction < 2) {
             if (nextAction != 0) {
                 if (!field_0xcaa) {
                     setBck(6, 0, 12.0f, 1.0f);
-                    mState = 2;
+                    mMode = 2;
                 } else {
                     setBck(0x15, 2, 12.0f, 1.0f);
-                    mState = 1;
+                    mMode = 1;
                 }
                 return;
             } else {
                 if (mpMorf->isStop()) {
                     setBck(0x15, 2, 0.0f, 1.0f);
-                    mState = 2;
+                    mMode = 2;
                 }
             }
         } else {
@@ -1181,12 +1181,12 @@ bool daCow_c::checkCowInOwn(int param_1) {
 
 /* 8065BC68-8065C32C 003788 06C4+00 9/0 0/0 0/0 .text            action_run__7daCow_cFv */
 void daCow_c::action_run() {
-    int nextAction = mState;
+    int nextAction = mMode;
     if (nextAction != 2) {
         if (nextAction < 2) {
             if (nextAction == 0) {
                 calcRunAnime(1);
-                mState = 1;
+                mMode = 1;
                 field_0xc90 = 0x1e;
                 field_0xc94 = 0x32;
                 field_0xca1 = 0;
@@ -1446,7 +1446,7 @@ void daCow_c::action_enter() {
     mDoMtx_stack_c::YrotS(-pen_dir);
     mDoMtx_stack_c::multVecSR(&penDistanceNow, &penDistanceNow);
 
-    int nextAction = mState;
+    int nextAction = mMode;
     if (nextAction != 2) {
         if (nextAction < 2) {
             if (nextAction != 0) {
@@ -1672,7 +1672,7 @@ void daCow_c::action_angry() {
     s16 playerAngle = fopAcM_searchPlayerAngleY(this);
 
     s16 targetZ = 0;
-    int uVar3 = mState;
+    int uVar3 = mMode;
     if (uVar3 == 2) {
         return;
     }
@@ -1692,7 +1692,7 @@ void daCow_c::action_angry() {
     }
     if (uVar3 == 0) {
         calcRunAnime(1);
-        mState = 1;
+        mMode = 1;
         if (field_0xca0 == 0) {
             field_0xc9f = 0;
             field_0xc90 = 0x14;
@@ -2429,7 +2429,7 @@ void daCow_c::executeCrazyAway() {
 void daCow_c::executeCrazyEnd() {
     mAcchCir.SetWall(0.0f, 0.0f);
     field_0xca6 = 1;
-    mState = 0;
+    mMode = 0;
 
     mPath = dPath_GetRoomPath((fopAcM_GetParam(this) & 0xff00) >> 8, fopAcM_GetRoomNo(this));
 }
@@ -2559,7 +2559,7 @@ void daCow_c::executeCrazyBack() {
 
 /* 8065FE50-8066010C 007970 02BC+00 4/0 0/0 0/0 .text            action_crazy__7daCow_cFv */
 void daCow_c::action_crazy() {
-    int uVar1 = mState;
+    int uVar1 = mMode;
     if (uVar1 != 2) {
         if (uVar1 < 2) {
             if (!uVar1) {
@@ -2712,12 +2712,12 @@ void daCow_c::executeCrazyBack2() {
 
 /* 80660544-806607B8 008064 0274+00 4/0 0/0 0/0 .text            action_thrown__7daCow_cFv */
 void daCow_c::action_thrown() {
-    int uVar1 = mState;
+    int uVar1 = mMode;
     if (uVar1 != 2) {
         if (uVar1 < 2) {
             if (uVar1 == 0) {
                 field_0xc9f = 2;
-                mState = 1;
+                mMode = 1;
                 dComIfGoat_SetThrow(this);
                 field_0xc9e = 0;
             } else {
@@ -2808,7 +2808,7 @@ void daCow_c::action_wolf() {
     cXyz aruPos = aru->current.pos;
 
     s16 aruAngle = cLib_targetAngleY(&current.pos, &aru->current.pos);
-    int uVar3 = mState;
+    int uVar3 = mMode;
     if (uVar3 == 2) {
         return;
     }
@@ -2838,7 +2838,7 @@ void daCow_c::action_wolf() {
         return;
     }
     if (uVar3 == 0) {
-        mState = 1;
+        mMode = 1;
         field_0xc9f = 0;
         calcRunAnime(1);
         attention_info.flags |= 1;
@@ -2957,14 +2957,14 @@ void daCow_c::action_wolf() {
 
 /* 806612DC-806613EC 008DFC 0110+00 2/0 0/0 0/0 .text            action_damage__7daCow_cFv */
 void daCow_c::action_damage() {
-    int uVar1 = mState;
+    int uVar1 = mMode;
     if (uVar1 == 2) {
         return;
     }
     if (uVar1 < 2) {
         if (uVar1 != 0) {
             setBck(0x18, 0, 3.0f, 1.0f);
-            mState = 1;
+            mMode = 1;
             field_0xc98 = 200;
             field_0xcb0 = 1.0f;
             field_0xcb4 = 0;
