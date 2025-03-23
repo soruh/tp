@@ -2054,8 +2054,8 @@ int daCow_c::checkOutOfGate(cXyz pos) {
 }
 
 /* 8065B8A8-8065B8D8 0033C8 0030+00 3/3 0/0 0/0 .text            getCowshedAngle__7daCow_cFv */
-void daCow_c::getCowshedAngle() {
-    // NONMATCHING
+int daCow_c::getCowshedAngle() {
+    return cLib_targetAngleY(&current.pos, &pen_pos);
 }
 
 /* 8065B8D8-8065BA30 0033F8 0158+00 1/1 0/0 0/0 .text            getCowshedDist__7daCow_cFv */
