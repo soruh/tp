@@ -2123,7 +2123,15 @@ void daCow_c::action_run() {
     int nextAction = field_0xc5c;
     if (nextAction != 2) {
         if (nextAction < 2) {
-            if (nextAction != 0) {
+            if (nextAction == 0) {
+                calcRunAnime(1);
+                field_0xc5c = 1;
+                field_0xc90 = 0x1e;
+                field_0xc94 = 0x32;
+                field_0xca1 = 0;
+                field_0xc9e = 0;
+                field_0xc9d = 0;
+            } else {
                 calcRunAnime(0);
 
                 if (field_0xc90 != 0) {
@@ -2140,12 +2148,7 @@ void daCow_c::action_run() {
                 if (field_0xc94 == 0) {
                     field_0xc08 = 0;
                 }
-                if (isChaseCowGame()) {
-                    if (checkCowInOwn(0x8000)) {
-                        return;
-                    }
-                    checkPlayerSurprise();
-                } else {
+                if (!isChaseCowGame()) {
                     if (!field_0xc9d) {
                         setCarryStatus();
                     }
@@ -2156,6 +2159,11 @@ void daCow_c::action_run() {
                         field_0xc9e = bVar1;
                         return;
                     }
+                } else {
+                    if (!checkCowInOwn(0x8000)) {
+                        checkPlayerSurprise();
+                    }
+                    return;
                 }
 
                 // cursor
@@ -2170,7 +2178,9 @@ void daCow_c::action_run() {
 
                 f32 fVar12;
 
-                if (havePlayerPos && checkPlayerWait()) {
+                if (!havePlayerPos || !checkPlayerWait()) {
+                    fVar12 = field_0xc90 ? (field_0xc7c - 10.0f) * (field_0xc6c / 1000.0f) : 0.0f;
+                } else {
                     f32 rand = cM_rndFX(200.0f);
                     field_0xc74 = rand * 20.0f;
                     field_0xc08 = 0;
@@ -2178,14 +2188,13 @@ void daCow_c::action_run() {
 
                     daPy_py_c* player = daPy_getPlayerActorClass();
 
-                    if (player->checkHorseRide() || player->checkNowWolf()) {
+                    if (player->checkHorseRide() || (u32)player->checkNowWolf() != 0) {
                         f32 rand = cM_rndF(100.0f);
                         field_0xc90 = (int)(rand + 30.0f) & 0xff;
                     }
                     fVar12 = field_0xc7c * (field_0xc6c / 1000.0f);
-                } else {
-                    fVar12 = field_0xc90 ? (field_0xc7c - 10.0f) * (field_0xc6c / 1000.0f) : 0.0f;
                 }
+
                 if (fVar12 == 0.0f) {
                     m_near_dist = 200.0f;
                     m_view_angle = -0x8000;
@@ -2247,7 +2256,7 @@ void daCow_c::action_run() {
                     field_0xc72 = pen_dir - 0x8000;
                 }
                 int cowIn = checkCowIn(800.0f, 300.0f);
-                if (cowIn == 1) {
+                if (cowIn != 1) {
                     setProcess(&daCow_c::action_enter, 0);
                 } else {
                     if (cowIn == 2) {
@@ -2284,14 +2293,6 @@ void daCow_c::action_run() {
                         setProcess(&daCow_c::action_wait, 0);
                     }
                 }
-            } else {
-                calcRunAnime(1);
-                field_0xc5c = 1;
-                field_0xc90 = 0x1e;
-                field_0xc94 = 0x32;
-                field_0xca1 = 0;
-                field_0xc9e = 0;
-                field_0xc9d = 0;
             }
         } else {
             if (nextAction < 4) {
