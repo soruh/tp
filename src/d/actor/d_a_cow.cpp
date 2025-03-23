@@ -14,6 +14,7 @@
 #include "dol2asm.h"
 #include "dolphin/types.h"
 #include "f_op/f_op_actor_mng.h"
+#include "m_Do/m_Do_ext.h"
 #include "m_Do/m_Do_lib.h"
 
 //
@@ -2961,14 +2962,51 @@ int daCow_c::Execute() {
 }
 
 /* 80661AD0-80661AF0 0095F0 0020+00 1/0 0/0 0/0 .text            daCow_Execute__FPv */
-static void daCow_Execute(void* param_0) {
-    // NONMATCHING
+static int daCow_Execute(void* param_0) {
+    return static_cast<daCow_c*>(param_0)->Execute();
 }
 
 /* 80661AF0-80661CDC 009610 01EC+00 1/1 0/0 0/0 .text            CreateHeap__7daCow_cFv */
 int daCow_c::CreateHeap() {
-    // NONMATCHING
-    return -1;
+    J3DModelData* modelData = (J3DModelData*)dComIfG_getObjectRes("Cow", 0x1f);
+
+#ifdef DEBUG
+    if (modelData == NULL) {
+        JUTAssertion::showAssert(JUTAssertion::getSDevice(), "d_a_cow.cpp", 0xef2,
+                                 "0 != modelData");
+        OSPanic("d_a_cow.cpp", 0xef2, "Halt");
+    }
+#endif
+
+    mpMorf = new mDoExt_McaMorfSO(modelData, NULL, NULL, NULL, -1, 1.0f, 0, -1, &this->mSound,
+                                  0x80000, 0x11020084);
+
+    if (!mpMorf || !mpMorf->getModel()) {
+        return 0;
+    }
+
+    mpMorf->getModel()->setUserArea((u32)this);
+
+    for (u16 iJoint = 0; iJoint < modelData->getJointNum(); iJoint++) {
+        if (iJoint == 1 || iJoint == 8 || iJoint == 0) {
+            modelData->getJointNodePointer(iJoint)->setCallBack(ctrlJointCallBack);
+        }
+    }
+    setBck(0x1a, 2, 0.0f, 1.0f);
+
+    mpBtp = new mDoExt_btpAnm();
+
+    if (mpBtp == NULL) {
+        return 5;
+    }
+
+    J3DAnmTexPattern* pattern = (J3DAnmTexPattern*)dComIfG_getObjectRes("Cow", 0x22);
+    modelData = mpMorf->getModel()->getModelData();
+    if (mpBtp->init(modelData, pattern, 1, 0, 1.0f, 0, -1)) {
+        return 1;
+    } else {
+        return 5;
+    }
 }
 
 /* 80661CDC-80661D24 0097FC 0048+00 1/0 0/0 0/0 .text            __dt__12J3DFrameCtrlFv */
@@ -3017,7 +3055,7 @@ void daCow_c::initialize() {
 }
 
 /* 80662228-806623D4 009D48 01AC+00 1/1 0/0 0/0 .text            create__7daCow_cFv */
-void daCow_c::create() {
+int daCow_c::create() {
     // NONMATCHING
 }
 
@@ -3064,8 +3102,8 @@ extern "C" void __dt__12dBgS_ObjAcchFv() {
 }
 
 /* 806626F0-80662710 00A210 0020+00 1/0 0/0 0/0 .text            daCow_Create__FPv */
-static void daCow_Create(void* param_0) {
-    // NONMATCHING
+static int daCow_Create(void* param_0) {
+    return static_cast<daCow_c*>(param_0)->create();
 }
 
 /* 80662710-80662920 00A230 0210+00 1/1 0/0 0/0 .text ctrlJoint__7daCow_cFP8J3DJointP8J3DModel
@@ -3075,7 +3113,7 @@ void daCow_c::ctrlJoint(J3DJoint* param_0, J3DModel* param_1) {
 }
 
 /* 80662920-8066296C 00A440 004C+00 1/1 0/0 0/0 .text ctrlJointCallBack__7daCow_cFP8J3DJointi */
-void daCow_c::ctrlJointCallBack(J3DJoint* param_0, int param_1) {
+int ctrlJointCallBack(J3DJoint* param_0, int param_1) {
     // NONMATCHING
 }
 
@@ -3100,19 +3138,24 @@ int daCow_c::Draw() {
 }
 
 /* 80662BC4-80662BE4 00A6E4 0020+00 1/0 0/0 0/0 .text            daCow_Draw__FPv */
-static void daCow_Draw(void* param_0) {
-    // NONMATCHING
+static int daCow_Draw(void* param_0) {
+    return static_cast<daCow_c*>(param_0)->Draw();
 }
 
 /* 80662BE4-80662C40 00A704 005C+00 1/1 0/0 0/0 .text            Delete__7daCow_cFv */
 int daCow_c::Delete() {
-    // NONMATCHING
-    return -1;
+    fopAcM_GetID(this);
+    dComIfG_resDelete(&this->mPhase, "Cow");
+
+    if (heap != NULL) {
+        mSound.deleteObject();
+    }
+    return true;
 }
 
 /* 80662C40-80662C60 00A760 0020+00 1/0 0/0 0/0 .text            daCow_Delete__FPv */
-static void daCow_Delete(void* param_0) {
-    // NONMATCHING
+static int daCow_Delete(void* param_0) {
+    return static_cast<daCow_c*>(param_0)->Delete();
 }
 
 /* 80662C60-80662C68 00A780 0008+00 1/0 0/0 0/0 .text            daCow_IsDelete__FPv */
