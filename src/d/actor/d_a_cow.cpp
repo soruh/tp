@@ -113,7 +113,7 @@ void daCow_c::setEffect() {
     if (mShouldSetEffect != 0) {
         if (mShouldSetEffect == 1) {
             if ((mMoreFlags & 1) != 0) {
-                cXyz offset(0.0f, -70.0f, 25.0f);
+                cXyz offset(10.0f, -70.0f, 25.0f);
 
                 offset.x = 10.0f;
                 cLib_offsetPos(&vectors[0], &current.pos, field_0xc32.y, &offset);
