@@ -144,7 +144,7 @@ private:
     /* 0xc48 */ void (daCow_c::*mProcess)();
     /* 0xc54 */ int field_0xc54;
     /* 0xc58 */ s32 field_0xc58;
-    /* 0xc5c */ u16 mAction;
+    /* 0xc5c */ u16 mState;
     /* 0xc5e */ s8 mAnimationPhase;
     /* 0xc5f */ u8 mPrm0;
     /* 0xc60 */ s8 field_0xc60;
