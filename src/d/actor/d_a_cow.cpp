@@ -3171,7 +3171,62 @@ void daCow_c::action_crazy() {
 /* 8066010C-80660544 007C2C 0438+00 1/1 0/0 0/0 .text            executeCrazyBack2__7daCow_cFv
  */
 void daCow_c::executeCrazyBack2() {
-    // NONMATCHING
+    if (!checkOutOfGate(daPy_getPlayerActorClass()->current.pos) && !checkOutOfGate(current.pos)) {
+        return;
+    }
+
+    if (checkCowInOwn(0x8000)) {
+        setProcess(&daCow_c::action_angry, 0);
+        return;
+    }
+
+    if (field_0xc9e) {
+        setProcess(&daCow_c::action_run, 0);
+        field_0xc9e = 1;
+        return;
+    }
+
+    int bVar1 = field_0xc61;
+    if (bVar1 == 2) {
+        if (checkNadeNadeFinish()) {
+            setBck(0xf, 0, 10.0f, 1.0f);
+            field_0xc61 = 3;
+            speedF = 0.0;
+        }
+    } else if (bVar1 < 2) {
+        if (bVar1 == 0) {
+            setBck(0x1c, 2, 10.0f, 1.0f);
+            field_0xc61 = 1;
+            field_0xc90 = 600;
+        }
+
+        setActetcStatus();
+        s16 targetAngle = cLib_targetAngleY(&current.pos, &old.pos);
+        cLib_addCalcAngleS(&current.angle.y, targetAngle, 0x10, 0x100, 0x80);
+        cLib_chaseF(&speedF, 2.0f, 1.0f);
+        cLib_addCalcAngleS(&shape_angle.y, current.angle.y, 8, 0x100, 0x800);
+        field_0xc32.y = shape_angle.y;
+        setBodyAngle(targetAngle);
+
+        if (current.pos.abs(old.pos) >= 200.0 && field_0xc90) {
+            if (checkNadeNade()) {
+                setBck(0x1a, 2, 10.0f, 1.0f);
+                field_0xc61 = 2;
+                speedF = 0.0f;
+            }
+        } else {
+            speedF = 0.0f;
+            setProcess(&daCow_c::action_moo, 0);
+        }
+    } else if (bVar1 < 4) {
+        if (mpMorf->checkFrame(35.0f)) {
+            mSound.startCreatureVoice(JAISoundID(Z2SE_GOAT_V_CRY), -1);
+        }
+        if (mpMorf->isStop()) {
+            setBck(0x1c, 2, 10.0f, 1.0f);
+            field_0xc61 = 1;
+        }
+    }
 }
 
 /* 80660544-806607B8 008064 0274+00 4/0 0/0 0/0 .text            action_thrown__7daCow_cFv */
