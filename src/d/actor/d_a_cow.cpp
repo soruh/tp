@@ -1378,9 +1378,7 @@ static void* s_near_cow(void* param_1, void* param_2) {
     if (IS_VALID_COW_INTERACTION(cow_1, cow_2) && !(cow_1)->getCowIn()) {
         s16 actorAngleY = fopAcM_searchActorAngleY(cow_2, cow_1);
 
-        // todo
-        csXyz stackAngle;
-        daCow_c::getShapeAngle(stackAngle, cow_2);
+        csXyz stackAngle = daCow_c::getShapeAngle(cow_2);
 
         actorAngleY = cLib_distanceAngleS(actorAngleY, stackAngle.y);
 
@@ -3271,8 +3269,8 @@ static void func_80662D68() {
 
 // todo
 /* 80662D70-80662D84 00A890 0014+00 1/1 0/0 0/0 .text            getShapeAngle__7daCow_cFv */
-void daCow_c::getShapeAngle(csXyz& out, daCow_c* cow) {
-    out = cow->field_0xc32;
+csXyz daCow_c::getShapeAngle(daCow_c* cow) {
+    return cow->field_0xc32;
 }
 
 /* ############################################################################################## */
