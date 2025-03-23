@@ -3370,12 +3370,51 @@ void daCow_c::executeCrazyAttack() {
 
 /* 8065F308-8065F37C 006E28 0074+00 1/1 0/0 0/0 .text            initCrazyAway__7daCow_cFi */
 void daCow_c::initCrazyAway(int param_0) {
-    // NONMATCHING
+    field_0xc9f = 6;
+    if (mPrm0 == 3) {
+        setBck(0x14, 2, 0.0f, 1.0f);
+    }
+    s16 sVar1 = shape_angle.y;
+    current.angle.y = sVar1;
+    field_0xc32.y = sVar1;
+    gravity = -4.0f;
 }
 
 /* 8065F37C-8065F6E0 006E9C 0364+00 1/1 0/0 0/0 .text            executeCrazyAway__7daCow_cFv */
 void daCow_c::executeCrazyAway() {
-    // NONMATCHING
+    setSeSnort();
+
+    if (current.pos.abs(daPy_getPlayerActorClass()->current.pos) < 2500.0f) {
+        setRushVibration(2);
+    }
+
+    this->mShouldSetEffect = 1;
+    cLib_chaseF(&speedF, 30.0f, 2.0f);
+    cLib_chaseS(&field_0xc3e.z, 0x1000, 0x400);
+
+    cXyz pointPos = dPath_GetPnt(mPath, field_0xc10)->m_position;
+    cLib_addCalcAngleS(&current.angle.y, cLib_targetAngleY(current.pos, pointPos), 0x10, 0x800,
+                       0x100);
+
+    if (current.pos.abs(pointPos) < 200.0f) {
+        field_0xc10++;
+
+        if (mPath->m_num <= field_0xc10) {
+            if (mPath->m_nextID == -1) {
+                field_0xc9f = 7;
+                speedF = 0.0f;
+            } else {
+                field_0xc10 = 0;
+                mPath = dPath_GetRoomPath(mPath->m_nextID, fopAcM_GetRoomNo(this));
+            }
+        }
+    }
+    cLib_addCalcAngleS(&shape_angle.y, current.angle.y, 8, 0x400, 0x100);
+    field_0xc32.y = shape_angle.y;
+    if (mFlags & 0x20) {
+        field_0xc9f = 7;
+        speedF = 0.0f;
+    }
 }
 
 /* 8065F6E0-8065F744 007200 0064+00 1/1 0/0 0/0 .text            executeCrazyEnd__7daCow_cFv */
