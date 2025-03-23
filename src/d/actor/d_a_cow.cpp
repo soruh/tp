@@ -112,11 +112,11 @@ int daCow_c::checkBck(int param_0) {
 
 /* 80658830-80658A68 000350 0238+00 1/1 0/0 0/0 .text            setEffect__7daCow_cFv */
 void daCow_c::setEffect() {
-    cXyz vectors[4];
+    cXyz vectors[3];
 
     if (mShouldSetEffect) {
         if (mShouldSetEffect == 1) {
-            if ((mMoreFlags & 1) != 0) {
+            if ((mMoreFlags & 1)) {
                 cXyz offset(0.0f, 10.0f, -70.0f);
 
                 offset.x = 25.0f;
@@ -131,12 +131,11 @@ void daCow_c::setEffect() {
 
             int roomNumber = fopAcM_GetRoomNo(this);
 
-            cXyz* vector_ptr_1 = mShouldSetEffect ? &vectors[1] : NULL;
-            cXyz* vector_ptr_3 = mShouldSetEffect ? &vectors[2] : NULL;
-            cXyz* vector_ptr_2 = mShouldSetEffect ? &vectors[3] : NULL;
-
-            mParticle.setEffectTwo(&tevStr, &current.pos, 0, 0, vector_ptr_1, vector_ptr_2,
-                                   vector_ptr_3, &field_0xc32, NULL, roomNumber, 1.0f, speedF);
+            mParticle.setEffectTwo(&tevStr, &current.pos, 0, 0,
+                                   mShouldSetEffect ? &vectors[0] : NULL,  //
+                                   mShouldSetEffect ? &vectors[2] : NULL,  //
+                                   mShouldSetEffect ? &vectors[1] : NULL,  //
+                                   &field_0xc32, NULL, roomNumber, 1.0f, speedF);
 
             static cXyz runScale(2.0f, 2.0f, 2.0f);
 
