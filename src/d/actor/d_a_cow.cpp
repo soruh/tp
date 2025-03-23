@@ -9,6 +9,7 @@
 #include "d/d_cc_uty.h"
 #include "d/d_com_inf_game.h"
 #include "d/d_meter2_info.h"
+#include "d/d_timer.h"
 #include "dol2asm.h"
 #include "dolphin/types.h"
 #include "m_Do/m_Do_lib.h"
@@ -2370,15 +2371,14 @@ void daCow_c::setCowInCage() {
 /* 8065C680-8065C70C 0041A0 008C+00 2/2 0/0 0/0 .text            setEnterCount__7daCow_cFv */
 void daCow_c::setEnterCount() {
     dTimer_createGetIn2D(2, current.pos);
+    dMeter2Info_setNowCount(dMeter2Info_getNowCount() + 1);
 
-    int cVar1 = dMeter2Info_getNowCount();
-    dMeter2Info_setNowCount(cVar1 + 1);
     field_0xc90 = 0x32;
     field_0xc9f = 1;
-    field_0xca9 = 0;
+    field_0xca9 = false;
 
-    if (dMeter2Info_getNowCount() == dMeter2Info_getMaxCount()) {
-        field_0xca9 = 1;
+    if ((u32)dMeter2Info_getNowCount() == (u32)dMeter2Info_getMaxCount()) {
+        field_0xca9 = true;
     }
 }
 
