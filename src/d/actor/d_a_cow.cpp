@@ -2221,7 +2221,7 @@ void daCow_c::action_run() {
                 }
                 if ((field_0xc54 == 0) || (field_0xc54 == 10)) {
                     s16 sVar3 = current.angle.y;
-                    if ((field_0xca2 == '\0') && (field_0xc08 != 0)) {
+                    if ((field_0xca2 == 0) && (field_0xc08 != 0)) {
                         sVar3 = *(short*)(field_0xc08 + 0xc34);
                     }
                     s8 bVar1 = field_0xc61;
@@ -2246,7 +2246,7 @@ void daCow_c::action_run() {
                     } else if (bVar1 < 4) {
                         sVar3 = sVar3 + -0x4000;
                     }
-                    if (havePlayerPos == '\0') {
+                    if (havePlayerPos == 0) {
                         sVar3 = sVar3 + field_0xc74;
                     }
                     field_0xc72 = sVar3;
@@ -3198,25 +3198,109 @@ void daCow_c::initCrazyThrow(int param_1) {
     gravity = 0.0;
 }
 
-/* ############################################################################################## */
-/* 80662EBC-80662EC0 00010C 0004+00 0/1 0/0 0/0 .rodata          @6706 */
-#pragma push
-#pragma force_active on
-SECTION_RODATA static f32 const lit_6706 = 34.0f;
-COMPILER_STRIP_GATE(0x80662EBC, &lit_6706);
-#pragma pop
-
-/* 80662EC0-80662EC4 000110 0004+00 0/4 0/0 0/0 .rodata          @6707 */
-#pragma push
-#pragma force_active on
-SECTION_RODATA static f32 const lit_6707 = -4.0f;
-COMPILER_STRIP_GATE(0x80662EC0, &lit_6707);
-#pragma pop
-
 /* 8065EBF0-8065F088 006710 0498+00 2/2 0/0 0/0 .text            executeCrazyThrow__7daCow_cFv
  */
 void daCow_c::executeCrazyThrow() {
-    // NONMATCHING
+    int bVar1 = field_0xc60;
+    if (bVar1 == 3) {
+        field_0xc32.y += field_0xc76;
+        cLib_chaseAngleS(&field_0xc76, 0, 0x1e);
+        if (cLib_chaseF(&speedF, 0.0f, 0.5f) && !field_0xc90) {
+            field_0xc60 = 4;
+            if (field_0xc61 == 0) {
+                setBck(0xc, 0, 5.0f, 1.0f);
+            } else {
+                setBck(0xd, 0, 5.0f, 1.0f);
+            }
+            shape_angle.y = field_0xc32.y;
+        }
+    } else if (bVar1 < 3) {
+        if (bVar1 == 1) {
+            field_0xc20.y += 100.0;
+
+            dBgS_LinChk linChk;
+            linChk.Set(&field_0xc20, &current.pos, NULL);
+            if (dComIfG_Bgsp().LineCross(&linChk)) {
+                current.pos = linChk.GetCross();
+
+                cM3dGPla plane;
+                dComIfG_Bgsp().GetTriPla(linChk, &plane);
+
+                cXyz* normal = plane.GetNP();
+                current.pos.x += normal->x * 50.0f;
+                current.pos.z += normal->z * 50.0f;
+                speedF = 0.0f;
+                old.pos = current.pos;
+            }
+            field_0xc60 = 2;
+        } else if (bVar1 == 0) {
+            current.pos = field_0xc20;
+
+            if (mpMorf->checkFrame(10.0f)) {
+                mSound.startCreatureVoice(JAISoundID(Z2SE_GOAT_V_THROWN), -1);
+            }
+            if (mpMorf->checkFrame(34.0f)) {
+                field_0xc60 = 1;
+                field_0xc62 = 2;
+                field_0xc63 = 0;
+                gravity = -4.0f;
+
+                for (int iSphere = 0; iSphere < N_COW_COLLIDERS; iSphere++) {
+                    mSph[iSphere].OnCoSetBit();
+                }
+
+                if (!field_0xc61) {
+                    current.angle.y = daPy_getPlayerActorClass()->shape_angle.y + -0x6800;
+                } else {
+                    current.angle.y = daPy_getPlayerActorClass()->shape_angle.y + 0x7000;
+                }
+                speedF = 10.0f;
+                speed.y = 10.0f;
+            }
+            return;
+        }
+
+        cLib_chaseAngleS(&field_0xc32.x, 0, 0x800);
+        field_0xc62 = 3;
+
+        if (mAcch.ChkGroundHit()) {
+            shape_angle.x = field_0xc32.x;
+
+            mSound.startCreatureSound(JAISoundID(Z2SE_GOAT_V_ANGRY), 0, -1);
+            dComIfGp_getVibration().StartShock(5, 0x1f, cXyz(0.0f, 1.0f, 0.0f));
+
+            speed.y = 0.0f;
+            field_0xc90 = 0x5a;
+            field_0xc60 = 3;
+            field_0xc62 = 0;
+            mShouldSetEffect = 2;
+
+            if (field_0xc61) {
+                setBck(8, 2, 0.0f, 1.0f);
+                field_0xc32.y -= 0x7000;
+                field_0xc76 = 0xfc18;
+
+            } else {
+                setBck(7, 2, 0.0f, 1.0f);
+                field_0xc32.y += 0x7000;
+                field_0xc76 = 1000;
+            }
+        }
+    } else if (bVar1 == 5) {
+        if (!field_0xc90) {
+            initCrazyBack(0);
+        }
+    } else if (bVar1 < 5) {
+        if (mpMorf->isStop()) {
+            if (this->mPrm0 == 3) {
+                setBck(0x1a, 2, 10.0f, 1.0f);
+                field_0xc60 = 5;
+                field_0xc90 = 10;
+            } else {
+                initCrazyBack(0);
+            }
+        }
+    }
 }
 
 /* 8065F088-8065F144 006BA8 00BC+00 3/3 0/0 0/0 .text            initCrazyAttack__7daCow_cFi */
