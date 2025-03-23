@@ -2891,59 +2891,48 @@ void daCow_c::setAttnPos() {
     // NONMATCHING
 }
 
-/* ############################################################################################## */
-/* 80662EE4-80662EE8 000134 0004+00 0/1 0/0 0/0 .rodata          @7686 */
-#pragma push
-#pragma force_active on
-SECTION_RODATA static f32 const lit_7686 = -30.0f;
-COMPILER_STRIP_GATE(0x80662EE4, &lit_7686);
-#pragma pop
-
 /* 80663500-80663504 0000A8 0004+00 0/0 0/0 0/0 .bss             m_search_range */
-#pragma push
-#pragma force_active on
-static u8 m_search_range[4];
-#pragma pop
-
-/* 80663504-80663514 0000AC 000C+04 0/1 0/0 0/0 .bss             @7631 */
-#pragma push
-#pragma force_active on
-static u8 lit_7631[12 + 4 /* padding */];
-#pragma pop
-
-/* 80663514-80663520 0000BC 000C+00 0/1 0/0 0/0 .bss             headOfst$7630 */
-#pragma push
-#pragma force_active on
-static u8 headOfst[12];
-#pragma pop
-
-/* 80663520-80663530 0000C8 000C+04 0/1 0/0 0/0 .bss             @7635 */
-#pragma push
-#pragma force_active on
-static u8 lit_7635[12 + 4 /* padding */];
-#pragma pop
-
-/* 80663530-8066353C 0000D8 000C+00 0/1 0/0 0/0 .bss             backBornOfst$7634 */
-#pragma push
-#pragma force_active on
-static u8 backBornOfst[12];
-#pragma pop
-
-/* 8066353C-8066354C 0000E4 000C+04 0/1 0/0 0/0 .bss             @7639 */
-#pragma push
-#pragma force_active on
-static u8 lit_7639[12 + 4 /* padding */];
-#pragma pop
-
-/* 8066354C-80663558 0000F4 000C+00 0/1 0/0 0/0 .bss             waistOfst$7638 */
-#pragma push
-#pragma force_active on
-static u8 waistOfst[12];
-#pragma pop
+static f32 m_search_range[4];
 
 /* 80661720-80661940 009240 0220+00 1/1 0/0 0/0 .text            setCollisions__7daCow_cFv */
 void daCow_c::setCollisions() {
-    // NONMATCHING
+    J3DModel* pJVar1;
+    Mtx* pMVar2;
+    cCcS* pcVar3;
+    cXyz acStack_28[2];
+
+    if (!field_0xca6) {
+        /* 80663514-80663520 0000BC 000C+00 0/1 0/0 0/0 .bss             headOfst$7630 */
+        static cXyz headOfst(20.0f, 10.0f, 0.0f);
+
+        /* 80663530-8066353C 0000D8 000C+00 0/1 0/0 0/0 .bss             backBornOfst$7634 */
+        static cXyz backBornOfst(60.0f, 20.0f, 0.0f);
+
+        /* 8066354C-80663558 0000F4 000C+00 0/1 0/0 0/0 .bss             waistOfst$7638 */
+        static cXyz waistOfst(-30.0f, 30.0f, 0.0f);
+
+        // todo: is this an unrolled loop?
+
+        cXyz ofstNow;
+
+        mDoMtx_stack_c::copy(mpMorf->getModel()->getAnmMtx(9));
+        mDoMtx_stack_c::multVec(&headOfst, &ofstNow);
+        mSph[0].SetR(40.0f);
+        mSph[0].SetC(ofstNow);
+        dComIfG_Ccsp()->Set(&mSph[0]);
+
+        mDoMtx_stack_c::copy(mpMorf->getModel()->getAnmMtx(1));
+        mDoMtx_stack_c::multVec(&backBornOfst, &ofstNow);
+        mSph[1].SetR(45.0f);
+        mSph[1].SetC(ofstNow);
+        dComIfG_Ccsp()->Set(&mSph[1]);
+
+        mDoMtx_stack_c::copy(mpMorf->getModel()->getAnmMtx(0xb));
+        mDoMtx_stack_c::multVec(&waistOfst, &ofstNow);
+        mSph[2].SetR(45.0f);
+        mSph[2].SetC(ofstNow);
+        dComIfG_Ccsp()->Set(&mSph[2]);
+    }
 }
 
 /* ############################################################################################## */
@@ -3072,7 +3061,7 @@ int daCow_c::initialize() {
 
                 setProcess(&daCow_c::action_crazy, 0);
             }
-            goto LAB_80a585e0;
+            goto SKIP_ACTION_CHANGE;  // todo
         }
     }
 
@@ -3098,7 +3087,7 @@ int daCow_c::initialize() {
         setProcess(&daCow_c::action_wait, 0);
     }
 
-LAB_80a585e0:
+SKIP_ACTION_CHANGE:
 
     mAcchCir.SetWallR(100.f);
     mAcchCir.SetWallH(110.f);
