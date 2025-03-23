@@ -2606,7 +2606,9 @@ void daCow_c::setRedTev() {
 
 /* 8065D29C-8065D2F0 004DBC 0054+00 1/1 0/0 0/0 .text            setAngryTurn__7daCow_cFv */
 void daCow_c::setAngryTurn() {
-    // NONMATCHING
+    setBck(0xe, 0, 0.0f, 1.0f);
+    speedF = field_0xc7c;
+    field_0xc9f = 5;
 }
 
 /* ############################################################################################## */
