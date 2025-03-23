@@ -3091,12 +3091,12 @@ void daCow_c::executeCrazyBeforeCatch() {
 
 /* 8065E7D0-8065E888 0062F0 00B8+00 3/3 0/0 0/0 .text            initCrazyCatch__7daCow_cFi */
 void daCow_c::initCrazyCatch(int param_0) {
-    setBck(0x17, 0, 0.0, 1.0f);
+    setBck(0x17, 0, 0.0f, 1.0f);
     field_0xc9f = 3;
     speedF = 0.0f;
     field_0xc3e.z = 0;
     field_0xc60 = 0;
-    calcCatchPos(-220.0, 1);
+    calcCatchPos(-220.0f, 1);
 
     for (int iSphere = 0; iSphere < N_COW_COLLIDERS; iSphere++) {
         mSph[iSphere].OffCoSetBit();
@@ -3104,21 +3104,67 @@ void daCow_c::initCrazyCatch(int param_0) {
     }
 
     field_0xc63 = 1;
-    gravity = 0.0;
+    gravity = 0.0f;
 }
-
-/* ############################################################################################## */
-/* 80662EB8-80662EBC 000108 0004+00 0/2 0/0 0/0 .rodata          @6599 */
-#pragma push
-#pragma force_active on
-SECTION_RODATA static f32 const lit_6599 = -260.0f;
-COMPILER_STRIP_GATE(0x80662EB8, &lit_6599);
-#pragma pop
 
 /* 8065E888-8065EAF4 0063A8 026C+00 2/2 0/0 0/0 .text            executeCrazyCatch__7daCow_cFv
  */
 void daCow_c::executeCrazyCatch() {
-    // NONMATCHING
+    f32 fVar2 = -220.0f;
+    int bVar1 = field_0xc60;
+
+    if (bVar1 == 2) {
+        fVar2 = -260.0f;
+        if (mpMorf->isStop()) {
+            setBck(0x12, 2, 0.0f, 1.0f);
+            field_0xc60 = 4;
+        }
+    } else if (bVar1 < 2) {
+        mShouldSetEffect = 1;
+        if (!field_0xc60 && mpMorf->isStop()) {
+            setBck(5, 2, 0.0f, 1.0f);
+            field_0xc60 = 1;
+        }
+
+        if (daPy_getPlayerActorClass()->speedF == 0.0f) {
+            setBck(0x10, 0, 0.0f, 1.0f);
+            field_0xc60 = 2;
+        }
+    } else if (bVar1 < 5) {
+        fVar2 = -260.0f;
+
+        if (!field_0xc90) {
+            if (field_0xc60 == 3) {
+                setBck(0x12, 2, 0.0f, 1.0f);
+                field_0xc90 = 0x3c;
+                field_0xc60 = 4;
+            } else {
+                setBck(0x11, 2, 0.0f, 1.0f);
+                field_0xc90 = 0x3c;
+                field_0xc60 = 3;
+            }
+        }
+    }
+    if (mFlags == 0) {
+        calcCatchPos(fVar2, 1);
+    } else {
+        if ((mFlags & 8) == 0) {
+            if ((mFlags & 0x10) == 0) {
+                if ((mFlags & 4) != 0) {
+                    if (daPy_getPlayerActorClass()->speedF == 0.0f) {
+                        initCrazyAttack(0);
+                    } else {
+                        initCrazyAttack(1);
+                    }
+                }
+            } else {
+                initCrazyThrow(1);
+            }
+        } else {
+            initCrazyThrow(0);
+        }
+        mFlags = 0;
+    }
 }
 
 /* 8065EAF4-8065EBF0 006614 00FC+00 1/1 0/0 0/0 .text            initCrazyThrow__7daCow_cFi */
