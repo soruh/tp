@@ -3310,8 +3310,21 @@ void daCow_c::executeCrazyThrow() {
 }
 
 /* 8065F088-8065F144 006BA8 00BC+00 3/3 0/0 0/0 .text            initCrazyAttack__7daCow_cFi */
-void daCow_c::initCrazyAttack(int param_0) {
-    // NONMATCHING
+void daCow_c::initCrazyAttack(int param_1) {
+    field_0xc3e.z = 0;
+    field_0xc9f = 5;
+    if (param_1) {
+        field_0xc61 = 1;
+        speedF = 0.0f;
+        setBck(0x18, 0, 3.0, 1.0f);
+    } else {
+        field_0xc61 = 0;
+        setBck(0x16, 0, 3.0, 1.0f);
+    }
+    for (int iSphere = 0; iSphere < N_COW_COLLIDERS; iSphere++) {
+        mSph[iSphere].OnCoSetBit();
+    }
+    gravity = -4.0f;
 }
 
 /* ############################################################################################## */
