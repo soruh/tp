@@ -2059,8 +2059,9 @@ int daCow_c::getCowshedAngle() {
 }
 
 /* 8065B8D8-8065BA30 0033F8 0158+00 1/1 0/0 0/0 .text            getCowshedDist__7daCow_cFv */
-void daCow_c::getCowshedDist() {
-    // NONMATCHING
+double daCow_c::getCowshedDist() {
+    cXyz diff = pen_pos - current.pos;
+    return diff.absXZ();
 }
 
 /* 8065BA30-8065BB34 003550 0104+00 2/2 0/0 0/0 .text            checkCowIn__7daCow_cFff */
