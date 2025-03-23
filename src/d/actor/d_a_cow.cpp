@@ -105,7 +105,7 @@ void daCow_c::setBck(int param_0, u8 param_1, f32 param_2, f32 param_3) {
 }
 
 /* 806587D4-80658830 0002F4 005C+00 1/1 0/0 0/0 .text            checkBck__7daCow_cFi */
-bool daCow_c::checkBck(int param_0) {
+int daCow_c::checkBck(int param_0) {
     J3DAnmTransform* animation = (J3DAnmTransform*)dComIfG_getObjectRes("Cow", param_0);
     return mpMorf->getAnm() == animation;
 }

@@ -21,7 +21,7 @@ class daCow_c : public fopAc_ac_c {
 public:
     /* 806585CC */ int calcRunAnime(int);
     /* 80658730 */ void setBck(int, u8, f32, f32);
-    /* 806587D4 */ bool checkBck(int);
+    /* 806587D4 */ int checkBck(int);
     /* 80658830 */ void setEffect();
     /* 80658AA4 */ bool isChaseCowGame();
     /* 80658B10 */ void setCarryStatus();
