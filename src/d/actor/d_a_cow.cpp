@@ -2976,17 +2976,88 @@ void daCow_c::executeCrazyWait() {
     }
 }
 
-/* ############################################################################################## */
-/* 80662EB0-80662EB4 000100 0004+00 0/2 0/0 0/0 .rodata          @6502 */
-#pragma push
-#pragma force_active on
-SECTION_RODATA static f32 const lit_6502 = -200.0f;
-COMPILER_STRIP_GATE(0x80662EB0, &lit_6502);
-#pragma pop
-
 /* 8065DF40-8065E6BC 005A60 077C+00 1/1 0/0 0/0 .text            executeCrazyDash__7daCow_cFv */
 void daCow_c::executeCrazyDash() {
-    // NONMATCHING
+    this->mShouldSetEffect = 1;
+
+    cXyz cStack_20 = dPath_GetPnt(mPath, field_0xc10)->m_position;
+    cXyz cStack_38;
+    setSeSnort();
+    setRushVibration(2);
+
+    if (field_0xc90 == 1) {
+        mSound.startCreatureVoice(JAISoundID(Z2SE_GOAT_V_ANGRY), -1);
+    }
+    if (field_0xc10 == 4 || field_0xc10 == 5) {
+        cLib_chaseS(&field_0xc3e.z, 0x1000, 0x400);
+
+        if (mFlags == 0) {
+            if (field_0xc10 == 4) {
+                cXyz cStack_2c = dPath_GetPnt(mPath, 3)->m_position;
+                s16 sVar4 = cLib_targetAngleY(cStack_2c, cStack_20);
+
+                if (current.pos.abs(cStack_20) <= 600.0f) {
+                    cLib_addCalcAngleS(&current.angle.y, sVar4, 0x10, 0x800, 0x100);
+                    if (current.pos.abs(cStack_20) >= 250.0f) {
+                        return;
+                    }
+                    field_0xc10++;
+                    return;
+                }
+                field_0xcb0 = 0;
+                s16 sVar5 = cLib_targetAngleY(&cStack_2c, &daPy_getPlayerActorClass()->current.pos);
+                if (sVar5 - sVar4 < 0) {
+                    cStack_38.set(200.0, 0.0, 0.0);
+                } else {
+                    cStack_38.set(-200.0, 0.0, 0.0);
+                }
+                cLib_offsetPos(&cStack_20, &cStack_20, sVar4, &cStack_38);
+                field_0xc20 = cStack_20;
+            } else {
+                field_0xc20 = cStack_20;
+            }
+            s16 sVar4 = cLib_targetAngleY(&current.pos, &field_0xc20);
+            cLib_addCalcAngleS(&current.angle.y, sVar4, 0x10, 0x800, 0x100);
+            if (current.pos.abs(cStack_20) < 250.0f) {
+                field_0xc10++;
+            }
+        } else if ((mFlags & 1) == 0) {
+            if ((mFlags & 2) == 0) {
+                if ((mFlags & 4) != 0) {
+                    initCrazyAttack(0);
+                    field_0xc10 = 6;
+                    mFlags = mFlags & 0xfffb;
+                }
+            } else {
+                initCrazyCatch(0);
+                field_0xc10 = 6;
+                mFlags &= ~0x0004;
+                dComIfGp_getVibration().StartShock(8, 0x1f, cXyz(0.0f, 1.0f, 0.0f));
+            }
+        } else {
+            initCrazyBeforeCatch(0);
+            field_0xc10 = 6;
+            mFlags &= ~1;
+        }
+    } else {
+        s16 sVar4 = cLib_targetAngleY(&current.pos, &cStack_20);
+        cLib_addCalcAngleS(&current.angle.y, sVar4, 0x10, 0x800, 0x100);
+        if (current.pos.abs(cStack_20) < 200.0f) {
+            field_0xc10++;
+            if (mPath->m_num <= field_0xc10) {
+                if (mPath->m_nextID == -1) {
+                    field_0xc9f = 7;
+                    speedF = 0.0;
+                } else {
+                    field_0xc10 = 0;
+                    mPath = dPath_GetRoomPath(mPath->m_nextID, fopAcM_GetRoomNo(this));
+                    field_0xc9f = 6;
+                }
+            }
+        }
+    }
+    cLib_addCalcAngleS(&shape_angle.y, current.angle.y, 8, 0x400, 0x100);
+    field_0xc32.y = shape_angle.y;
 }
 
 /* 8065E6BC-8065E6E8 0061DC 002C+00 2/2 0/0 0/0 .text initCrazyBeforeCatch__7daCow_cFi */
@@ -3102,7 +3173,7 @@ void daCow_c::action_crazy() {
     int uVar1 = field_0xc5c;
     if (uVar1 != 2) {
         if (uVar1 < 2) {
-            if (uVar1 == 0) {
+            if (!uVar1) {
                 field_0xcb4 = 0;
                 field_0xc10 = 0;
 
