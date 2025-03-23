@@ -2328,7 +2328,42 @@ bool daCow_c::checkCurringPen() {
 
 /* 8065C508-8065C680 004028 0178+00 2/2 0/0 0/0 .text            setCowInCage__7daCow_cFv */
 void daCow_c::setCowInCage() {
-    // NONMATCHING
+    for (int iSphere = 0; iSphere < (int)(sizeof(mSph) / sizeof(dCcD_Sph)); iSphere++) {
+        mSph[iSphere].OffCoSetBit();
+        mSph[iSphere].OnCoNoCrrBit();
+        mCcStts.ClrCcMove();
+    }
+    mAcchCir.SetWall(0.0f, 0.0f);
+
+    u8 cowIndex = cM_rndF(20.0f);
+    if (l_CowRoomNo & 1 << cowIndex) {
+        for (int i = 0; i < 0x14; i++) {
+            if (!(l_CowRoomNo & 1 << i)) {
+                cowIndex = i;
+                break;
+            }
+        }
+    }
+
+    if (cowIndex >= 0x14) {
+        cowIndex = 0x13;
+    }
+
+    current.pos.x = l_CowRoomPosX[cowIndex];
+    current.pos.z = l_CowRoomPosZ[cowIndex & 1];
+
+    old.pos = current.pos;
+
+    l_CowRoomNo |= 1 << cowIndex;
+    if ((cowIndex & 1) == 0) {
+        field_0xc32.y = -0x8000;
+        shape_angle.y = 0x8000;
+        current.angle.y = 0x8000;
+    } else {
+        field_0xc32.y = 0;
+        shape_angle.y = 0;
+        current.angle.y = 0;
+    }
 }
 
 /* 8065C680-8065C70C 0041A0 008C+00 2/2 0/0 0/0 .text            setEnterCount__7daCow_cFv */
