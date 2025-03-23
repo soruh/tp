@@ -2796,7 +2796,90 @@ SECTION_DEAD static char const* const stringBase_80662F3D = "WILDGOAT_FAILURE";
 
 /* 8065FE50-8066010C 007970 02BC+00 4/0 0/0 0/0 .text            action_crazy__7daCow_cFv */
 void daCow_c::action_crazy() {
-    // NONMATCHING
+    int uVar1 = field_0xc5c;
+    if (uVar1 != 2) {
+        if (uVar1 < 2) {
+            if (uVar1 == 0) {
+                field_0xcb4 = 0;
+                field_0xc10 = 0;
+
+                current.pos = dPath_GetPnt(mPath, field_0xc10)->m_position;
+                field_0xc10++;
+
+                cXyz acStack_28 = dPath_GetPnt(mPath, field_0xc10)->m_position;
+
+                s16 angle = cLib_targetAngleY(&current.pos, &acStack_28);
+                current.angle.y = angle;
+                shape_angle.y = angle;
+                field_0xc32.y = angle;
+
+                field_0xc9f = 0;
+                speedF = 0.0;
+                field_0xca6 = 1;
+
+                dComIfGoat_SetThrow(this);
+                this->field_0xcac = 1;
+                fopAcM_OnStatus(this, 0x100);
+            } else {
+                if (field_0xc94) {
+                    field_0xc94--;
+                }
+                if (field_0xc90) {
+                    field_0xc90--;
+                }
+
+                fopAcM_OnStatus(this, 0x4000);
+
+                if (dComIfGp_event_runCheck() &&
+                    strcmp(dComIfGp_getEventManager().getRunEventName(), "WILDGOAT") &&
+                    strcmp(dComIfGp_getEventManager().getRunEventName(), "WILDGOAT_SUCCESS") &&
+                    strcmp(dComIfGp_getEventManager().getRunEventName(), "WILDGOAT_FAILURE"))
+                {
+                    fopAcM_OffStatus(this, 0x4000);
+                }
+            }
+            switch (field_0xc9f) {
+            case 0:
+                executeCrazyWait();
+                break;
+            case 1:
+                executeCrazyDash();
+                break;
+            case 2:
+                executeCrazyBeforeCatch();
+                break;
+            case 3:
+                executeCrazyCatch();
+                break;
+            case 4:
+                executeCrazyThrow();
+                break;
+            case 5:
+                executeCrazyAttack();
+                break;
+            case 6:
+                executeCrazyAway();
+                break;
+            case 7:
+                executeCrazyEnd();
+                break;
+            case 8:
+                setGroundAngle();
+                executeCrazyBack();
+            default:
+                for (int iSphere = 0; iSphere < N_COW_COLLIDERS; iSphere++) {
+                    mSph[iSphere].OffTgSetBit();
+                }
+            }
+        }
+    } else if (uVar1 < 4) {
+        dComIfGoat_SetThrow(0);
+        field_0xca6 = 0;
+        field_0xcb0 = 0;
+        field_0xc3e.z = 0;
+        field_0xc38.y = 0;
+        field_0xc3e.y = 0;
+    }
 }
 
 /* 8066010C-80660544 007C2C 0438+00 1/1 0/0 0/0 .text            executeCrazyBack2__7daCow_cFv
