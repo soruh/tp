@@ -3199,24 +3199,52 @@ int daCow_c::ctrlJointCallBack(J3DJoint* joint, int param_1) {
     return 1;
 }
 
-/* ############################################################################################## */
-/* 80662F00-80662F04 000150 0004+00 0/1 0/0 0/0 .rodata          @8223 */
-#pragma push
-#pragma force_active on
-SECTION_RODATA static f32 const lit_8223 = -20.0f;
-COMPILER_STRIP_GATE(0x80662F00, &lit_8223);
-#pragma pop
-
-/* 80662F18-80662F18 000168 0000+00 0/0 0/0 0/0 .rodata          @stringBase0 */
-#pragma push
-#pragma force_active on
-SECTION_DEAD static char const* const stringBase_80662F4E = "MAKI_OP";
-#pragma pop
-
 /* 8066296C-80662BC4 00A48C 0258+00 1/1 0/0 0/0 .text            Draw__7daCow_cFv */
 int daCow_c::Draw() {
-    // NONMATCHING
-    return -1;
+    if (field_0xca6) {
+        return 1;
+    }
+
+    J3DModel* model = mpMorf->getModel();
+
+    g_env_light.settingTevStruct(0, &current.pos, &tevStr);
+    g_env_light.setLightTevColorType_MAJI(model, &tevStr);
+
+    mpBtp->entry(model->getModelData());
+    mpMorf->entryDL();
+
+    if (strcmp(dComIfGp_getEventManager().getRunEventName(), "MAKI_OP") == 0) {
+        cXyz shadowPos;
+        cXyz arg1(0.0f, 0.0f, -20.0f);
+        cLib_offsetPos(&shadowPos, &current.pos, current.angle.y, &arg1);
+
+        GXTexObj* shadowTex = dDlst_shadowControl_c::getSimpleTex();
+        dComIfGd_setSimpleShadow(&shadowPos, 90.0f, field_0xc44, mAcch.m_gnd, 0, 1.0f, shadowTex);
+
+        cXyz arg2(0.0f, 0.0f, 120.0f);
+        cLib_offsetPos(&shadowPos, &current.pos, current.angle.y, &arg2);
+        shadowTex = dDlst_shadowControl_c::getSimpleTex();
+        dComIfGd_setSimpleShadow(&shadowPos, 50.0f, field_0xc44, mAcch.m_gnd, 0, 1.0f, shadowTex);
+
+    } else {
+        f32 fVar1 = 800.0f;
+        bool bVar2 = true;
+        if (!checkProcess(&daCow_c::action_crazy) && !checkProcess(&daCow_c::action_thrown)) {
+            bVar2 = false;
+        }
+
+        if (bVar2 && field_0xc9f == 4) {
+            fVar1 = 1500.0f;
+        }
+
+        GXTexObj* shadowTex = dDlst_shadowControl_c::getSimpleTex();
+
+        field_0xc64 =
+            dComIfGd_setShadow(field_0xc64, 1, model, &current.pos, fVar1, 0.0f, current.pos.y,
+                               field_0xc44, mAcch.m_gnd, &tevStr, 0, 1.0f, shadowTex);
+    }
+    tevStr.FogCol.r = field_0xcac * 50.0f;
+    return 1;
 }
 
 /* 80662BC4-80662BE4 00A6E4 0020+00 1/0 0/0 0/0 .text            daCow_Draw__FPv */
