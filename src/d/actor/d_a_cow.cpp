@@ -3449,7 +3449,104 @@ void daCow_c::initCrazyBack(int param_0) {
 
 /* 8065F7DC-8065FE50 0072FC 0674+00 2/1 0/0 0/0 .text            executeCrazyBack__7daCow_cFv */
 void daCow_c::executeCrazyBack() {
-    // NONMATCHING
+    cXyz pointPos;
+    s16 angle;
+
+    switch (field_0xc61) {
+    case 0:
+        setActetcStatus();
+
+        pointPos = dPath_GetPnt(mPath, field_0xc10)->m_position;
+        angle = cLib_targetAngleY(current.pos, pointPos);
+        cLib_addCalcAngleS(&current.angle.y, angle, 0x10, 0x100, 0x80);
+        if (speedF <= 3.0f) {
+            cLib_chaseF(&speedF, 2.0f, 1.0f);
+        } else {
+            cLib_chaseF(&speedF, 2.0f, 3.0f);
+        }
+        cLib_addCalcAngleS(&shape_angle.y, current.angle.y, 8, 0x100, 0x80);
+        field_0xc32.y = shape_angle.y;
+        setBodyAngle(angle);
+
+        if (current.pos.abs(pointPos) < 300.0f && --field_0xc10 < 0) {
+            speedF = 0.0f;
+            field_0xc61 = 3;
+            field_0xc72 -= 0x2000;
+        }
+        if (checkNadeNade()) {
+            setBck(0x1a, 2, 10.0f, 1.0f);
+            field_0xc61 = 1;
+            speedF = 0.0f;
+        }
+        break;
+    case 1:
+        if (checkNadeNadeFinish()) {
+            setBck(0xf, 0, 10.0f, 1.0f);
+            field_0xc61 = 2;
+            speedF = 0.0f;
+        }
+        break;
+    case 2:
+        if (mpMorf->checkFrame(35.0f)) {
+            mSound.startCreatureVoice(JAISoundID(Z2SE_GOAT_V_BREATH_SHAKE), -1);
+        }
+        if (mpMorf->isStop()) {
+            setBck(0x1c, 2, 10.0f, 1.0f);
+            field_0xc61 = 0;
+        }
+        break;
+    case 3:
+        if (mpMorf->checkFrame(1.0f)) {
+            setBck(0x1a, 2, 10.0f, 1.0f);
+            field_0xc61 = 4;
+        }
+        break;
+    case 4:
+        fopAcM_OnStatus(this, 0x100);
+        if (fopAcM_CheckCondition(this, 4)) {
+            fopAcM_delete(this);
+        }
+        break;
+    case 5:
+        setBck(0x18, 0, 3.0f, 1.0f);
+        field_0xc61 = 6;
+        break;
+    case 6:
+        if (mpMorf->isStop()) {
+            if (field_0xc10 < 0) {
+                setBck(0x1c, 2, 10.0f, 1.0f);
+                field_0xc61 = 3;
+            } else if (field_0xc10 < 2) {
+                setBck(0x1c, 2, 10.0f, 1.0f);
+                field_0xc61 = 0;
+            } else {
+                calcRunAnime(1);
+                field_0xc61 = 7;
+                field_0xc90 = 0x1e;
+                speedF = 30.0f;
+            }
+        }
+        break;
+    case 7:
+        pointPos = dPath_GetPnt(mPath, field_0xc10)->m_position;
+        angle = cLib_targetAngleY(current.pos, pointPos);
+        cLib_addCalcAngleS(&current.angle.y, angle, 0x10, 0x100, 0x80);
+
+        if (field_0xc10 < 2) {
+            cLib_chaseF(&speedF, 10.0f, 1.0f);
+        } else {
+            cLib_chaseF(&speedF, 45.0f, 1.0f);
+        }
+        cLib_addCalcAngleS(&shape_angle.y, current.angle.y, 8, 0x100, 0x80);
+        field_0xc32.y = shape_angle.y;
+        setBodyAngle(angle);
+        calcRunAnime(0);
+
+        if (current.pos.abs(pointPos) < 300.0f && --field_0xc10 < 1 && !field_0xc90) {
+            setBck(0x1c, 2, 10.0f, 1.0f);
+            field_0xc61 = 0;
+        }
+    }
 }
 
 /* 8065FE50-8066010C 007970 02BC+00 4/0 0/0 0/0 .text            action_crazy__7daCow_cFv */
