@@ -2851,7 +2851,25 @@ void daCow_c::action_wolf() {
 
 /* 806612DC-806613EC 008DFC 0110+00 2/0 0/0 0/0 .text            action_damage__7daCow_cFv */
 void daCow_c::action_damage() {
-    // NONMATCHING
+    int uVar1 = field_0xc5c;
+    if (uVar1 != 2 && uVar1 < 2) {
+        if (uVar1 != 0) {
+            setBck(0x18, 0, 3.0f, 1.0f);
+            field_0xc5c = 1;
+            field_0xc98 = 200;
+            field_0xcb0 = 1.0f;
+            field_0xcb4 = 0;
+            speedF = 0.0f;
+        } else {
+            setRedTev();
+            if (mpMorf->isStop()) {
+                field_0xca0 = 0;
+                field_0xca1 = 1;
+
+                setProcess(&daCow_c::action_angry, 0);
+            }
+        }
+    }
 }
 
 /* 806613EC-80661580 008F0C 0194+00 1/1 0/0 0/0 .text            action__7daCow_cFv */
