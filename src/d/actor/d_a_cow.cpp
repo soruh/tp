@@ -2911,7 +2911,7 @@ void daCow_c::setCollisions() {
         /* 8066354C-80663558 0000F4 000C+00 0/1 0/0 0/0 .bss             waistOfst$7638 */
         static cXyz waistOfst(-30.0f, 30.0f, 0.0f);
 
-        // todo: is this an unrolled loop?
+        // todo: is this an unrolled loop / macro?
 
         cXyz ofstNow;
 
@@ -2935,18 +2935,45 @@ void daCow_c::setCollisions() {
     }
 }
 
-/* ############################################################################################## */
-/* 80662EE8-80662EEC 000138 0004+00 0/2 0/0 0/0 .rodata          @7722 */
-#pragma push
-#pragma force_active on
-SECTION_RODATA static f32 const lit_7722 = 120.0f;
-COMPILER_STRIP_GATE(0x80662EE8, &lit_7722);
-#pragma pop
-
 /* 80661940-80661AD0 009460 0190+00 2/2 0/0 0/0 .text            Execute__7daCow_cFv */
 int daCow_c::Execute() {
-    // NONMATCHING
-    return -1;
+    mMoreFlags++;
+    field_0xc62 = 0;
+
+    attention_info.flags &= 0xffffffef;
+    attention_info.flags &= 0xffffff7f;
+    action();
+
+    if (!field_0xca6) {
+        fopAcM_posMoveF(this, mCcStts.GetCCMoveP());
+        mAcch.CrrPos(dComIfG_Bgsp());
+        field_0xc44 = mAcch.GetGroundH();
+        setEffect();
+        mpMorf->play(0, dComIfGp_getReverb(fopAcM_GetRoomNo(this)));
+
+        if (!field_0xc9c) {
+            mpBtp->setPlaySpeed(1.0f);
+            field_0xc9c = cM_rndF(120.0f) + 60.0f;
+            if (field_0xc9c < 0x50) {
+                field_0xc9c = 10;
+            }
+        } else {
+            field_0xc9c--;
+            if (mpBtp->isStop()) {
+                mpBtp->setPlaySpeed(0.0f);
+                mpBtp->setFrame(0.0f);
+            }
+        }
+
+        mpBtp->play();
+        setMtx();
+        setAttnPos();
+        setCollisions();
+    } else {
+        setMtx();
+        setAttnPos();
+    }
+    return 1;
 }
 
 /* 80661AD0-80661AF0 0095F0 0020+00 1/0 0/0 0/0 .text            daCow_Execute__FPv */
