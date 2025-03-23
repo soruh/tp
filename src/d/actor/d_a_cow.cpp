@@ -3218,13 +3218,14 @@ int daCow_c::Draw() {
         cXyz arg1(0.0f, 0.0f, -20.0f);
         cLib_offsetPos(&shadowPos, &current.pos, current.angle.y, &arg1);
 
-        GXTexObj* shadowTex = dDlst_shadowControl_c::getSimpleTex();
-        dComIfGd_setSimpleShadow(&shadowPos, 90.0f, field_0xc44, mAcch.m_gnd, 0, 1.0f, shadowTex);
+        dComIfGd_setSimpleShadow(&shadowPos, field_0xc44, 90.0f, mAcch.m_gnd, 0, 1.0f,
+                                 dDlst_shadowControl_c::getSimpleTex());
 
         cXyz arg2(0.0f, 0.0f, 120.0f);
         cLib_offsetPos(&shadowPos, &current.pos, current.angle.y, &arg2);
-        shadowTex = dDlst_shadowControl_c::getSimpleTex();
-        dComIfGd_setSimpleShadow(&shadowPos, 50.0f, field_0xc44, mAcch.m_gnd, 0, 1.0f, shadowTex);
+
+        dComIfGd_setSimpleShadow(&shadowPos, field_0xc44, 50.0f, mAcch.m_gnd, 0, 1.0f,
+                                 dDlst_shadowControl_c::getSimpleTex());
 
     } else {
         f32 fVar1 = 800.0f;
@@ -3235,11 +3236,9 @@ int daCow_c::Draw() {
             fVar1 = 1500.0f;
         }
 
-        GXTexObj* shadowTex = dDlst_shadowControl_c::getSimpleTex();
-
-        field_0xc64 =
-            dComIfGd_setShadow(field_0xc64, 1, model, &current.pos, fVar1, 0.0f, current.pos.y,
-                               field_0xc44, mAcch.m_gnd, &tevStr, 0, 1.0f, shadowTex);
+        field_0xc64 = dComIfGd_setShadow(field_0xc64, 1, model, &current.pos, fVar1, 0.0f,
+                                         current.pos.y, field_0xc44, mAcch.m_gnd, &tevStr, 0, 1.0f,
+                                         dDlst_shadowControl_c::getSimpleTex());
     }
     tevStr.FogCol.r = field_0xcac * 50.0f;
     return 1;
