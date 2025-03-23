@@ -61,20 +61,23 @@ int daCow_c::calcRunAnime(int resetAnimation) {
     if (resetAnimation != 0) {
         mAnimationPhase = 0;
     }
+
     int animationPhase = mAnimationPhase;
 
-    if (animationPhase > 1) {
-        if (animationPhase >= 0) {
-            if (speedF >= 35.0f) {
-                setBck(0x13, 2, 5.0f, 1.0f);
-                mAnimationPhase = 2;
-            } else {
-                setBck(0x19, 2, 5.0f, 1.0f);
-                mAnimationPhase = 1;
-            }
+    f32 newSpeed;
+    switch (animationPhase) {
+    case 0:
+        if (speedF < 35.0f) {
+            setBck(0x19, 2, 5.0f, 1.0f);
+            mAnimationPhase = 1;
+        } else {
+            setBck(0x13, 2, 5.0f, 1.0f);
+            mAnimationPhase = 2;
         }
-    } else if (animationPhase < 1) {
-        f32 newSpeed = (speedF * 3.0f) / 25.0f;
+        break;
+
+    case 1:
+        newSpeed = (speedF * 3.0f) / 25.0f;
         if (newSpeed > 5.0f) {
             newSpeed = 5.0f;
         }
@@ -83,9 +86,10 @@ int daCow_c::calcRunAnime(int resetAnimation) {
             setBck(0x13, 2, 5.0f, 1.0f);
             mAnimationPhase = 2;
         }
-    } else {
-        mpMorf->setPlaySpeed(1.3f);
+        break;
 
+    case 2:
+        mpMorf->setPlaySpeed(1.3f);
         if (speedF < 35.0f) {
             setBck(0x19, 2, 5.0f, 1.0f);
             mAnimationPhase = 1;
