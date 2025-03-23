@@ -1949,32 +1949,18 @@ void daCow_c::checkBeforeBg() {
         return;
     }
 
-    if (!planeTri[1] || !planeTri[2]) {
+    if (planeTri[1] && planeTri[2]) {
         if (planeTri[0]) {
             if (planeTri[1]) {
-                if (field_0xc60 <= 3) {
-                    field_0xc61 = 4;
-                } else {
-                    field_0xc61 = 2;
-                }
+                field_0xc61 = field_0xc60 <= 3 ? 4 : 2;
             } else if (planeTri[2]) {
-                if (field_0xc60 <= 3) {
-                    field_0xc61 = 3;
-                } else {
-                    field_0xc61 = 1;
-                }
+                field_0xc61 = field_0xc60 <= 3 ? 3 : 1;
             } else {
                 s16 difference = z[0] - field_0xc32.y;
                 if (abs(difference) < 0x7801) {
-                    if (difference <= 0) {
-                        field_0xc61 = 3;
-                    } else {
-                        field_0xc61 = 4;
-                    }
-                } else if ((field_0xc60 & 1) == 0) {
-                    field_0xc61 = 3;
+                    field_0xc61 = difference <= 0 ? 3 : 4;
                 } else {
-                    field_0xc61 = 4;
+                    field_0xc61 = (field_0xc60 & 1) ? 4 : 3;
                 }
             }
         } else if (planeTri[1]) {
@@ -1982,59 +1968,57 @@ void daCow_c::checkBeforeBg() {
                 if (field_0xc60 < 2) {
                     field_0xc61 = 4;
                     field_0xc54 = 10;
-                } else if (field_0xc60 < 4) {
-                    field_0xc61 = 2;
-                }
-            } else if (y[1] < 600.0) {
-                field_0xc61 = 2;
-            } else {
-                field_0xc61 = 0;
-            }
-        } else if (!planeTri[2]) {
-            if (field_0xc60 == 2) {
-                field_0xc61 = 1;
-            } else if (field_0xc60 < 2) {
-                if (field_0xc60 == 0) {
-                    field_0xc61 = 3;
                 } else {
-                    field_0xc61 = 4;
+                    if (field_0xc60 < 4) {
+                        field_0xc61 = 2;
+                    }
                 }
             } else {
-                if (field_0xc60 <= 3) {
+                if (y[1] < 600.0) {
                     field_0xc61 = 2;
                 } else {
                     field_0xc61 = 0;
                 }
             }
-        } else if (field_0xc60 == 2) {
-            field_0xc61 = 1;
-        } else if (field_0xc60 > 1) {
-            if (y[2] < 600.0) {
+        } else if (!planeTri[2]) {
+            if (field_0xc60 == 2) {
                 field_0xc61 = 1;
             } else {
-                field_0xc61 = 0;
+                if (field_0xc60 < 2) {
+                    field_0xc61 = field_0xc60 == 0 ? 3 : 4;
+                } else {
+                    field_0xc61 = field_0xc60 <= 3 ? 2 : 0;
+                }
             }
         } else {
-            field_0xc61 = 3;
-            field_0xc54 = 10;
+            if (field_0xc60 == 2) {
+                field_0xc61 = 1;
+            } else {
+                if (field_0xc60 > 1) {
+                    field_0xc61 = y[2] < 600.0f ? 1 : 0;
+                } else {
+                    field_0xc61 = 3;
+                    field_0xc54 = 10;
+                }
+            }
         }
     } else {
         if (field_0xc61 == 3) {
             field_0xc61 = 3;
         } else {
-            if (field_0xc61 < 3) {
+            if (field_0xc61 >= 3) {
+                if (field_0xc61 < 5) {
+                    field_0xc61 = 4;
+                } else {
+                    field_0xc61 = (field_0xc60 & 1) ? 4 : 3;
+                }
+            } else {
                 if (field_0xc61 == 1) {
                     field_0xc61 = 3;
                 }
                 if (field_0xc61 != 0) {
                     field_0xc61 = 4;
                 }
-            } else if (field_0xc61 < 5) {
-                field_0xc61 = 4;
-            } else if ((field_0xc60 & 1) == 0) {
-                field_0xc61 = 3;
-            } else {
-                field_0xc61 = 4;
             }
         }
         field_0xc54 = 10;
