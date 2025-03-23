@@ -15,5 +15,5 @@ dComIfAc_info_c g_dComIfAc_gameInfo = {
 
 /* 80450618-80450620 000098 0004+04 0/0 2/2 7/7 .sdata           g_dComIfGoat_gameInfo */
 dComIfGoat_info_c g_dComIfGoat_gameInfo = {
-    NULL, // field_0x0
+    NULL,  // field_0x0
 };

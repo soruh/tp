@@ -8,6 +8,7 @@
 #include "d/actor/d_a_npc_aru.h"
 #include "d/actor/d_a_player.h"
 #include "d/d_cc_uty.h"
+#include "d/d_com_inf_actor.h"
 #include "d/d_com_inf_game.h"
 #include "d/d_meter2_info.h"
 #include "d/d_timer.h"
@@ -2806,7 +2807,68 @@ void daCow_c::executeCrazyBack2() {
 
 /* 80660544-806607B8 008064 0274+00 4/0 0/0 0/0 .text            action_thrown__7daCow_cFv */
 void daCow_c::action_thrown() {
-    // NONMATCHING
+    int uVar1 = field_0xc5c;
+    if (uVar1 != 2) {
+        if (uVar1 < 2) {
+            if (uVar1 == 0) {
+                field_0xc9f = 2;
+                field_0xc5c = 1;
+                dComIfGoat_SetThrow(this);
+                field_0xc9e = 0;
+            } else {
+                if (field_0xc94) {
+                    field_0xc94--;
+                }
+                if (field_0xc90) {
+                    field_0xc90--;
+                }
+
+                daPy_py_c* player;
+
+                switch (field_0xc9f) {
+                case 2:
+                    executeCrazyBeforeCatch();
+                    break;
+                case 3:
+                    executeCrazyCatch();
+                    break;
+                case 4:
+                    executeCrazyThrow();
+                    break;
+                case 5:
+                    executeCrazyAttack();
+                    break;
+                case 6:
+                    player = daPy_getPlayerActorClass();
+                    if (checkOutOfGate(player->current.pos) || checkOutOfGate(current.pos)) {
+                        setProcess(&daCow_c::action_run, 0);
+                        field_0xc9e = 1;
+                    }
+                    if (checkCowInOwn(0x8000)) {
+                        return;
+                    }
+                    if (checkBck(0x15)) {
+                        setProcess(&daCow_c::action_wait, 1);
+                    } else {
+                        setProcess(&daCow_c::action_wait, 0);
+                    }
+                    break;
+                case 8:
+                    executeCrazyBack2();
+                    break;
+                default:
+                    for (int iSphere = 0; iSphere < N_COW_COLLIDERS; iSphere++) {
+                        mSph[iSphere].OffTgSetBit();
+                    }
+                }
+            }
+        } else {
+            if (uVar1 < 4) {
+                field_0xc3e.set(0, 0, 0);
+                dComIfGoat_SetThrow(0);
+            }
+        }
+    }
 }
 
 #define N_WOLF_BUSTERS 3
