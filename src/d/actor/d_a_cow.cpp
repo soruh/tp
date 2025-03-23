@@ -2525,7 +2525,13 @@ void daCow_c::action_enter() {
 
 /* 8065CFBC-8065D03C 004ADC 0080+00 4/4 0/0 1/1 .text            isAngry__7daCow_cFv */
 bool daCow_c::isAngry() {
-    // NONMATCHING
+    if (checkProcess(&daCow_c::action_angry) &&
+        (field_0xc9f == 0 || field_0xc9f == 1 || field_0xc9f == 5))
+    {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 /* 8065D03C-8065D0B8 004B5C 007C+00 1/1 0/0 1/1 .text            isGuardFad__7daCow_cFv */
