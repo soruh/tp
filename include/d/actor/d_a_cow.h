@@ -7,6 +7,8 @@
 #include "d/d_path.h"
 #include "f_op/f_op_actor_mng.h"
 
+#define N_COW_COLLIDERS 3
+
 /**
  * @ingroup actors-unsorted
  * @class daCow_c
@@ -125,7 +127,7 @@ private:
     /* 0x60c */ dBgS_ObjAcch mAcch;
     /* 0x7e4 */ dCcD_Stts mCcStts;
     /* 0x820 */ dBgS_AcchCir mAcchCir;
-    /* 0x860 */ dCcD_Sph mSph[3];
+    /* 0x860 */ dCcD_Sph mSph[N_COW_COLLIDERS];
     /* 0xc08 */ u32 field_0xc08;
     /* 0xc0c */ dPath* mPath;
     /* 0xc10 */ u8 field_0xc10;
@@ -163,8 +165,8 @@ private:
     /* 0xc7c */ f32 field_0xc7c;
     /* 0xc80 */ int field_0xc80;
     /* 0xc84 */ u32 field_0xc84;
-    /* 0xc88 */ int field_0xc88;
-    /* 0xc8c */ int field_0xc8c;
+    /* 0xc88 */ int field_0xc88;  // some timer
+    /* 0xc8c */ int field_0xc8c;  // some timer
     /* 0xc90 */ u32 field_0xc90;
     /* 0xc94 */ u32 field_0xc94;
     /* 0xc98 */ u32 field_0xc98;

@@ -516,6 +516,7 @@ bool daCow_c::checkThrow() {
 }
 
 #define CLAMP(val, min, max)                                                                       \
+    STATIC_ASSERT(min <= max);                                                                     \
     if ((val) > (max)) {                                                                           \
         (val) = (max);                                                                             \
     }                                                                                              \
@@ -594,7 +595,7 @@ void daCow_c::damage_check() {
             field_0xc80--;
         } else {
             cCcD_ObjHitInf* hitObject = NULL;
-            for (int iSphere = 0; iSphere < (int)(sizeof(mSph) / sizeof(dCcD_Sph)); iSphere++) {
+            for (int iSphere = 0; iSphere < N_COW_COLLIDERS; iSphere++) {
                 dCcD_Sph* sphere = &mSph[iSphere];
                 if (sphere->ChkTgHit()) {
                     hitObject = sphere->GetTgHitObj();
@@ -1454,7 +1455,7 @@ bool daCow_c::checkNearCowRun() {
         return false;
     }
 
-    for (int iSphere = 0; iSphere < (int)(sizeof(mSph) / sizeof(dCcD_Sph)); iSphere++) {
+    for (int iSphere = 0; iSphere < N_COW_COLLIDERS; iSphere++) {
         cCcD_Obj* obj = mSph[iSphere].GetCoHitObj();
         if (!obj) {
             continue;
@@ -2332,7 +2333,7 @@ bool daCow_c::checkCurringPen() {
 
 /* 8065C508-8065C680 004028 0178+00 2/2 0/0 0/0 .text            setCowInCage__7daCow_cFv */
 void daCow_c::setCowInCage() {
-    for (int iSphere = 0; iSphere < (int)(sizeof(mSph) / sizeof(dCcD_Sph)); iSphere++) {
+    for (int iSphere = 0; iSphere < N_COW_COLLIDERS; iSphere++) {
         mSph[iSphere].OffCoSetBit();
         mSph[iSphere].OnCoNoCrrBit();
         mCcStts.ClrCcMove();
@@ -2439,7 +2440,7 @@ void daCow_c::action_enter() {
                             cLib_addCalcAngleS2(&shape_angle.y, current.angle.y, 8, 0x800);
                             field_0xc32.y = shape_angle.y;
                             if (penDistanceNow.z > 500.0f) {
-                                for (int iSphere = 0; iSphere < 3; iSphere++) {
+                                for (int iSphere = 0; iSphere < N_COW_COLLIDERS; iSphere++) {
                                     mSph[iSphere].OnCoSetBit();
                                 }
                                 mSph[0].SetCoSPrm(0x19);
@@ -2512,7 +2513,7 @@ void daCow_c::action_enter() {
                 calcRunAnime(1);
                 field_0xc6c = 1;
                 this->field_0xc9f = 0;
-                for (int iSphere = 0; iSphere < 3; iSphere++) {
+                for (int iSphere = 0; iSphere < N_COW_COLLIDERS; iSphere++) {
                     mSph[iSphere].OffCoSetBit();
                     mCcStts.ClrCcMove();
                 }
@@ -2520,7 +2521,7 @@ void daCow_c::action_enter() {
         }
     }
 
-    for (int iSphere = 0; iSphere < 3; iSphere++) {
+    for (int iSphere = 0; iSphere < N_COW_COLLIDERS; iSphere++) {
         this->mSph[iSphere].OffTgSetBit();
     }
 }
@@ -2853,24 +2854,43 @@ void daCow_c::action_damage() {
     // NONMATCHING
 }
 
-/* ############################################################################################## */
-/* 80662ED8-80662EDC 000128 0004+00 0/1 0/0 0/0 .rodata          @7551 */
-#pragma push
-#pragma force_active on
-SECTION_RODATA static f32 const lit_7551 = 1.0f / 5.0f;
-COMPILER_STRIP_GATE(0x80662ED8, &lit_7551);
-#pragma pop
-
-/* 80662EDC-80662EE0 00012C 0004+00 0/1 0/0 0/0 .rodata          @7552 */
-#pragma push
-#pragma force_active on
-SECTION_RODATA static f32 const lit_7552 = -300.0f;
-COMPILER_STRIP_GATE(0x80662EDC, &lit_7552);
-#pragma pop
-
 /* 806613EC-80661580 008F0C 0194+00 1/1 0/0 0/0 .text            action__7daCow_cFv */
 void daCow_c::action() {
-    // NONMATCHING
+    if (fopAcM_checkCarryNow(this)) {
+        fopAcM_cancelCarryNow(this);
+
+        speedF = 0.0f;
+        speed.y = 0.0f;
+    }
+    if (mNoNearCheckTimer) {
+        mNoNearCheckTimer--;
+    }
+    if (field_0xc8c) {
+        field_0xc8c--;
+    }
+    if (field_0xc88) {
+        field_0xc88--;
+    }
+
+    cLib_chaseF(&field_0xcac, field_0xcb0, 0.1f);
+    damage_check();
+
+    s16 sVar2 = field_0xc38.y;
+    if (!field_0xca5) {
+        for (int iSphere = 0; iSphere < N_COW_COLLIDERS; iSphere++) {
+            mSph[iSphere].OnTgSetBit();
+        }
+    }
+    if (this->mProcess) {
+        (this->*mProcess)();
+    }
+
+    sVar2 = (sVar2 - 0.2f * field_0xc32.y) * current.angle.y;
+
+    CLAMP(sVar2, -0x1000, 0x1000);
+
+    cLib_addCalcAngleS2(&field_0xc32.z, sVar2, 8, 0x800);
+    dComIfGp_att_LookRequest(this, 1500.0f, 300.0f, -300.0f, 0x6000, 1);
 }
 
 /* 80661580-806615EC 0090A0 006C+00 1/1 0/0 0/0 .text            setMtx__7daCow_cFv */
@@ -3059,7 +3079,7 @@ int daCow_c::initialize() {
 
     static dCcD_SrcSph cc_sph_src;
 
-    for (int iSphere = 0; iSphere < 3; iSphere = iSphere + 1) {
+    for (int iSphere = 0; iSphere < N_COW_COLLIDERS; iSphere = iSphere + 1) {
         mSph[iSphere].Set(cc_sph_src);
         mSph[iSphere].SetStts(&mCcStts);
     }
