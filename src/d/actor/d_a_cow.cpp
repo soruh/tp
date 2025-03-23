@@ -2589,7 +2589,19 @@ bool daCow_c::checkBeforeBgAngry(s16 angle) {
 
 /* 8065D230-8065D29C 004D50 006C+00 2/2 0/0 0/0 .text            setRedTev__7daCow_cFv */
 void daCow_c::setRedTev() {
-    // NONMATCHING
+    if (field_0xcb4 < 2) {
+        if (field_0xcb4 == 0) {
+            if (field_0xcac == 1.0f) {
+                field_0xcb0 = 0.0f;
+                field_0xcb4 = 1;
+            }
+        } else {
+            if (field_0xcac == 0.0f) {
+                field_0xcb0 = 1.0f;
+                field_0xcb4 = 0;
+            }
+        }
+    }
 }
 
 /* 8065D29C-8065D2F0 004DBC 0054+00 1/1 0/0 0/0 .text            setAngryTurn__7daCow_cFv */
