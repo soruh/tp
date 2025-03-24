@@ -2850,13 +2850,7 @@ void daCow_c::action_wolf() {
 
         calcRunAnime(0);
 
-        if (player->checkNowWolf()) {
-            setProcess(&daCow_c::action_run, 0);
-            field_0xc9e = 1;
-            return;
-        }
-
-        if (checkOutOfGate(current.pos)) {
+        if (player->checkNowWolf() && checkOutOfGate(current.pos)) {
             setProcess(&daCow_c::action_run, 0);
             field_0xc9e = 1;
             return;
@@ -2867,21 +2861,18 @@ void daCow_c::action_wolf() {
 
             cLib_chaseF(&speedF, 36.0f, 1.0f);
             cLib_addCalcAngleS2(&current.angle.y, aruAngle, 8, 0x400);
-            shape_angle.y = current.angle.y;
-            field_0xc32.y = current.angle.y;
+            shape_angle.y = field_0xc32.y = current.angle.y;
             setBodyAngle2(aruAngle);
 
             if (aruPos.absXZ(current.pos) < 500.0f) {
                 field_0xc9f = 1;
             }
-            // goto LAB_80661240;
-            cLib_chaseS(&field_0xc3e.z, 0, 0x400);
             break;
         case 1:
-            if (cM_rnd() >= 0.5f) {
-                aruAngle -= 0x3000;
+            if (cM_rnd() < 0.5f) {
+                aruAngle = aruAngle + 0x3000;
             } else {
-                aruAngle += 0x3000;
+                aruAngle = aruAngle - 0x3000;
             }
 
             field_0xc20 = aruPos;
@@ -2891,8 +2882,6 @@ void daCow_c::action_wolf() {
             field_0xc72 = cLib_targetAngleY(&current.pos, &field_0xc20);
             field_0xc9f = 2;
             field_0xc90 = 0x96;
-            break;
-
         case 2:
             field_0xc72 = cLib_targetAngleY(&current.pos, &field_0xc20);
 
@@ -2904,23 +2893,18 @@ void daCow_c::action_wolf() {
 
             cLib_chaseF(&speedF, fVar13, 1.0f);
             cLib_addCalcAngleS2(&current.angle.y, field_0xc72, 8, 0x200);
-
-            shape_angle.y = current.angle.y;
-            field_0xc32.y = current.angle.y;
-
+            shape_angle.y = field_0xc32.y = current.angle.y;
             setBodyAngle2(field_0xc72);
 
-            if (!field_0xc90) {
+            if (!field_0xc90 || current.pos.absXZ(field_0xc20) < 100.0f || mAcch.ChkWallHit()) {
                 field_0xc9f = 1;
-            } else {
-                if (current.pos.absXZ(field_0xc20) < 100.0f || mAcch.ChkWallHit()) {
-                    field_0xc9f = 1;
-                }
             }
 
             if (current.pos.absXZ(aru->current.pos) < 700.0f) {
                 if (!checkOutOfGate(current.pos)) {
-                    if (abs(fopAcM_searchPlayerAngleY(this) - field_0xc32.y) < 0x2000) {
+                    // this uses `fopAcM_searchPlayerAngleY(this)` in the debug rom
+                    s16 angleDifference = fopAcM_searchActorAngleY(this, player) - field_0xc32.y;
+                    if (abs(angleDifference) < 0x2000) {
                         field_0xca0 = 0;
                         field_0xca1 = 1;
                         setProcess(&daCow_c::action_angry, 0);
@@ -2933,7 +2917,10 @@ void daCow_c::action_wolf() {
                 if (!checkOutOfGate(current.pos)) {
                     m_angry_cow = 0;
                     if (!fpcEx_Search(s_angry_cow2, this)) {
-                        if (abs(fopAcM_searchPlayerAngleY(this) - field_0xc32.y) < 0x2000) {
+                        s16 angleDifference = fopAcM_searchPlayerAngleY(this) - field_0xc32.y;
+                        if (abs(angleDifference) < 0x2000) {
+                            field_0xca0 = 0;
+                            field_0xca1 = 1;
                             setProcess(&daCow_c::action_angry, 0);
                             return;
                         }
@@ -2943,7 +2930,6 @@ void daCow_c::action_wolf() {
         }
 
         cLib_chaseS(&field_0xc3e.z, 0, 0x400);
-
         break;
     case 2:
         break;
@@ -2959,15 +2945,12 @@ void daCow_c::action_wolf() {
         attention_info.flags &= ~0x1;
 
         // todo: clean up
-        int iWolfBuster = 0;
-        for (int i = N_WOLF_BUSTERS; i != 0; i -= 1) {
+        for (int iWolfBuster = 0; iWolfBuster < N_WOLF_BUSTERS; iWolfBuster++) {
             if (gWolfBustersID[iWolfBuster] == fopAcM_GetID(this)) {
+                gWolfBustersID[iWolfBuster] = -1;
                 break;
             }
-            iWolfBuster += 1;
         }
-        gWolfBustersID[iWolfBuster] = -1;
-        break;
     }
 }
 
