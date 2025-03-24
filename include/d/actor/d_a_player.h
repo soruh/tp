@@ -338,7 +338,7 @@ public:
         FLG0_MAGNE_BOOTS_ON = 0x1000,
         FLG0_PUSH_PULL_KEEP = 0x800,
         FLG0_UNK_400 = 0x400,
-        FLG0_COW_GAME_LEASH = 0x200,
+        FLG0_UNK_200 = 0x200,
         FLG0_SWIM_UP = 0x100,
         FLG0_UNK_80 = 0x80,
         FLG0_UNK_40 = 0x40,
@@ -559,7 +559,7 @@ public:
         RFLG0_FRONT_ROLL_CRASH = 0x2000,
         RFLG0_ENEMY_ATTN_LOCK = 0x1000,
         RFLG0_UNK_400 = 0x400,
-        RFLG0_UNK_200 = 0x200,
+        RFLG0_COW_GAME_LEASH = 0x200,
         RFLG0_UNK_100 = 0x100,
         RFLG0_UNK_80 = 0x80,
         RFLG0_UNK_40 = 0x40,
@@ -924,7 +924,7 @@ public:
     bool checkGrabThrow() const { return checkResetFlg0(RFLG0_GRAB_THROW); }
     bool checkMidnaAtnPos() const { return checkNoResetFlg1(FLG1_MIDNA_ATN_POS); }
     bool checkMidnaHairAtnPos() const { return checkNoResetFlg1(FLG1_MIDNA_HAIR_ATN_POS); }
-    bool checkCowGameLash() const { return checkNoResetFlg0(FLG0_COW_GAME_LEASH); }
+    bool checkCowGameLash() const { return checkResetFlg0(RFLG0_COW_GAME_LEASH); }
 
     void onBossRoomWait() { onEndResetFlg0(ERFLG0_BOSS_ROOM_WAIT); }
     void onBeeFollow() { onEndResetFlg0(ERFLG0_BEE_FOLLOW); }
