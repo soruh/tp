@@ -954,7 +954,10 @@ void daCow_c::checkBeforeBg() {
     b.y += 110.0f;
     cXyz c;
 
-    bool planeTri[3] = {false, false, false};
+    bool planeTri[3];
+    for (int iPlane = 0; iPlane < 3; iPlane++) {
+        planeTri[iPlane] = false;
+    }
 
     f32 f1 = 1000.0f;
     f32 f2 = 700.0f;
@@ -964,10 +967,10 @@ void daCow_c::checkBeforeBg() {
         f2 = 560.0f;
     }
 
-    if (speedF != 0.0f) {
-        for (int iPlane = 0; iPlane < 3; iPlane++) {
+    if (speedF) {
+        for (u32 iPlane = 0; iPlane < 3; iPlane++) {
             c = b;
-            if (iPlane == 0) {
+            if (!iPlane) {
                 c.x += f1 * cM_ssin(field_0xc32.y + x[0]);
                 c.z += f1 * cM_scos(field_0xc32.y + x[0]);
             } else {
@@ -1013,9 +1016,19 @@ void daCow_c::checkBeforeBg() {
     if (planeTri[1] && planeTri[2]) {
         if (planeTri[0]) {
             if (planeTri[1]) {
-                field_0xc61 = field_0xc60 <= 3 ? 4 : 2;
+                if (field_0xc60 <= 3) {
+                    field_0xc61 = 4;
+                } else {
+                    field_0xc61 = 2;
+                }
+
             } else if (planeTri[2]) {
-                field_0xc61 = field_0xc60 <= 3 ? 3 : 1;
+                if (field_0xc60 <= 3) {
+                    field_0xc61 = 4;
+                } else {
+                    field_0xc61 = 1;
+                }
+
             } else {
                 s16 difference = z[0] - field_0xc32.y;
                 if (abs(difference) < 0x7801) {
