@@ -1603,19 +1603,17 @@ bool daCow_c::isAngry() {
 bool daCow_c::isGuardFad() {
     if (checkProcess(&daCow_c::action_wolf)) {
         return true;
+    } else if ((u32)daPy_getPlayerActorClass()->checkNowWolf() != (u32)0) {
+        return isAngry();
     } else {
-        if ((u32)daPy_getPlayerActorClass()->checkNowWolf() != (u32)0) {
-            return isAngry();
-        } else {
-            return false;
-        }
+        return false;
     }
 }
 
 /* 8065D0B8-8065D17C 004BD8 00C4+00 0/0 0/0 1/1 .text            setAngryHit__7daCow_cFv */
 void daCow_c::setAngryHit() {
     if (isAngry()) {
-        field_0xc72 = field_0xc32.y - 0x8000;
+        field_0xc72 = field_0xc32.y - (s16)0x8000;
         speedF = 0.0f;
         current.angle.y = field_0xc32.y;
         calcRunAnime(1);
