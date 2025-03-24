@@ -3008,7 +3008,7 @@ void daCow_c::action() {
         (this->*mProcess)();
     }
 
-    sVar2 = (sVar2 - 0.2f * field_0xc32.y) * current.angle.y;
+    sVar2 = speedF * (sVar2 - field_0xc32.y) * 0.2f;
 
     CLAMP(sVar2, -0x1000, 0x1000);
 
