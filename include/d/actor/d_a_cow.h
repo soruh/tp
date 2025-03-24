@@ -117,6 +117,9 @@ public:
     bool getNoNearCheckTimer() { return mNoNearCheckTimer; }
     daCow_c* getCowP() { return mCowP; }
 
+    // todo
+    u8 getUnknownParam() { return fopAcM_GetParam(this) >> 8; }
+
 private:
     /* 0x568 */ u16 mFlags;
     /* 0x56a */ u8 field_0x56a;  // undefined

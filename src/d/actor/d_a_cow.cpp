@@ -3224,47 +3224,38 @@ int daCow_c::initialize() {
         setCowInCage();
     }
 
-    if (mPrm0 == 4) {
+    dStage_dPnt_c* point;
+
+    switch (mPrm0) {
+    case 3:
+        if (getUnknownParam() != (u8)-1) {  // todo
+            mPath = dPath_GetRoomPath(fopAcM_GetParam(this), fopAcM_GetRoomNo(this));
+            field_0xc10 = 0;
+
+            point = dPath_GetPnt(mPath, field_0xc10);
+            current.pos = point->m_position;
+
+            setProcess(&daCow_c::action_crazy, 0);
+        }
+        break;
+
+    case 4:
         field_0xca5 = 1;
-    } else {
-        if (mPrm0 < 4 && mPrm0 > 2) {
-            int param = fopAcM_GetParam(this);
-            if ((param >> 8) != 0xff) {
-                mPath = dPath_GetRoomPath(param, fopAcM_GetRoomNo(this));
-                field_0xc10 = 0;
+    default:
+        int rand = cM_rndF(4.0f) + fopAcM_GetID(this);
+        int nextAction = rand % 4;
+        if (nextAction == 1) {
+            setProcess(&daCow_c::action_shake, 0);
 
-                dStage_dPnt_c* point = dPath_GetPnt(mPath, field_0xc10);
-                current.pos = point->m_position;
+        } else if (nextAction == 2) {
+            setProcess(&daCow_c::action_moo, 0);
 
-                setProcess(&daCow_c::action_crazy, 0);
-            }
-            goto SKIP_ACTION_CHANGE;  // todo
+        } else if (nextAction == 3) {
+            setProcess(&daCow_c::action_eat, 0);
+        } else {
+            setProcess(&daCow_c::action_wait, 0);
         }
     }
-
-    // todo: what is this?
-    s32 iVar12 = cM_rndF(4.0f) + fopAcM_GetID(this);
-    s32 iVar1 = iVar12 >> 0x1f;
-    iVar1 = (iVar1 * 4 | (iVar12 * 0x40000000 + iVar1) >> 0x1e) - iVar1;
-
-    switch (iVar1) {
-    case 1:
-        setProcess(&daCow_c::action_shake, 0);
-
-        break;
-    case 2:
-        setProcess(&daCow_c::action_moo, 0);
-
-        break;
-    case 3:
-        setProcess(&daCow_c::action_eat, 0);
-
-        break;
-    default:
-        setProcess(&daCow_c::action_wait, 0);
-    }
-
-SKIP_ACTION_CHANGE:
 
     mAcchCir.SetWallR(100.f);
     mAcchCir.SetWallH(110.f);
