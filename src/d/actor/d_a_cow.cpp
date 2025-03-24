@@ -3262,28 +3262,32 @@ int daCow_c::initialize() {
     gravity = -4.0f;
 
     f32 rand = cM_rnd();
-    int bVar11 = 0;
-    if (rand >= 0.1f) {
-        if (rand >= 0.9f && !(l_CowType & 2)) {
-            l_CowType |= 2;
-            bVar11 = 2;
-        }
-    } else {
+    u8 bVar11 = 0;
+    if (rand < 0.1f) {
         if (!(l_CowType & 1)) {
             l_CowType |= 1;
             bVar11 = 1;
         }
+    } else {
+        if (rand >= 0.9f && !(l_CowType & 2)) {
+            l_CowType |= 2;
+            bVar11 = 2;
+        }
     }
 
-    if (bVar11 == 2) {
-        field_0xc78 = 700.0f;
-        field_0xc7c = 15.0f;
-    } else if (bVar11 < 2 && bVar11) {
+    switch (bVar11) {
+    case 1:
         field_0xc78 = 1300.0f;
         field_0xc7c = 35.0f;
-    } else {
+        break;
+    case 2:
+        field_0xc78 = 700.0f;
+        field_0xc7c = 15.0f;
+        break;
+    default:
         field_0xc78 = cM_rndFX(100.0f) + 1000.0f;
         field_0xc7c = cM_rndFX(5.0f) + 25.0f;
+        break;
     }
 
     field_0xc69 = bVar11;
