@@ -2790,17 +2790,29 @@ void daCow_c::action_thrown() {
 bool daCow_c::checkWolfBusters() {
     daNpc_Aru_c* aru;
 
-    if (daPy_getPlayerActorClass()->checkNowWolf() &&
-        fopAcM_SearchByName(PROC_NPC_ARU, (fopAc_ac_c**)&aru))
-    {
-        if (!checkOutOfGate(current.pos) && cM_rnd() >= 0.9f) {
-            for (int iWolfBuster = 0; iWolfBuster < 3; iWolfBuster = iWolfBuster + 1) {
-                if (gWolfBustersID[iWolfBuster] == -1) {
-                    gWolfBustersID[iWolfBuster] = fopAcM_GetID(this);
-                    setProcess(&daCow_c::action_wolf, 0);
-                    return true;
-                }
-            }
+    daPy_py_c* player = daPy_getPlayerActorClass();
+    if (!player->checkNowWolf()) {
+        return false;
+    }
+
+    fopAcM_SearchByName(PROC_NPC_ARU, (fopAc_ac_c**)&aru);
+    if (!aru) {
+        return false;
+    }
+
+    if (checkOutOfGate(current.pos)) {
+        return false;
+    }
+
+    if (cM_rnd() < 0.9f) {
+        return false;
+    }
+
+    for (int iWolfBuster = 0; iWolfBuster < N_WOLF_BUSTERS; iWolfBuster = iWolfBuster + 1) {
+        if (gWolfBustersID[iWolfBuster] == -1) {
+            gWolfBustersID[iWolfBuster] = fopAcM_GetID(this);
+            setProcess(&daCow_c::action_wolf, 0);
+            return true;
         }
     }
     return false;
