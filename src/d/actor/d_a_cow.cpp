@@ -120,7 +120,7 @@ void daCow_c::setEffect() {
 
     if (mShouldSetEffect) {
         if (mShouldSetEffect == 1) {
-            if ((field_0xc68 & 1)) {
+            if (field_0xc68 & 1) {
                 cXyz offset(0.0f, 10.0f, -70.0f);
 
                 offset.x = 25.0f;
@@ -144,8 +144,9 @@ void daCow_c::setEffect() {
 
             static cXyz runScale(2.0f, 2.0f, 2.0f);
 
+            int j;
             for (int i = 0; i < 3; i++) {
-                for (int j = 0; j < 2; j++) {
+                for (j = 0; j < 2; j++) {
                     JPABaseEmitter* emitter = mParticle.getEmitterTwo(i, j, 0);
 
                     if (emitter) {
@@ -154,11 +155,11 @@ void daCow_c::setEffect() {
                     }
                 }
             }
+        } else {
+            fopAcM_effSmokeSet1(&field_0xd38, &field_0xd3c, &current.pos, NULL, 2.0f, &tevStr, 1);
         }
-    } else {
-        fopAcM_effSmokeSet1(&field_0xd38, &field_0xd3c, &current.pos, NULL, 2.0f, &tevStr, 1);
+        mShouldSetEffect = 0;
     }
-    mShouldSetEffect = 0;
 }
 
 /* 80658AA4-80658B10 0005C4 006C+00 5/5 0/0 0/0 .text            isChaseCowGame__7daCow_cFv */
