@@ -1939,8 +1939,10 @@ void daCow_c::action_angry() {
 void daCow_c::calcCatchPos(f32 distance, int someBool) {
     daPy_py_c* player = daPy_getPlayerActorClass();
     s16 offsetAngle = player->shape_angle.y - (s16)0x8000;
+    f32 playerPosY = player->current.pos.y;
+    f32 diff = playerPosY - field_0xc44;
     f32 abs = current.pos.absXZ(player->current.pos);
-    int angle = cM_atan2s(abs, player->current.pos.y - field_0xc44);
+    int angle = cM_atan2s(abs, diff);
 
     cXyz catchPos(0.0f, distance * cM_scos(angle), distance * cM_ssin(angle));
     shape_angle.x = angle - 0x4000;
