@@ -472,19 +472,21 @@ static s16 m_view_angle;
 
 /* 8065972C-80659814 00124C 00E8+00 2/2 0/0 0/0 .text            s_near_cow__FPvPv */
 static void* s_near_cow(void* param_1, void* param_2) {
-    if (IS_VALID_COW_INTERACTION(param_1, param_2) && !((daCow_c*)param_1)->getCowIn()) {
+    if (IS_VALID_COW_INTERACTION(param_1, param_2)) {
         daCow_c* cow_1 = (daCow_c*)param_1;
         daCow_c* cow_2 = (daCow_c*)param_2;
 
-        s16 actorAngleY = fopAcM_searchActorAngleY(cow_2, cow_1);
+        if (!cow_1->getCowIn()) {
+            s16 actorAngleY = fopAcM_searchActorAngleY(cow_2, cow_1);
 
-        actorAngleY = cLib_distanceAngleS(actorAngleY, cow_2->getShapeAngle().y);
+            actorAngleY = cLib_distanceAngleS(actorAngleY, cow_2->getShapeAngle().y);
 
-        if (cLib_distanceAngleS(actorAngleY, m_view_angle) < m_view_angle_wide) {
-            f32 dVar5 = fopAcM_searchActorDistance(cow_1, cow_2);
+            if (cLib_distanceAngleS(actorAngleY, m_view_angle) < m_view_angle_wide) {
+                f32 dVar5 = fopAcM_searchActorDistance(cow_1, cow_2);
 
-            if (dVar5 < (double)m_near_dist) {
-                m_near_dist = (float)dVar5;
+                if (dVar5 < (double)m_near_dist) {
+                    m_near_dist = (float)dVar5;
+                }
             }
         }
     }
@@ -496,12 +498,11 @@ static s16 m_angry_cow;
 
 /* 80659814-806598D4 001334 00C0+00 1/1 0/0 0/0 .text            s_angry_cow__FPvPv */
 static void* s_angry_cow(void* param_1, void* param_2) {
-    daCow_c* cow_1 = (daCow_c*)param_1;
     fopAc_ac_c* other_actor = (fopAc_ac_c*)param_2;
-
-    if (IS_VALID_COW_INTERACTION(cow_1, other_actor)) {
-        if (cow_1->isAngry() ||
-            (cow_1->isGuardFad() && fopAcM_searchActorDistance(cow_1, other_actor) < 500.0f))
+    if (IS_VALID_COW_INTERACTION(param_1, other_actor)) {
+        daCow_c* cow_1 = (daCow_c*)param_1;
+        if ((cow_1->isAngry() || cow_1->isGuardFad()) &&
+            fopAcM_searchActorDistance(cow_1, other_actor) < 500.0f)
         {
             m_angry_cow = true;
         }
@@ -511,10 +512,9 @@ static void* s_angry_cow(void* param_1, void* param_2) {
 
 /* 806598D4-80659970 0013F4 009C+00 1/1 0/0 0/0 .text            s_angry_cow2__FPvPv */
 static void* s_angry_cow2(void* param_1, void* param_2) {
-    daCow_c* cow_1 = (daCow_c*)param_1;
     fopAc_ac_c* other_actor = (fopAc_ac_c*)param_2;
-
-    if (IS_VALID_COW_INTERACTION(cow_1, other_actor)) {
+    if (IS_VALID_COW_INTERACTION(param_1, other_actor)) {
+        daCow_c* cow_1 = (daCow_c*)param_1;
         if (cow_1->isAngry()) {
             m_angry_cow = true;
             return cow_1;
