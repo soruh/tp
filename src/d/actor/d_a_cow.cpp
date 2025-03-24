@@ -1727,7 +1727,7 @@ void daCow_c::action_angry() {
                 pos.y += 100.0f;
                 cXyz pos2;
                 mDoMtx_stack_c::transS(pos);
-                mDoMtx_stack_c::YrotM(sangle);
+                mDoMtx_stack_c::YrotM(shape_angle.y);
                 mDoMtx_stack_c::transM(0.0f, 0.0f, 200.0f);
                 mDoMtx_stack_c::multVecZero(&pos2);
 
@@ -1753,12 +1753,6 @@ void daCow_c::action_angry() {
                 return;
             }
         }
-        if (field_0xc84) {
-            field_0xc84--;
-        }
-        if (field_0xc98) {
-            field_0xc98--;
-        }
         if (field_0xc94) {
             field_0xc94--;
         }
@@ -1769,17 +1763,13 @@ void daCow_c::action_angry() {
         if (checkCowInOwn(0x4000)) {
             return;
         }
-        if (field_0xca1 != 0) {
-            if (checkOutOfGate(daPy_getPlayerActorClass()->current.pos)) {
+        if (field_0xca1) {
+            if (!checkOutOfGate(daPy_getPlayerActorClass()->current.pos) &&
+                checkOutOfGate(current.pos))
+            {
                 setProcess(&daCow_c::action_run, 0);
                 field_0xc9e = 1;
                 return;
-            } else {
-                if (checkOutOfGate(current.pos)) {
-                    setProcess(&daCow_c::action_run, 0);
-                    field_0xc9e = 1;
-                    return;
-                }
             }
         }
 
@@ -1801,7 +1791,7 @@ void daCow_c::action_angry() {
             cLib_addCalcAngleS2(&shape_angle.y, current.angle.y, 8, 0x800);
             field_0xc32.y = shape_angle.y;
             break;
-        case 1:
+        case 1: {
             calcRunAnime(0);
             mShouldSetEffect = 1;
             targetZ = 0x2000;
@@ -1809,18 +1799,17 @@ void daCow_c::action_angry() {
             if (player->getSpeedF() >= 15.0f) {
                 targetSpeed = player->getSpeedF() + 35.0f;
 
-                if (field_0xca1) {
-                    if (targetSpeed > 60.0f) {
-                        targetSpeed = 60.0f;
-                    }
-                } else {
+                if (!field_0xca1) {
                     if (targetSpeed > 75.0f) {
                         targetSpeed = 75.0f;
                     }
+                } else {
+                    if (targetSpeed > 60.0f) {
+                        targetSpeed = 60.0f;
+                    }
                 }
-            } else {
-                targetSpeed = 50.0f;
             }
+
             cLib_chaseF(&speedF, targetSpeed, 4.0f);
 
             if (checkBeforeBgAngry(0x6000)) {
@@ -1828,44 +1817,43 @@ void daCow_c::action_angry() {
                 field_0xc9f = 2;
                 return;
             }
-            if (field_0xc94 == 0) {
+            if (field_0xc94) {
+                field_0xc72 = current.angle.y;
+            } else {
                 field_0xc72 = playerAngle;
-                s32 angleToPlayer = cLib_distanceAngleS(playerAngle, field_0xc32.y);
+                s16 angleToPlayer = cLib_distanceAngleS(playerAngle, field_0xc32.y);
 
-                if (player->getSpeedF() <= 5.0f) {
-                    if (playerDistance >= 500.0f) {
-                        if ((playerDistance >= 1500.0f) && angleToPlayer > 0x57ff) {
+                if (player->getSpeedF() > 5.0f) {
+                    if (playerDistance < 350.0f) {
+                        field_0xc94 = 10;
+                    } else {
+                        if ((playerDistance < 1200.0f) && angleToPlayer >= 0x4000) {
+                            setAngryTurn();
+                            return;
+                        }
+                    }
+                } else {
+                    if (playerDistance < 500.0f) {
+                        field_0xc94 = 0x23;
+                    } else {
+                        if ((playerDistance >= 1500.0f) && angleToPlayer >= 0x5800) {
                             current.angle.y = field_0xc32.y;
                             field_0xc9f = 2;
                             return;
                         }
-                    } else {
-                        field_0xc94 = 0x23;
-                    }
-                } else {
-                    if (playerDistance >= 350.0f) {
-                        if ((playerDistance < 1200.0f) && angleToPlayer > 0x3fff) {
-                            setAngryTurn();
-                            return;
-                        }
-                    } else {
-                        field_0xc94 = 10;
                     }
                 }
-            } else {
-                field_0xc72 = current.angle.y;
             }
 
-            int lockedOn;
+            int lockedOn = false;
             if (field_0xca1 && field_0xc94 && dComIfGp_getAttention().LockonTruth() &&
-                dComIfGp_getAttention().LockonTarget(0) &&
-                cLib_distanceAngleS(playerAngle, field_0xc32.y) < 0x800)
+                !dComIfGp_getAttention().LockonTarget(0) &&
+                (s16)cLib_distanceAngleS(playerAngle, field_0xc32.y) < 0x800)
             {
                 field_0xc72 = playerAngle;
                 lockedOn = true;
-            } else {
-                lockedOn = false;
             }
+
             if (lockedOn) {
                 cLib_chaseAngleS(&current.angle.y, field_0xc72, 0x800);
             } else {
@@ -1875,6 +1863,7 @@ void daCow_c::action_angry() {
             field_0xc32.y = shape_angle.y;
 
             break;
+        }
         case 2:
             calcRunAnime(0);
             if (checkBeforeBgAngry(0)) {
@@ -1894,7 +1883,7 @@ void daCow_c::action_angry() {
             shape_angle.y = targetZ;
             (field_0xc32).y = targetZ;
             setBodyAngle(field_0xc72);
-            s16 angleDist = cLib_distanceAngleS(field_0xc72, field_0xc32.y);
+            s32 angleDist = cLib_distanceAngleS(field_0xc72, field_0xc32.y);
             if (angleDist < 0x200 && field_0xc3e.y < 0x200) {
                 if (field_0xc9f == 4) {
                     setProcess(&daCow_c::action_run, 0);
@@ -1930,7 +1919,6 @@ void daCow_c::action_angry() {
         }
 
         cLib_chaseS(&field_0xc3e.z, targetZ, 0x400);
-
         break;
     case 2:
         break;
