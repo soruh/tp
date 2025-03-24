@@ -2439,7 +2439,6 @@ void daCow_c::executeCrazyEnd() {
     mAcchCir.SetWall(0.0f, 0.0f);
     field_0xca6 = 1;
     mMode = 0;
-
     mPath = dPath_GetRoomPath((fopAcM_GetParam(this) & 0xff00) >> 8, fopAcM_GetRoomNo(this));
 }
 
@@ -2454,14 +2453,14 @@ void daCow_c::initCrazyBack(int param_0) {
 
         mPath = dPath_GetRoomPath(pathIndex, fopAcM_GetRoomNo(this));
         field_0xc10 = 3;
-    } else {
-        field_0xc90 = 0;
-        field_0xc61 = 0;
-        s16 angle = field_0xc32.y;
-        shape_angle.y = angle;
-        current.angle.y = angle;
-        field_0xc9f = 8;
     }
+
+    field_0xc90 = 0;
+    field_0xc61 = 0;
+    s16 angle = field_0xc32.y;
+    shape_angle.y = angle;
+    current.angle.y = angle;
+    field_0xc9f = 8;
 }
 
 /* 8065F7DC-8065FE50 0072FC 0674+00 2/1 0/0 0/0 .text            executeCrazyBack__7daCow_cFv */
