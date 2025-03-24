@@ -2355,20 +2355,18 @@ void daCow_c::initCrazyAttack(int param_1) {
 void daCow_c::executeCrazyAttack() {
     int bVar1 = field_0xc61;
 
-    if (bVar1 != 1) {
-        if (bVar1 == 0) {
-            cLib_chaseF(&speedF, 10.0f, 1.0f);
+    switch (field_0xc61) {
+    case 0:
+        cLib_chaseF(&speedF, 10.0f, 1.0f);
 
-            if (mpMorf->checkFrame(2.0f)) {
-                mSound.startCreatureVoice(Z2SE_GOAT_V_BREATH_SHAKE, -1);
-            }
-            if (mpMorf->isStop()) {
-                initCrazyAway(0);
-            }
-        } else if (bVar1 < 3 && mpMorf->isStop()) {
+        if (mpMorf->checkFrame(2.0f)) {
+            mSound.startCreatureVoice(Z2SE_GOAT_V_BREATH_SHAKE, -1);
+        }
+        if (mpMorf->isStop()) {
             initCrazyAway(0);
         }
-    } else {
+        break;
+    case 1:
         if (mpMorf->checkFrame(2.0f)) {
             mSound.startCreatureVoice(Z2SE_GOAT_V_BREATH_SHAKE, -1);
         }
@@ -2381,6 +2379,13 @@ void daCow_c::executeCrazyAttack() {
                 field_0xc61 = 2;
             }
         }
+        break;
+
+    case 2:
+        if (mpMorf->isStop()) {
+            initCrazyAway(0);
+        }
+        break;
     }
 }
 
