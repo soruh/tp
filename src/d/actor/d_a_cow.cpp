@@ -2968,9 +2968,14 @@ void daCow_c::action_damage() {
         if (mpMorf->isStop()) {
             field_0xca0 = 0;
             field_0xca1 = 1;
-
             setProcess(&daCow_c::action_angry, 0);
         }
+        break;
+    case 2:
+        return;
+    case 3:
+        break;
+    default:
         break;
     }
 }
