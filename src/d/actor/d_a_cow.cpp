@@ -708,16 +708,18 @@ void daCow_c::action_eat() {
 
             } else {
                 f32 rand = cM_rnd();
+
                 if (current.pos.absXZ(daPy_getPlayerActorClass()->current.pos) > 500.0f &&
                     rand < 0.4f)
                 {
                     setProcess(&daCow_c::action_moo, 0);
+                    return;
+                }
+
+                if (rand < 0.5f) {
+                    setProcess(&daCow_c::action_shake, 0);
                 } else {
-                    if (rand < 0.5f) {
-                        setProcess(&daCow_c::action_shake, 0);
-                    } else {
-                        setProcess(&daCow_c::action_wait, 1);
-                    }
+                    setProcess(&daCow_c::action_wait, 1);
                 }
             }
         }
