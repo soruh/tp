@@ -2014,67 +2014,72 @@ void daCow_c::executeCrazyDash() {
     if (field_0xc10 == 4 || field_0xc10 == 5) {
         cLib_chaseS(&field_0xc3e.z, 0x1000, 0x400);
 
-        if (mFlags == 0) {
-            if (field_0xc10 == 4) {
-                cXyz cStack_2c = dPath_GetPnt(mPath, 3)->m_position;
-                s16 sVar4 = cLib_targetAngleY(cStack_2c, cStack_20);
-
-                if (current.pos.abs(cStack_20) <= 600.0f) {
-                    cLib_addCalcAngleS(&current.angle.y, sVar4, 0x10, 0x800, 0x100);
-                    if (current.pos.abs(cStack_20) >= 250.0f) {
-                        return;
-                    }
-                    field_0xc10++;
-                    return;
-                }
-                field_0xcb0 = 0;
-                s16 sVar5 = cLib_targetAngleY(&cStack_2c, &daPy_getPlayerActorClass()->current.pos);
-                if (sVar5 - sVar4 < 0) {
-                    cStack_38.set(200.0f, 0.0f, 0.0f);
-                } else {
-                    cStack_38.set(-200.0f, 0.0f, 0.0f);
-                }
-                cLib_offsetPos(&cStack_20, &cStack_20, sVar4, &cStack_38);
-                field_0xc20 = cStack_20;
-            } else {
-                field_0xc20 = cStack_20;
-            }
-            s16 sVar4 = cLib_targetAngleY(&current.pos, &field_0xc20);
-            cLib_addCalcAngleS(&current.angle.y, sVar4, 0x10, 0x800, 0x100);
-            if (current.pos.abs(cStack_20) < 250.0f) {
-                field_0xc10++;
-            }
-        } else if ((mFlags & 1) == 0) {
-            if ((mFlags & 2) == 0) {
-                if ((mFlags & 4) != 0) {
-                    initCrazyAttack(0);
-                    field_0xc10 = 6;
-                    mFlags = mFlags & 0xfffb;
-                }
-            } else {
+        if (mFlags) {
+            if (mFlags & 1) {
+                initCrazyBeforeCatch(0);
+                field_0xc10 = 6;
+                mFlags &= ~1;
+            } else if (mFlags & 2) {
                 initCrazyCatch(0);
                 field_0xc10 = 6;
-                mFlags &= ~0x0004;
+                mFlags &= ~4;
                 dComIfGp_getVibration().StartShock(8, 0x1f, cXyz(0.0f, 1.0f, 0.0f));
+
+            } else if (mFlags & 4) {
+                initCrazyAttack(0);
+                field_0xc10 = 6;
+                mFlags &= ~4;
             }
+
         } else {
-            initCrazyBeforeCatch(0);
-            field_0xc10 = 6;
-            mFlags &= ~1;
+            int pointIndex = field_0xc10;
+            if (pointIndex == 4) {
+                cXyz cStack_2c = dPath_GetPnt(mPath, pointIndex - 1)->m_position;
+                s16 sVar4 = cLib_targetAngleY(&cStack_2c, &cStack_20);
+
+                if (current.pos.abs(cStack_20) > 600.0f) {
+                    field_0xc60 = 0;
+                    s16 sVar5 =
+                        cLib_targetAngleY(&cStack_2c, &daPy_getPlayerActorClass()->current.pos) -
+                        sVar4;
+
+                    if (sVar5 < 0) {
+                        cStack_38.set(200.0f, 0.0f, 0.0f);
+                    } else {
+                        cStack_38.set(-200.0f, 0.0f, 0.0f);
+                    }
+                    cLib_offsetPos(&cStack_20, &cStack_20, sVar4, &cStack_38);
+                    field_0xc20 = cStack_20;
+                } else {
+                    cLib_addCalcAngleS(&current.angle.y, sVar4, 0x10, 0x800, 0x100);
+                    if (current.pos.abs(cStack_20) < 250.0f) {
+                        field_0xc10++;
+                    }
+                    return;
+                }
+            }
+
+            field_0xc20 = cStack_20;
+        }
+
+        s16 sVar4 = cLib_targetAngleY(&current.pos, &field_0xc20);
+        cLib_addCalcAngleS(&current.angle.y, sVar4, 0x10, 0x800, 0x100);
+        if (current.pos.abs(cStack_20) < 250.0f) {
+            field_0xc10++;
         }
     } else {
         s16 sVar4 = cLib_targetAngleY(&current.pos, &cStack_20);
         cLib_addCalcAngleS(&current.angle.y, sVar4, 0x10, 0x800, 0x100);
         if (current.pos.abs(cStack_20) < 200.0f) {
             field_0xc10++;
-            if (mPath->m_num <= field_0xc10) {
-                if (mPath->m_nextID == -1) {
-                    field_0xc9f = 7;
-                    speedF = 0.0f;
-                } else {
+            if (field_0xc10 >= mPath->m_num) {
+                if ((s16)mPath->m_nextID != -1) {
                     field_0xc10 = 0;
                     mPath = dPath_GetRoomPath(mPath->m_nextID, fopAcM_GetRoomNo(this));
                     field_0xc9f = 6;
+                } else {
+                    field_0xc9f = 7;
+                    speedF = 0.0f;
                 }
             }
         }

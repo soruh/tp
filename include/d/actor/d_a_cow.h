@@ -131,7 +131,7 @@ private:
     /* 0x860 */ dCcD_Sph mSph[N_COW_COLLIDERS];
     /* 0xc08 */ daCow_c* mCowP;
     /* 0xc0c */ dPath* mPath;
-    /* 0xc10 */ u8 field_0xc10;
+    /* 0xc10 */ s8 field_0xc10;
     /* 0xc11 */ u8 field_0xc11;  // undefined
     /* 0xc12 */ u8 field_0xc12;  // undefined
     /* 0xc13 */ u8 field_0xc13;  // undefined
