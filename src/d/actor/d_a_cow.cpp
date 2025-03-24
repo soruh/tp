@@ -2105,15 +2105,13 @@ void daCow_c::executeCrazyBeforeCatch() {
         initCrazyCatch(0);
         mFlags &= ~2;
         dComIfGp_getVibration().StartShock(8, 0x1f, cXyz(0.0f, 1.0f, 0.0f));
-    } else {
-        if (this->mFlags & 4) {
-            if (daPy_getPlayerActorClass()->speedF == 0.0f) {
-                initCrazyAttack(0);
-            } else {
-                initCrazyAttack(1);
-            }
-            mFlags &= ~4;
+    } else if (this->mFlags & 4) {
+        if (!daPy_getPlayerActorClass()->speedF) {
+            initCrazyAttack(0);
+        } else {
+            initCrazyAttack(1);
         }
+        mFlags &= ~4;
     }
 }
 
