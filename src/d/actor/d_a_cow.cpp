@@ -793,10 +793,10 @@ void daCow_c::action_shake() {
     switch (mMode) {
     case 0:
         if (!field_0xcaa) {
-            setBck(6, 0, 12.0f, 1.0f);
+            setBck(0x15, 2, 12.0f, 1.0f);
             mMode = 2;
         } else {
-            setBck(0x15, 2, 12.0f, 1.0f);
+            setBck(6, 0, 12.0f, 1.0f);
             mMode = 1;
         }
         break;
@@ -827,7 +827,7 @@ void daCow_c::action_shake() {
             }
         }
         if (mpMorf->isLoop()) {
-            if (!checkNearWolf()) {
+            if (checkNearWolf()) {
                 setProcess(&daCow_c::action_moo, 1);
             } else {
                 f32 rand = cM_rnd();
@@ -837,13 +837,15 @@ void daCow_c::action_shake() {
                     setProcess(&daCow_c::action_moo, 1);
                 } else {
                     if (rand < 0.5f) {
-                        setProcess(&daCow_c::action_wait, 1);
+                        setProcess(&daCow_c::action_wait, 0);
                     } else {
-                        setProcess(&daCow_c::action_eat, 0);
+                        setProcess(&daCow_c::action_eat, 1);
                     }
                 }
             }
         }
+    case 3:
+        break;
     }
 }
 
