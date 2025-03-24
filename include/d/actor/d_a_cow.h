@@ -193,7 +193,7 @@ private:
     /* 0xcac */ f32 field_0xcac;
     /* 0xcb0 */ f32 field_0xcb0;
     /* 0xcb4 */ u8 field_0xcb4;
-    /* 0xcb5 */ bool mShouldSetEffect;
+    /* 0xcb5 */ u8 mShouldSetEffect;
     /* 0xcb6 */ u8 field_0xcb6;
     /* 0xcb7 */ u8 field_0xcb7;
     /* 0xcb8 */ dPaPoT_c mParticle;

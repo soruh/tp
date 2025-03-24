@@ -2235,10 +2235,10 @@ void daCow_c::executeCrazyThrow() {
                 mSph[iSphere].OnCoSetBit();
             }
 
-            if (!field_0xc61) {
-                current.angle.y = daPy_getPlayerActorClass()->shape_angle.y + -0x6800;
-            } else {
+            if (field_0xc61) {
                 current.angle.y = daPy_getPlayerActorClass()->shape_angle.y + 0x7000;
+            } else {
+                current.angle.y = daPy_getPlayerActorClass()->shape_angle.y + -0x6800;
             }
             speedF = 10.0f;
             speed.y = 10.0f;
@@ -2263,7 +2263,6 @@ void daCow_c::executeCrazyThrow() {
         field_0xc60 = 2;
 
     case 2:
-
         cLib_chaseAngleS(&field_0xc32.x, 0, 0x800);
         field_0xc62 = 3;
 
@@ -2296,22 +2295,22 @@ void daCow_c::executeCrazyThrow() {
         cLib_chaseAngleS(&field_0xc76, 0, 0x1e);
         if (cLib_chaseF(&speedF, 0.0f, 0.5f) && !field_0xc90) {
             field_0xc60 = 4;
-            if (field_0xc61 == 0) {
-                setBck(0xc, 0, 5.0f, 1.0f);
-            } else {
+            if (field_0xc61) {
                 setBck(0xd, 0, 5.0f, 1.0f);
+            } else {
+                setBck(0xc, 0, 5.0f, 1.0f);
             }
             shape_angle.y = field_0xc32.y;
         }
         break;
     case 4:
         if (mpMorf->isStop()) {
-            if (this->mPrm0 == 3) {
+            if (this->mPrm0 != 3) {
+                initCrazyBack(0);
+            } else {
                 setBck(0x1a, 2, 10.0f, 1.0f);
                 field_0xc60 = 5;
                 field_0xc90 = 10;
-            } else {
-                initCrazyBack(0);
             }
         }
         break;
