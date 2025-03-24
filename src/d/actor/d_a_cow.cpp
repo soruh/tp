@@ -20,6 +20,7 @@
 #include "m_Do/m_Do_mtx.h"
 
 UNK_REL_DATA;
+UNK_REL_BSS;
 
 static u8 cc_sph_src[sizeof(dCcD_SrcSph)] = {
     /* 0x00 */ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -46,12 +47,6 @@ static f32 l_CowRoomPosX[20] = {-10600.0f, -10600.0f, -10800.0f, -10800.0f, -110
 
 /* 80663010-80663018 0000B8 0008+00 1/3 0/0 0/0 .data l_CowRoomPosZ__21@unnamed@d_a_cow_cpp@ */
 static f32 l_CowRoomPosZ[2] = {-19646.0f, -20926.0f};
-
-static cXyz pen_pos(-10200.0f, 15000.0f, -20246.0f);
-static cXyz gate_pos(-9246.0f, 15000.0f, -22763.0f);
-
-/* 806634D0-806634D4 000078 0004+00 3/3 0/0 0/0 .bss l_CowRoomNo__21@unnamed@d_a_cow_cpp@ */
-static int l_CowRoomNo = 0;
 
 #define N_WOLF_BUSTERS 3
 extern fpc_ProcID gWolfBustersID[N_WOLF_BUSTERS] = {-1, -1, -1};
@@ -110,6 +105,15 @@ int daCow_c::checkBck(int param_0) {
     return mpMorf->getAnm() == animation;
 }
 
+static cXyz pen_pos(-10200.0f, 15000.0f, -20246.0f);
+static cXyz gate_pos(-9246.0f, 15000.0f, -22763.0f);
+
+/* 806634D0-806634D4 000078 0004+00 3/3 0/0 0/0 .bss l_CowRoomNo__21@unnamed@d_a_cow_cpp@ */
+static int l_CowRoomNo = 0;
+static u32 l_CowType = 0;
+
+static cXyz runScale(2.0f, 2.0f, 2.0f);
+
 /* 80658830-80658A68 000350 0238+00 1/1 0/0 0/0 .text            setEffect__7daCow_cFv */
 void daCow_c::setEffect() {
     cXyz c;
@@ -138,8 +142,6 @@ void daCow_c::setEffect() {
                                    mShouldSetEffect ? &c : NULL,  //
                                    mShouldSetEffect ? &b : NULL,  //
                                    &field_0xc32, NULL, roomNumber, 1.0f, speedF);
-
-            static cXyz runScale(2.0f, 2.0f, 2.0f);
 
             for (int i = 0; i < 3; i++) {
                 for (int j = 0; j < 2; j++) {
@@ -3052,7 +3054,16 @@ void daCow_c::setAttnPos() {
 }
 
 /* 80663500-80663504 0000A8 0004+00 0/0 0/0 0/0 .bss             m_search_range */
-static f32 m_search_range[4];
+static f32 m_search_range;
+
+/* 80663514-80663520 0000BC 000C+00 0/1 0/0 0/0 .bss             headOfst$7630 */
+static cXyz headOfst(20.0f, 10.0f, 0.0f);
+
+/* 80663530-8066353C 0000D8 000C+00 0/1 0/0 0/0 .bss             backBornOfst$7634 */
+static cXyz backBornOfst(60.0f, 20.0f, 0.0f);
+
+/* 8066354C-80663558 0000F4 000C+00 0/1 0/0 0/0 .bss             waistOfst$7638 */
+static cXyz waistOfst(-30.0f, 30.0f, 0.0f);
 
 /* 80661720-80661940 009240 0220+00 1/1 0/0 0/0 .text            setCollisions__7daCow_cFv */
 void daCow_c::setCollisions() {
@@ -3062,17 +3073,7 @@ void daCow_c::setCollisions() {
     cXyz acStack_28[2];
 
     if (!field_0xca6) {
-        /* 80663514-80663520 0000BC 000C+00 0/1 0/0 0/0 .bss             headOfst$7630 */
-        static cXyz headOfst(20.0f, 10.0f, 0.0f);
-
-        /* 80663530-8066353C 0000D8 000C+00 0/1 0/0 0/0 .bss             backBornOfst$7634 */
-        static cXyz backBornOfst(60.0f, 20.0f, 0.0f);
-
-        /* 8066354C-80663558 0000F4 000C+00 0/1 0/0 0/0 .bss             waistOfst$7638 */
-        static cXyz waistOfst(-30.0f, 30.0f, 0.0f);
-
         // todo: is this an unrolled loop / macro?
-
         cXyz ofstNow;
 
         mDoMtx_stack_c::copy(mpMorf->getModel()->getAnmMtx(9));
@@ -3189,8 +3190,6 @@ int daCow_c::CreateHeap() {
 int daCow_c::createHeapCallBack(fopAc_ac_c* actor) {
     return static_cast<daCow_c*>(actor)->CreateHeap();
 }
-
-static u32 l_CowType;
 
 /* 80661D44-80662228 009864 04E4+00 1/1 0/0 0/0 .text            initialize__7daCow_cFv */
 int daCow_c::initialize() {
