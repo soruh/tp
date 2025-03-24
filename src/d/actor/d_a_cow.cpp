@@ -1150,7 +1150,7 @@ int daCow_c::checkCowIn(f32 param_1, f32 param_2) {
 
     double dist = getCowshedDist();
     if (dist < param_1) {
-        int angle = getCowshedAngle();
+        s16 angle = getCowshedAngle();
         if (dist < param_2) {
             if ((s16)angle < pen_dir + 0x2000 && (s16)angle > pen_dir - 0x2000 &&
                 cLib_distanceAngleS(angle, field_0xc32.y) < 0x1800)
