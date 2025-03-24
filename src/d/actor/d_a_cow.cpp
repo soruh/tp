@@ -447,8 +447,8 @@ void daCow_c::setGroundAngle() {
 
         dComIfG_Bgsp().GetTriPla(mAcch.m_gnd, &plane);
         cXyz* pfVar2 = plane.GetNP();
-        alpha = cM_atan2s(pfVar2->z, pfVar2->y);
-        beta = cM_atan2s(pfVar2->x, pfVar2->y);
+        alpha = (s16)cM_atan2s(pfVar2->z, pfVar2->y);
+        beta = (s16)cM_atan2s(pfVar2->x, pfVar2->y);
     }
 
     cLib_chaseAngleS(&field_0xc2c.x, alpha, 128);
