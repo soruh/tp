@@ -3347,47 +3347,48 @@ int daCow_c::ctrlJoint(J3DJoint* joint, J3DModel* model) {
     int jointNo = joint->getJntNo();
 
     mDoMtx_stack_c::copy(model->getAnmMtx(jointNo));
-    if (jointNo != 8) {
-        if (jointNo < 8 && jointNo == 1) {
-            mDoMtx_stack_c::YrotM(field_0xc38.y);
-        }
-    } else {
+
+    switch (jointNo) {
+    case 1:
+        mDoMtx_stack_c::YrotM(field_0xc38.y);
+        break;
+    case 8:
         mDoMtx_stack_c::ZrotM(field_0xc3e.y);
         mDoMtx_stack_c::YrotM(field_0xc3e.y);
+        break;
     }
 
     model->setAnmMtx(jointNo, mDoMtx_stack_c::get());
     cMtx_copy(mDoMtx_stack_c::get(), &J3DSys::mCurrentMtx[0]);
 
     if (jointNo == 0) {
-        int bVar1 = field_0xc62;
-        if (bVar1 != 2) {
-            if (bVar1 <= 1) {
-                if (bVar1 != 0) {
-                    // todo
-                    field_0xc14.set(J3DSys::mCurrentMtx[0][3], J3DSys::mCurrentMtx[1][3],
-                                    J3DSys::mCurrentMtx[2][3]);
-                }
-            } else {
-                if (bVar1 < 4) {
-                    // todo
-                    cXyz v = current.pos + field_0xc14;
-                    J3DSys::mCurrentMtx[0][3] = v.x;
-                    J3DSys::mCurrentMtx[1][3] = v.y;
-                    J3DSys::mCurrentMtx[2][3] = v.z;
-                }
-            }
-        } else {
-            // todo
+        switch (field_0xc62) {
+        case 1:
+            field_0xc14.set(J3DSys::mCurrentMtx[0][3], J3DSys::mCurrentMtx[1][3],
+                            J3DSys::mCurrentMtx[2][3]);
+            break;
+        case 2: {
             cXyz currentMtx(J3DSys::mCurrentMtx[0][3], J3DSys::mCurrentMtx[1][3],
                             J3DSys::mCurrentMtx[2][3]);
 
-            cXyz cStack_30 = currentMtx - (field_0xc14 - current.pos);
-            currentMtx = field_0xc14 - currentMtx;
-            current.pos -= currentMtx;
-            field_0xc14 -= 50.0f;
+            cXyz currentOffset = currentMtx - current.pos;
+            cXyz tmp = field_0xc14 - currentMtx;
+            field_0xc14 -= tmp;
+            current.pos = currentOffset;
+
+            field_0xc14.y -= 50.0f;
+            break;
+        }
+        case 3: {
+            cXyz v = current.pos + field_0xc14;
+            J3DSys::mCurrentMtx[0][3] = v.x;
+            J3DSys::mCurrentMtx[1][3] = v.y;
+            J3DSys::mCurrentMtx[2][3] = v.z;
+            break;
+        }
         }
     }
+
     return 1;
 }
 
