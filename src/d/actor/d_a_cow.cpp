@@ -109,7 +109,7 @@ static cXyz pen_pos(-10200.0f, 15000.0f, -20246.0f);
 static cXyz gate_pos(-9246.0f, 15000.0f, -22763.0f);
 
 /* 806634D0-806634D4 000078 0004+00 3/3 0/0 0/0 .bss l_CowRoomNo__21@unnamed@d_a_cow_cpp@ */
-static int l_CowRoomNo = 0;
+static u32 l_CowRoomNo = 0;
 static u32 l_CowType = 0;
 
 /* 80658830-80658A68 000350 0238+00 1/1 0/0 0/0 .text            setEffect__7daCow_cFv */
@@ -415,7 +415,7 @@ void daCow_c::setEnterCow20() {
 
 /* ############################################################################################## */
 /* 80663084-806630AC 00012C 0028+00 0/1 0/0 0/0 .data            cow_number$4349 */
-static int cow_number[10] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+static u32 cow_number[10] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
 
 /* 80659540-80659630 001060 00F0+00 1/1 0/0 0/0 .text            setEnterCow10__7daCow_cFv */
 void daCow_c::setEnterCow10() {
@@ -424,10 +424,10 @@ void daCow_c::setEnterCow10() {
 
         cXyz spawnPosition(l_CowRoomPosX[cowNumber], l_CowRoomPosY, l_CowRoomPosZ[cowNumber & 1]);
 
-        l_CowRoomNo |= 1 << (iCow & ~!0xc0);  // todo: what is this flag?
+        l_CowRoomNo |= 1 << cowNumber;  // todo: what is this flag?
 
         csXyz spawnAngle;
-        if (iCow & 1) {
+        if (cowNumber & 1) {
             spawnAngle.set(0, 0, 0);
         } else {
             spawnAngle.set(0, -0x8000, 0);
