@@ -726,6 +726,9 @@ void daCow_c::action_eat() {
                 }
             }
         }
+        break;
+    case 3:
+        break;
     }
 }
 
