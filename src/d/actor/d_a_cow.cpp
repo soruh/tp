@@ -3357,7 +3357,7 @@ int daCow_c::ctrlJoint(J3DJoint* joint, J3DModel* model) {
         mDoMtx_stack_c::YrotM(field_0xc38.y);
         break;
     case 8:
-        mDoMtx_stack_c::ZrotM(field_0xc3e.y);
+        mDoMtx_stack_c::ZrotM(field_0xc3e.z);
         mDoMtx_stack_c::YrotM(field_0xc3e.y);
         break;
     }
@@ -3365,31 +3365,31 @@ int daCow_c::ctrlJoint(J3DJoint* joint, J3DModel* model) {
     model->setAnmMtx(jointNo, mDoMtx_stack_c::get());
     cMtx_copy(mDoMtx_stack_c::get(), &J3DSys::mCurrentMtx[0]);
 
-    if (jointNo == 0) {
+    cXyz currentMtx;
+
+    if (!jointNo) {
         switch (field_0xc62) {
         case 1:
             field_0xc14.set(J3DSys::mCurrentMtx[0][3], J3DSys::mCurrentMtx[1][3],
                             J3DSys::mCurrentMtx[2][3]);
             break;
         case 2: {
-            cXyz currentMtx(J3DSys::mCurrentMtx[0][3], J3DSys::mCurrentMtx[1][3],
-                            J3DSys::mCurrentMtx[2][3]);
+            currentMtx.set(J3DSys::mCurrentMtx[0][3], J3DSys::mCurrentMtx[1][3],
+                           J3DSys::mCurrentMtx[2][3]);
 
-            cXyz currentOffset = currentMtx - current.pos;
-            cXyz tmp = field_0xc14 - currentMtx;
-            field_0xc14 -= tmp;
-            current.pos = currentOffset;
+            cXyz currentOffset = field_0xc14 - current.pos;
+            currentMtx = field_0xc14 - currentMtx;
+            current.pos -= currentMtx;
+            field_0xc14 = currentOffset;
 
             field_0xc14.y -= 50.0f;
-            break;
-        }
+        } break;
         case 3: {
-            cXyz v = current.pos + field_0xc14;
-            J3DSys::mCurrentMtx[0][3] = v.x;
-            J3DSys::mCurrentMtx[1][3] = v.y;
-            J3DSys::mCurrentMtx[2][3] = v.z;
-            break;
-        }
+            currentMtx = current.pos + field_0xc14;
+            J3DSys::mCurrentMtx[0][3] = currentMtx.x;
+            J3DSys::mCurrentMtx[1][3] = currentMtx.y;
+            J3DSys::mCurrentMtx[2][3] = currentMtx.z;
+        } break;
         }
     }
 
