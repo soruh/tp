@@ -2358,7 +2358,6 @@ void daCow_c::executeCrazyAttack() {
     switch (field_0xc61) {
     case 0:
         cLib_chaseF(&speedF, 10.0f, 1.0f);
-
         if (mpMorf->checkFrame(2.0f)) {
             mSound.startCreatureVoice(Z2SE_GOAT_V_BREATH_SHAKE, -1);
         }
@@ -2370,7 +2369,6 @@ void daCow_c::executeCrazyAttack() {
         if (mpMorf->checkFrame(2.0f)) {
             mSound.startCreatureVoice(Z2SE_GOAT_V_BREATH_SHAKE, -1);
         }
-
         if (mpMorf->checkFrame(10.0f)) {
             if (mPrm0 == 3) {
                 initCrazyAway(0);
@@ -2380,12 +2378,10 @@ void daCow_c::executeCrazyAttack() {
             }
         }
         break;
-
     case 2:
         if (mpMorf->isStop()) {
             initCrazyAway(0);
         }
-        break;
     }
 }
 
@@ -2420,13 +2416,13 @@ void daCow_c::executeCrazyAway() {
     if (current.pos.abs(pointPos) < 200.0f) {
         field_0xc10++;
 
-        if (mPath->m_num <= field_0xc10) {
-            if (mPath->m_nextID == -1) {
-                field_0xc9f = 7;
-                speedF = 0.0f;
-            } else {
+        if (field_0xc10 >= mPath->m_num) {
+            if ((s16)mPath->m_nextID != -1) {
                 field_0xc10 = 0;
                 mPath = dPath_GetRoomPath(mPath->m_nextID, fopAcM_GetRoomNo(this));
+            } else {
+                field_0xc9f = 7;
+                speedF = 0.0f;
             }
         }
     }
