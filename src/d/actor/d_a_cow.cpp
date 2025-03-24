@@ -1980,11 +1980,11 @@ void daCow_c::calcCatchPos(f32 distance, int someBool) {
 /* 8065DE70-8065DF40 005990 00D0+00 1/1 0/0 0/0 .text            executeCrazyWait__7daCow_cFv */
 void daCow_c::executeCrazyWait() {
     if (mFlags & 0x20) {
-        mFlags &= ~0x0200;
+        mFlags &= ~0x20;
     }
     if (mFlags & 0x200) {
         field_0xca6 = 0;
-        mFlags &= ~0x0200;
+        mFlags &= ~0x200;
     }
     if (mFlags & 0x40) {
         field_0xc9f = 1;
