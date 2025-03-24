@@ -783,6 +783,8 @@ void daCow_c::action_moo() {
                 }
             }
         }
+    case 3:
+        break;
     }
 }
 
