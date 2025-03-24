@@ -1423,14 +1423,14 @@ void daCow_c::setCowInCage() {
     old.pos = current.pos;
 
     l_CowRoomNo |= 1 << cowIndex;
-    if ((cowIndex & 1) == 0) {
-        field_0xc32.y = -0x8000;
-        shape_angle.y = 0x8000;
-        current.angle.y = 0x8000;
-    } else {
+    if ((cowIndex & 1)) {
         field_0xc32.y = 0;
         shape_angle.y = 0;
         current.angle.y = 0;
+    } else {
+        field_0xc32.y = -0x8000;
+        shape_angle.y = -0x8000;
+        current.angle.y = -0x8000;
     }
 }
 
