@@ -2567,83 +2567,86 @@ void daCow_c::executeCrazyBack() {
 
 /* 8065FE50-8066010C 007970 02BC+00 4/0 0/0 0/0 .text            action_crazy__7daCow_cFv */
 void daCow_c::action_crazy() {
-    int uVar1 = mMode;
-    if (uVar1 != 2) {
-        if (uVar1 < 2) {
-            if (!uVar1) {
-                field_0xcb4 = 0;
-                field_0xc10 = 0;
+    cXyz acStack_28;
+    s16 angle;
 
-                current.pos = dPath_GetPnt(mPath, field_0xc10)->m_position;
-                field_0xc10++;
+    switch (mMode) {
+    case 0:
+        field_0xcb4 = 0;
+        field_0xc10 = 0;
 
-                cXyz acStack_28 = dPath_GetPnt(mPath, field_0xc10)->m_position;
+        current.pos = dPath_GetPnt(mPath, field_0xc10)->m_position;
+        field_0xc10++;
+        acStack_28 = dPath_GetPnt(mPath, field_0xc10)->m_position;
 
-                s16 angle = cLib_targetAngleY(&current.pos, &acStack_28);
-                current.angle.y = angle;
-                shape_angle.y = angle;
-                field_0xc32.y = angle;
+        angle = cLib_targetAngleY(&current.pos, &acStack_28);
+        current.angle.y = angle;
+        shape_angle.y = angle;
+        field_0xc32.y = angle;
 
-                field_0xc9f = 0;
-                speedF = 0.0f;
-                field_0xca6 = 1;
+        field_0xc9f = 0;
+        speedF = 0.0f;
+        field_0xca6 = 1;
 
-                dComIfGoat_SetThrow(this);
-                field_0xcac = 1;
-                fopAcM_OnStatus(this, 0x100);
-            } else {
-                if (field_0xc94) {
-                    field_0xc94--;
-                }
-                if (field_0xc90) {
-                    field_0xc90--;
-                }
+        dComIfGoat_SetThrow(this);
+        mMode = 1;
+        fopAcM_OnStatus(this, 0x100);
+        break;
+    case 1:
+        if (field_0xc94) {
+            field_0xc94--;
+        }
+        if (field_0xc90) {
+            field_0xc90--;
+        }
 
-                fopAcM_OnStatus(this, 0x4000);
+        fopAcM_OnStatus(this, 0x4000);
 
-                if (dComIfGp_event_runCheck() &&
-                    strcmp(dComIfGp_getEventManager().getRunEventName(), "WILDGOAT") &&
-                    strcmp(dComIfGp_getEventManager().getRunEventName(), "WILDGOAT_SUCCESS") &&
-                    strcmp(dComIfGp_getEventManager().getRunEventName(), "WILDGOAT_FAILURE"))
-                {
-                    fopAcM_OffStatus(this, 0x4000);
-                }
-            }
-            switch (field_0xc9f) {
-            case 0:
-                executeCrazyWait();
-                break;
-            case 1:
-                executeCrazyDash();
-                break;
-            case 2:
-                executeCrazyBeforeCatch();
-                break;
-            case 3:
-                executeCrazyCatch();
-                break;
-            case 4:
-                executeCrazyThrow();
-                break;
-            case 5:
-                executeCrazyAttack();
-                break;
-            case 6:
-                executeCrazyAway();
-                break;
-            case 7:
-                executeCrazyEnd();
-                break;
-            case 8:
-                setGroundAngle();
-                executeCrazyBack();
-            default:
-                for (int iSphere = 0; iSphere < N_COW_COLLIDERS; iSphere++) {
-                    mSph[iSphere].OffTgSetBit();
-                }
+        if (dComIfGp_event_runCheck() &&
+            strcmp(dComIfGp_getEventManager().getRunEventName(), "WILDGOAT") &&
+            strcmp(dComIfGp_getEventManager().getRunEventName(), "WILDGOAT_SUCCESS") &&
+            strcmp(dComIfGp_getEventManager().getRunEventName(), "WILDGOAT_FAILURE"))
+        {
+            fopAcM_OffStatus(this, 0x4000);
+        }
+
+        switch (field_0xc9f) {
+        case 0:
+            executeCrazyWait();
+            break;
+        case 1:
+            executeCrazyDash();
+            break;
+        case 2:
+            executeCrazyBeforeCatch();
+            break;
+        case 3:
+            executeCrazyCatch();
+            break;
+        case 4:
+            executeCrazyThrow();
+            break;
+        case 5:
+            executeCrazyAttack();
+            break;
+        case 6:
+            executeCrazyAway();
+            break;
+        case 7:
+            executeCrazyEnd();
+            break;
+        case 8:
+            setGroundAngle();
+            executeCrazyBack();
+        }
+        if (field_0xc9f != 8) {
+            for (int iSphere = 0; iSphere < N_COW_COLLIDERS; iSphere++) {
+                mSph[iSphere].OffTgSetBit();
             }
         }
-    } else if (uVar1 < 4) {
+    case 2:
+        break;
+    case 3:
         dComIfGoat_SetThrow(0);
         field_0xca6 = 0;
         field_0xcb0 = 0;
