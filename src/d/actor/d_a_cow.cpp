@@ -635,7 +635,7 @@ void daCow_c::action_wait() {
                 return;
             }
         }
-        if (!cLib_calcTimer((int*)&field_0xc58) && !field_0xc88) {
+        if (!cLib_calcTimer(&field_0xc58) && !field_0xc88) {
             if (checkNearWolf()) {
                 setProcess(&daCow_c::action_moo, 0);
             } else {
@@ -663,71 +663,61 @@ void daCow_c::action_wait() {
 
 /* 8065A0E8-8065A594 001C08 04AC+00 4/0 0/0 0/0 .text            action_eat__7daCow_cFv */
 void daCow_c::action_eat() {
-    // switch (mMode) {
-    // case 2:
-    //     break;
-    // }
-    int nextAction = mMode;
-    if (nextAction != 2) {
-        if (nextAction < 2) {
-            if (nextAction != 0) {
-                f32 rand = cM_rndF(100.0f);
-                field_0xc58 = rand + 300.0f;
-                field_0xc90 = 0;
-                if (!field_0xcaa) {
-                    setBck(9, 2, 12.0f, 1.0f);
-                    mMode = 2;
-                } else {
-                    setBck(6, 0, 12.0f, 1.0f);
-                    mMode = 1;
-                }
+    switch (mMode) {
+    case 0:
+        field_0xc58 = cM_rndF(100.0f) + 300.0f;
+        field_0xc90 = 0;
+        if (!field_0xcaa) {
+            setBck(9, 2, 12.0f, 1.0f);
+            mMode = 2;
+        } else {
+            setBck(6, 0, 12.0f, 1.0f);
+            mMode = 1;
+        }
+        break;
+    case 1:
+        if (mpMorf->isStop()) {
+            setBck(9, 2, 0.0f, 1.0f);
+            mMode = 2;
+        }
+    case 2:
+        if (mpMorf->checkFrame(10.0f) || mpMorf->checkFrame(40.0f) || mpMorf->checkFrame(68.0f) ||
+            mpMorf->checkFrame(98.0f))
+        {
+            mSound.startCreatureVoice(JAISoundID(Z2SE_GOAT_V_EAT), -1);
+        }
+
+        if (!field_0xca5) {
+            if (checkNearCowRun() || checkPlayerWait()) {
+                setProcess(&daCow_c::action_wait, 0);
                 return;
-            } else {
-                if (mpMorf->isStop()) {
-                    setBck(9, 2, 0.0f, 1.0f);
-                    mMode = 2;
-                }
             }
-        } else {
-            return;
+            setCarryStatus();
+            if (checkThrow()) {
+                return;
+            }
+            setActetcStatus();
+            if (checkNadeNade()) {
+                setProcess(&daCow_c::action_wait, 1);
+                return;
+            }
         }
-    }
-
-    if (mpMorf->checkFrame(10.0f) || mpMorf->checkFrame(40.0f) || mpMorf->checkFrame(68.0f) ||
-        mpMorf->checkFrame(98.0f))
-    {
-        mSound.startCreatureVoice(JAISoundID(Z2SE_GOAT_V_EAT), -1);
-    }
-
-    if (!field_0xca5) {
-        if (checkNearCowRun() || checkPlayerWait()) {
-            setProcess(&daCow_c::action_wait, 0);
-            return;
-        }
-        setCarryStatus();
-        if (checkThrow()) {
-            return;
-        }
-        setActetcStatus();
-        if (checkNadeNade()) {
-            setProcess(&daCow_c::action_wait, 1);
-            return;
-        }
-    }
-    if (!cLib_calcTimer((int*)&field_0xc58) && mpMorf->isLoop()) {
-        if (checkNearWolf()) {
-            setProcess(&daCow_c::action_moo, 0);
-
-        } else {
-            f32 rand = cM_rnd();
-            if (current.pos.absXZ(daPy_getPlayerActorClass()->current.pos) > 500.0f && rand < 0.4f)
-            {
+        if (!cLib_calcTimer(&field_0xc58) && mpMorf->isLoop()) {
+            if (checkNearWolf()) {
                 setProcess(&daCow_c::action_moo, 0);
+
             } else {
-                if (rand < 0.5f) {
-                    setProcess(&daCow_c::action_shake, 0);
+                f32 rand = cM_rnd();
+                if (current.pos.absXZ(daPy_getPlayerActorClass()->current.pos) > 500.0f &&
+                    rand < 0.4f)
+                {
+                    setProcess(&daCow_c::action_moo, 0);
                 } else {
-                    setProcess(&daCow_c::action_wait, 1);
+                    if (rand < 0.5f) {
+                        setProcess(&daCow_c::action_shake, 0);
+                    } else {
+                        setProcess(&daCow_c::action_wait, 1);
+                    }
                 }
             }
         }
