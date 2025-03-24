@@ -298,13 +298,15 @@ void daCow_c::setBodyAngle2(s16 angle) {
     s16 targetAngle = cLib_targetAngleY(&current.pos, &player->current.pos);
     s16 bodyAngle = field_0xc32.y - targetAngle;
 
+    s16 chaseAngle;
     if (abs(bodyAngle) < 0x5000) {
         CLAMP_COW_BODY_ANGLE(bodyAngle);
+        chaseAngle = bodyAngle;
     } else {
-        bodyAngle = offsetAngle * 0.7f;
+        chaseAngle = offsetAngle * 0.7f;
     }
 
-    cLib_chaseS(&field_0xc3e.y, bodyAngle, 0x100);
+    cLib_chaseS(&field_0xc3e.y, chaseAngle, 0x100);
 }
 
 /* 806590E8-80659114 000C08 002C+00 5/5 0/0 0/0 .text checkProcess__7daCow_cFM7daCow_cFPCvPv_v */
@@ -3064,13 +3066,10 @@ void daCow_c::setCollisions() {
     cXyz acStack_28[2];
 
     if (!field_0xca6) {
-        /* 80663514-80663520 0000BC 000C+00 0/1 0/0 0/0 .bss             headOfst$7630 */
         static cXyz headOfst(20.0f, 10.0f, 0.0f);
 
-        /* 80663530-8066353C 0000D8 000C+00 0/1 0/0 0/0 .bss             backBornOfst$7634 */
         static cXyz backBornOfst(60.0f, 20.0f, 0.0f);
 
-        /* 8066354C-80663558 0000F4 000C+00 0/1 0/0 0/0 .bss             waistOfst$7638 */
         static cXyz waistOfst(-30.0f, 30.0f, 0.0f);
 
         // todo: is this an unrolled loop / macro?
