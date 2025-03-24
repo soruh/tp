@@ -112,8 +112,6 @@ static cXyz gate_pos(-9246.0f, 15000.0f, -22763.0f);
 static int l_CowRoomNo = 0;
 static u32 l_CowType = 0;
 
-static cXyz runScale(2.0f, 2.0f, 2.0f);
-
 /* 80658830-80658A68 000350 0238+00 1/1 0/0 0/0 .text            setEffect__7daCow_cFv */
 void daCow_c::setEffect() {
     cXyz c;
@@ -137,11 +135,14 @@ void daCow_c::setEffect() {
 
             int roomNumber = fopAcM_GetRoomNo(this);
 
-            mParticle.setEffectTwo(&tevStr, &current.pos, 0, 0,
-                                   mShouldSetEffect ? &a : NULL,  //
-                                   mShouldSetEffect ? &c : NULL,  //
-                                   mShouldSetEffect ? &b : NULL,  //
-                                   &field_0xc32, NULL, roomNumber, 1.0f, speedF);
+            cXyz* v3 = mShouldSetEffect ? &b : NULL;
+            cXyz* v2 = mShouldSetEffect ? &c : NULL;
+            cXyz* v1 = mShouldSetEffect ? &a : NULL;
+
+            mParticle.setEffectTwo(&tevStr, &current.pos, 0, 0, v1, v2, v3, &field_0xc32, NULL,
+                                   roomNumber, 1.0f, speedF);
+
+            static cXyz runScale(2.0f, 2.0f, 2.0f);
 
             for (int i = 0; i < 3; i++) {
                 for (int j = 0; j < 2; j++) {
