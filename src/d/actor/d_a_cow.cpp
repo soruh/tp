@@ -3191,7 +3191,7 @@ int daCow_c::createHeapCallBack(fopAc_ac_c* actor) {
 }
 
 /* 80661D44-80662228 009864 04E4+00 1/1 0/0 0/0 .text            initialize__7daCow_cFv */
-u16 daCow_c::initialize() {
+u8 daCow_c::initialize() {
     fopAcM_SetMtx(this, mpMorf->getModel()->getBaseTRMtx());
     mSound.init(&current.pos, &eyePos, 3, 1);
 
@@ -3252,10 +3252,8 @@ u16 daCow_c::initialize() {
         int nextAction = rand % 4;
         if (nextAction == 1) {
             setProcess(&daCow_c::action_shake, 0);
-
         } else if (nextAction == 2) {
             setProcess(&daCow_c::action_moo, 0);
-
         } else if (nextAction == 3) {
             setProcess(&daCow_c::action_eat, 0);
         } else {
@@ -3320,12 +3318,12 @@ int daCow_c::create() {
     }
 
     switch (mPrm0) {
-    case 1:
-        setEnterCow10();
-        field_0xca6 = 1;
-        return cPhs_ERROR_e;
     case 2:
         setEnterCow20();
+        field_0xca6 = 1;
+        return cPhs_ERROR_e;
+    case 1:
+        setEnterCow10();
         field_0xca6 = 1;
         return cPhs_ERROR_e;
     default:

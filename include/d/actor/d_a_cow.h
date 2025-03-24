@@ -96,7 +96,7 @@ public:
     /* 80661940 */ int Execute();
     /* 80661AF0 */ int CreateHeap();
     /* 80661D24 */ static int createHeapCallBack(fopAc_ac_c*);
-    /* 80661D44 */ u16 initialize();
+    /* 80661D44 */ u8 initialize();
     /* 80662228 */ int create();
     /* 80662710 */ int ctrlJoint(J3DJoint*, J3DModel*);
     /* 80662920 */ static int ctrlJointCallBack(J3DJoint*, int);
