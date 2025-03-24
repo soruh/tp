@@ -1345,18 +1345,17 @@ void daCow_c::action_run() {
                 mShouldSetEffect = 1;
                 fVar11 = 4.0f;
                 fVar12 = (field_0xc6c / 1000.0f) * 45.0f;
-                field_0xca1 = field_0xca1 + 1;
-                f32 rand = cM_rndF(50.0f);
+                field_0xca1++;
 
-                if ((((int)(rand + 100.0f) & 0xffU) <= field_0xca1) &&
-                        daPy_getPlayerActorClass()->checkHorseRide() ||
-                    (u32)daPy_getPlayerActorClass()->checkNowWolf() != 0)
-                {
-                    field_0xca0 = 0;
-                    field_0xca1 = 0;
-
-                    setProcess(&daCow_c::action_angry, 0);
-                    return;
+                if (field_0xca1 >= (u8)(cM_rndF(50.0f) + 100.0f)) {
+                    if (daPy_getPlayerActorClass()->checkHorseRide() ||
+                        (u32)daPy_getPlayerActorClass()->checkNowWolf() != 0)
+                    {
+                        field_0xca0 = 0;
+                        field_0xca1 = 0;
+                        setProcess(&daCow_c::action_angry, 0);
+                        return;
+                    }
                 }
             } else {
                 field_0xca1 = 0;
