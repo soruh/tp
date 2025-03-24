@@ -568,41 +568,41 @@ bool daCow_c::checkNearCowRun() {
 void daCow_c::action_wait() {
     f32 rand = cM_rnd();
 
-    int nextAction = mMode;
-    if (nextAction != 2) {
-        if (nextAction < 2) {
-            if (nextAction != 0) {
-                rand = cM_rndF(100.0f);
-                field_0xc58 = rand + 300.0f;
-                mMode = 1;
-                field_0xc90 = 0;
-                if (!field_0xcaa) {
-                    setBck(0x1a, 2, 12.0f, 1.0f);
-                    mMode = 2;
-                } else {
-                    setBck(6, 0, 12.0f, 1.0f);
-
-                    mpMorf->setFrame(mpMorf->getEndFrame());
-                    mpMorf->setPlaySpeed(-1.0f);
-
-                    mMode = 1;
-                }
-                return;
-            } else {
-                if (mpMorf->isStop()) {
-                    setBck(0x1a, 2, 0.0f, 1.0f);
-                    mMode = 2;
-                }
-            }
+    switch (mMode) {
+    case 0:
+        field_0xc58 = cM_rndF(100.0f) + 300.0f;
+        mMode = 1;
+        field_0xc90 = 0;
+        if (!field_0xcaa) {
+            setBck(0x1a, 2, 12.0f, 1.0f);
+            mMode = 2;
         } else {
-            if (nextAction < 4) {
-                field_0xc38.y = 0;
-                field_0xc3e.y = 0;
-                field_0xc88 = 0;
-                field_0xca8 = 0;
-            }
-            return;
+            setBck(6, 0, 12.0f, 1.0f);
+
+            mpMorf->setFrame(mpMorf->getEndFrame());
+            mpMorf->setPlaySpeed(-1.0f);
+
+            mMode = 1;
         }
+        return;
+
+    case 1:
+        if (mpMorf->isStop()) {
+            setBck(0x1a, 2, 0.0f, 1.0f);
+            mMode = 2;
+        }
+        break;
+
+    case 2:
+        break;
+
+    case 3:
+        field_0xc38.y = 0;
+        field_0xc3e.y = 0;
+        field_0xc88 = 0;
+        field_0xca8 = 0;
+    default:
+        return;
     }
 
     s16 angle = 0;
@@ -646,7 +646,6 @@ void daCow_c::action_wait() {
             return;
         }
     }
-    STATIC_ASSERT(sizeof(s32) == sizeof(int));
     if (!cLib_calcTimer((int*)&field_0xc58) && !field_0xc88) {
         if (checkNearWolf()) {
             setProcess(&daCow_c::action_moo, 0);
