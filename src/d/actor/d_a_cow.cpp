@@ -2676,47 +2676,48 @@ void daCow_c::executeCrazyBack2() {
         return;
     }
 
-    int bVar1 = field_0xc61;
-    if (bVar1 == 2) {
-        if (bVar1 < 2) {
-            if (bVar1 == 0) {
-                setBck(0x1c, 2, 10.0f, 1.0f);
-                field_0xc61 = 1;
-                field_0xc90 = 600;
-            }
+    s16 targetAngle;
 
-            setActetcStatus();
-            s16 targetAngle = cLib_targetAngleY(&current.pos, &old.pos);
-            cLib_addCalcAngleS(&current.angle.y, targetAngle, 0x10, 0x100, 0x80);
-            cLib_chaseF(&speedF, 2.0f, 1.0f);
-            cLib_addCalcAngleS(&shape_angle.y, current.angle.y, 8, 0x100, 0x800);
-            field_0xc32.y = shape_angle.y;
-            setBodyAngle(targetAngle);
+    switch (field_0xc61) {
+    case 0:
+        setBck(0x1c, 2, 10.0f, 1.0f);
+        field_0xc61 = 1;
+        field_0xc90 = 600;
+    case 1:
 
-            if (current.pos.abs(old.pos) < 200.0f || field_0xc90) {
+        setActetcStatus();
+        targetAngle = cLib_targetAngleY(&current.pos, &old.pos);
+        cLib_addCalcAngleS(&current.angle.y, targetAngle, 0x10, 0x100, 0x80);
+        cLib_chaseF(&speedF, 2.0f, 1.0f);
+        cLib_addCalcAngleS(&shape_angle.y, current.angle.y, 8, 0x100, 0x800);
+        field_0xc32.y = shape_angle.y;
+        setBodyAngle(targetAngle);
+
+        if (current.pos.abs(old.pos) < 200.0f || field_0xc90) {
+            speedF = 0.0f;
+            setProcess(&daCow_c::action_moo, 0);
+        } else {
+            if (checkNadeNade()) {
+                setBck(0x1a, 2, 10.0f, 1.0f);
+                field_0xc61 = 2;
                 speedF = 0.0f;
-                setProcess(&daCow_c::action_moo, 0);
-            } else {
-                if (checkNadeNade()) {
-                    setBck(0x1a, 2, 10.0f, 1.0f);
-                    field_0xc61 = 2;
-                    speedF = 0.0f;
-                }
-            }
-        } else if (bVar1 < 4) {
-            if (mpMorf->checkFrame(35.0f)) {
-                mSound.startCreatureVoice(Z2SE_GOAT_V_CRY, -1);
-            }
-            if (mpMorf->isStop()) {
-                setBck(0x1c, 2, 10.0f, 1.0f);
-                field_0xc61 = 1;
             }
         }
-    } else {
+        break;
+    case 2:
         if (checkNadeNadeFinish()) {
             setBck(0xf, 0, 10.0f, 1.0f);
             field_0xc61 = 3;
             speedF = 0.0f;
+        }
+        break;
+    case 3:
+        if (mpMorf->checkFrame(35.0f)) {
+            mSound.startCreatureVoice(Z2SE_GOAT_V_CRY, -1);
+        }
+        if (mpMorf->isStop()) {
+            setBck(0x1c, 2, 10.0f, 1.0f);
+            field_0xc61 = 1;
         }
     }
 }
