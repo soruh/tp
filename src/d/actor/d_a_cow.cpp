@@ -903,37 +903,38 @@ bool daCow_c::checkPlayerPos() {
 
     s16 angleDifference = fopAcM_searchPlayerAngleY(this) - field_0xc32.y;
     s16 absAngleDifference = abs(angleDifference);
-    if (absAngleDifference >= 0x2000) {
-        if (angleDifference >= 1) {
-            return false;
+    if (absAngleDifference < 0x2000) {
+        if (angleDifference > 0) {
+            field_0xc60 = 0;
         } else {
-            return true;
-        }
-    }
-
-    if (absAngleDifference >= 0x6001) {
-        if (angleDifference < 1) {
-            field_0xc60 = 5;
-        } else {
-            field_0xc60 = 4;
+            field_0xc60 = 1;
         }
     } else {
-        if (fabsf(cutoffDistance * cM_scos(0x2000)) <
-            fabsf(playerDistance * cM_scos(angleDifference)))
-        {
-            return false;
-        }
-
-        if (fabsf(cutoffDistance * cM_ssin(0x2000)) <
-            fabsf(playerDistance * cM_ssin(angleDifference)))
-        {
-            return false;
-        }
-
-        if (angleDifference >= 1) {
-            field_0xc60 = 2;
+        if (absAngleDifference > 0x6000) {
+            if (angleDifference > 0) {
+                field_0xc60 = 4;
+            } else {
+                field_0xc60 = 5;
+            }
         } else {
-            field_0xc60 = 3;
+            f32 a = fabsf(playerDistance * cM_scos(angleDifference));
+            f32 b = fabsf(cutoffDistance * cM_scos(0x2000));
+            if (a > b) {
+                return false;
+            }
+
+            f32 c = fabsf(playerDistance * cM_ssin(angleDifference));
+            f32 d = fabsf(cutoffDistance * cM_ssin(0x2000));
+
+            if (c > d) {
+                return false;
+            }
+
+            if (angleDifference > 0) {
+                field_0xc60 = 2;
+            } else {
+                field_0xc60 = 3;
+            }
         }
     }
 
