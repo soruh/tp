@@ -314,11 +314,15 @@ BOOL daCow_c::checkProcess(void (daCow_c::*process)()) {
 /* 80659114-806591BC 000C34 00A8+00 16/16 0/0 0/0 .text setProcess__7daCow_cFM7daCow_cFPCvPv_vi */
 bool daCow_c::setProcess(void (daCow_c::*process)(), int param_1) {
     mMode = 3;
-    (this->*mProcess)();
+    if (mProcess) {
+        (this->*mProcess)();
+    }
     field_0xcaa = param_1;
     mMode = 0;
     mProcess = process;
-    (this->*mProcess)();
+    if (mProcess) {
+        (this->*mProcess)();
+    }
 
     return true;
 }
