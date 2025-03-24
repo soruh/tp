@@ -100,7 +100,7 @@ void daCow_c::setBck(int param_0, u8 param_1, f32 param_2, f32 param_3) {
 }
 
 /* 806587D4-80658830 0002F4 005C+00 1/1 0/0 0/0 .text            checkBck__7daCow_cFi */
-int daCow_c::checkBck(int param_0) {
+bool daCow_c::checkBck(int param_0) {
     J3DAnmTransform* animation = (J3DAnmTransform*)dComIfG_getObjectRes("Cow", param_0);
     return mpMorf->getAnm() == animation;
 }
@@ -2761,7 +2761,7 @@ void daCow_c::action_thrown() {
             if (checkCowInOwn(0x8000)) {
                 return;
             }
-            if (checkBck(0x15) & 1) {
+            if (checkBck(0x15)) {
                 setProcess(&daCow_c::action_wait, 1);
             } else {
                 setProcess(&daCow_c::action_wait, 0);
@@ -2777,7 +2777,10 @@ void daCow_c::action_thrown() {
         }
         break;
     case 3:
-        field_0xc3e.set(0, 0, 0);
+        field_0xc3e.z = 0;
+        field_0xc38.y = 0;
+        field_0xc3e.y = 0;
+
         dComIfGoat_SetThrow(0);
     }
 }
