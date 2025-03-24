@@ -115,6 +115,7 @@ public:
 
     bool getCowIn() { return field_0xca5; }
     bool getNoNearCheckTimer() { return mNoNearCheckTimer; }
+    daCow_c* getCowP() { return mCowP; }
 
 private:
     /* 0x568 */ u16 mFlags;
@@ -128,7 +129,7 @@ private:
     /* 0x7e4 */ dCcD_Stts mCcStts;
     /* 0x820 */ dBgS_AcchCir mAcchCir;
     /* 0x860 */ dCcD_Sph mSph[N_COW_COLLIDERS];
-    /* 0xc08 */ u32 field_0xc08;
+    /* 0xc08 */ daCow_c* mCowP;
     /* 0xc0c */ dPath* mPath;
     /* 0xc10 */ u8 field_0xc10;
     /* 0xc11 */ u8 field_0xc11;  // undefined
@@ -147,7 +148,7 @@ private:
     /* 0xc5c */ u16 mMode;
     /* 0xc5e */ s8 mAnimationPhase;
     /* 0xc5f */ u8 mPrm0;
-    /* 0xc60 */ s8 field_0xc60;
+    /* 0xc60 */ u8 field_0xc60;
     /* 0xc61 */ u8 field_0xc61;  // s8 or u8?
     /* 0xc62 */ u8 field_0xc62;
     /* 0xc63 */ u8 field_0xc63;
@@ -167,9 +168,9 @@ private:
     /* 0xc84 */ u32 field_0xc84;
     /* 0xc88 */ int field_0xc88;  // some timer
     /* 0xc8c */ int field_0xc8c;  // some timer
-    /* 0xc90 */ u32 field_0xc90;
-    /* 0xc94 */ u32 field_0xc94;
-    /* 0xc98 */ u32 field_0xc98;
+    /* 0xc90 */ s32 field_0xc90;
+    /* 0xc94 */ s32 field_0xc94;
+    /* 0xc98 */ s32 field_0xc98;
     /* 0xc9c */ u8 field_0xc9c;
     /* 0xc9d */ u8 field_0xc9d;
     /* 0xc9e */ u8 field_0xc9e;

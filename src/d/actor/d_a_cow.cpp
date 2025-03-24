@@ -1181,184 +1181,195 @@ bool daCow_c::checkCowInOwn(int param_1) {
 
 /* 8065BC68-8065C32C 003788 06C4+00 9/0 0/0 0/0 .text            action_run__7daCow_cFv */
 void daCow_c::action_run() {
-    int nextAction = mMode;
-    if (nextAction != 2) {
-        if (nextAction < 2) {
-            if (nextAction == 0) {
-                calcRunAnime(1);
-                mMode = 1;
-                field_0xc90 = 0x1e;
-                field_0xc94 = 0x32;
-                field_0xca1 = 0;
-                field_0xc9e = 0;
-                field_0xc9d = 0;
-            } else {
-                calcRunAnime(0);
+    f32 fVar11;
 
-                if (field_0xc90 != 0) {
-                    field_0xc90--;
-                }
-                if (field_0xc94 != 0) {
-                    field_0xc94--;
-                }
-                if (field_0xca3 != 0) {
-                    field_0xca3--;
-                }
+    switch (mMode) {
+    case 0:
+        calcRunAnime(1);
+        mMode = 1;
+        field_0xc90 = 0x1e;
+        field_0xc94 = 0x32;
+        field_0xca1 = 0;
+        field_0xc9e = 0;
+        field_0xc9d = 0;
+        break;
+    case 1:
+        calcRunAnime(0);
 
-                f32 fVar11 = 1.0f;
-                if (field_0xc94 == 0) {
-                    field_0xc08 = 0;
-                }
-                if (!isChaseCowGame()) {
-                    if (!field_0xc9d) {
-                        setCarryStatus();
-                    }
+        if (field_0xc90) {
+            field_0xc90--;
+        }
+        if (field_0xc94) {
+            field_0xc94--;
+        }
+        if (field_0xca3) {
+            field_0xca3--;
+        }
 
-                    u8 bVar1 = field_0xc9e;
-                    if (checkThrow()) {
-                        dComIfGp_getVibration().StartShock(2, 0x1f, cXyz(0.0f, 1.0f, 0.0f));
-                        field_0xc9e = bVar1;
-                        return;
-                    }
-                } else {
-                    if (!checkCowInOwn(0x8000)) {
-                        checkPlayerSurprise();
-                    }
-                    return;
-                }
+        fVar11 = 1.0f;
+        if (field_0xc94 == 0) {
+            mCowP = 0;
+        }
+        if (!isChaseCowGame()) {
+            if (!field_0xc9d) {
+                setCarryStatus();
+            }
 
-                bool havePlayerPos = checkPlayerPos();
-
-                if (field_0xc60 == 0 || field_0xc60 == 1 || field_0xc60 == 6) {
-                    field_0xca1 = 0;
-                }
-
-                checkBeforeBg();
-
-                f32 fVar12;
-
-                if (!havePlayerPos || !checkPlayerWait()) {
-                    fVar12 = field_0xc90 ? (field_0xc7c - 10.0f) * (field_0xc6c / 1000.0f) : 0.0f;
-                } else {
-                    f32 rand = cM_rndFX(200.0f);
-                    field_0xc74 = rand * 20.0f;
-                    field_0xc08 = 0;
-                    fVar11 = 2.0f;
-
-                    daPy_py_c* player = daPy_getPlayerActorClass();
-
-                    if (player->checkHorseRide() || (u32)player->checkNowWolf() != 0) {
-                        f32 rand = cM_rndF(100.0f);
-                        field_0xc90 = (int)(rand + 30.0f) & 0xff;
-                    }
-                    fVar12 = field_0xc7c * (field_0xc6c / 1000.0f);
-                }
-
-                if (fVar12 == 0.0f) {
-                    m_near_dist = 200.0f;
-                    m_view_angle = -0x8000;
-                    m_view_angle_wide = 0x2000;
-                    fpcEx_Search(s_near_cow, this);
-                    if (m_near_dist < 200.0f) {
-                        fVar12 = field_0xc7c * (field_0xc6c / 1000.0f);
-                    }
-                } else {
-                    m_near_dist = 200.0f;
-                    m_view_angle = 0;
-                    m_view_angle_wide = 0x2000;
-                    fpcEx_Search(s_near_cow, this);
-                    if (m_near_dist < 200.0f) {
-                        fVar12 = field_0xc7c * (field_0xc6c / 1000.0f) * 0.5f;
-                    }
-                }
-                if ((field_0xc54 == 0) || (field_0xc54 == 10)) {
-                    s16 sVar3 = current.angle.y;
-                    if ((field_0xca2 == 0) && (field_0xc08 != 0)) {
-                        sVar3 = *(short*)(field_0xc08 + 0xc34);
-                    }
-                    s8 bVar1 = field_0xc61;
-                    if (bVar1 == 2) {
-                        sVar3 = sVar3 + 0x1000;
-                    } else if (bVar1 < 2) {
-                        if (bVar1 == 0) {
-                            int sVar7 = getCowshedAngle();
-                            s16 playerAngle = fopAcM_searchPlayerAngleY(this);
-                            sVar3 = playerAngle - 0x8000;
-                            if (isChaseCowGame() &&
-                                cLib_distanceAngleS(sVar7, (field_0xc32).y) < 0x3000 &&
-                                cLib_distanceAngleS(sVar7, playerAngle) > 0x5800)
-                            {
-                                sVar3 = sVar7;
-                            }
-                        } else {
-                            sVar3 = sVar3 + -0x1000;
-                        }
-                    } else if (bVar1 == 4) {
-                        sVar3 = sVar3 + 0x4000;
-                    } else if (bVar1 < 4) {
-                        sVar3 = sVar3 + -0x4000;
-                    }
-                    if (havePlayerPos == 0) {
-                        sVar3 = sVar3 + field_0xc74;
-                    }
-                    field_0xc72 = sVar3;
-                }
-
-                int outOfGate = checkOutOfGate(current.pos);
-                if (outOfGate) {
-                    field_0xc90 = 0x96;
-                    field_0xc9d = outOfGate;
-                }
-                if (field_0xc9d == 1) {
-                    field_0xc72 = gate_dir - 0x8000;
-                } else if (field_0xc9d == 2) {
-                    field_0xc72 = pen_dir - 0x8000;
-                }
-                int cowIn = checkCowIn(800.0f, 300.0f);
-                if (cowIn != 1) {
-                    setProcess(&daCow_c::action_enter, 0);
-                } else {
-                    if (cowIn == 2) {
-                        fVar12 = field_0xc7c * (field_0xc6c / 1000.0f);
-                    }
-                    if (field_0xca3 == 0) {
-                        field_0xca1 = 0;
-                    } else {
-                        this->mShouldSetEffect = 1;
-                        fVar11 = 4.0f;
-                        fVar12 = (field_0xc6c / 1000.0f) * 45.0f;
-                        field_0xca1 = field_0xca1 + 1;
-                        f32 rand = cM_rndF(50.0f);
-
-                        if ((((int)(rand + 100.0f) & 0xffU) <= field_0xca1) &&
-                                daPy_getPlayerActorClass()->checkHorseRide() ||
-                            daPy_getPlayerActorClass()->checkNowWolf())
-                        {
-                            field_0xca0 = 0;
-                            field_0xca1 = 0;
-
-                            setProcess(&daCow_c::action_angry, 0);
-                            return;
-                        }
-                    }
-                    if (fVar12 < 0.0f) {
-                        fVar12 = 0.0f;
-                    }
-                    cLib_chaseF(&speedF, fVar12, fVar11);
-                    cLib_addCalcAngleS2(&current.angle.y, field_0xc72, 8, 0x400);
-                    cLib_addCalcAngleS2(&shape_angle.y, current.angle.y, 8, 0x400);
-                    (field_0xc32).y = shape_angle.y;
-                    if (speedF == 0.0f) {
-                        setProcess(&daCow_c::action_wait, 0);
-                    }
-                }
+            u8 bVar1 = field_0xc9e;
+            if (checkThrow()) {
+                dComIfGp_getVibration().StartShock(2, 0x1f, cXyz(0.0f, 1.0f, 0.0f));
+                field_0xc9e = bVar1;
+                return;
             }
         } else {
-            if (nextAction < 4) {
-                mNoNearCheckTimer = 0x1e;
-                field_0xca3 = 0;
+            if (checkCowInOwn(0x8000)) {
+                return;
+            }
+            checkPlayerSurprise();
+        }
+
+        bool havePlayerPos = checkPlayerPos();
+
+        if (field_0xc60 == 0 || field_0xc60 == 1 || field_0xc60 == 6) {
+            field_0xca1 = 0;
+        }
+
+        checkBeforeBg();
+
+        f32 fVar12;
+
+        if (!havePlayerPos || !checkPlayerWait()) {
+            if (!field_0xc90) {
+                fVar12 = 0.0f;
+            } else {
+                fVar12 = (field_0xc7c - 10.0f) * (field_0xc6c / 1000.0f);
+            }
+        } else {
+            f32 rand = cM_rndFX(200.0f);
+            field_0xc74 = rand * 20.0f;
+            mCowP = 0;
+            fVar11 = 2.0f;
+
+            daPy_py_c* player = daPy_getPlayerActorClass();
+
+            // checkNowWolf should not get inlined...
+            if (player->checkHorseRide() || player->checkNowWolf()) {
+                f32 rand = cM_rndF(100.0f);
+                field_0xc90 = (int)(rand + 30.0f) & 0xff;
+            }
+            fVar12 = field_0xc7c * (field_0xc6c / 1000.0f);
+        }
+
+        if (fVar12 == 0.0f) {
+            m_near_dist = 200.0f;
+            m_view_angle = -0x8000;
+            m_view_angle_wide = 0x2000;
+            fpcEx_Search(s_near_cow, this);
+            if (m_near_dist < 200.0f) {
+                fVar12 = field_0xc7c * (field_0xc6c / 1000.0f);
+            }
+        } else {
+            m_near_dist = 200.0f;
+            m_view_angle = 0;
+            m_view_angle_wide = 0x2000;
+            fpcEx_Search(s_near_cow, this);
+            if (m_near_dist < 200.0f) {
+                fVar12 = (field_0xc6c / 1000.0f) * 0.5f * field_0xc7c;
             }
         }
+        if ((field_0xc54 == 0) || (field_0xc54 == 10)) {
+            s16 sVar3 = current.angle.y;
+            if (!field_0xca2 && mCowP) {
+                sVar3 = getCowP()->field_0xc2c.y;
+            }
+
+            int sVar7;
+            s16 playerAngle;
+
+            switch (field_0xc61) {
+            case 0:
+                sVar7 = getCowshedAngle();
+                playerAngle = fopAcM_searchPlayerAngleY(this);
+                sVar3 = playerAngle - 0x8000;
+                if (isChaseCowGame() && cLib_distanceAngleS(sVar7, (field_0xc32).y) < 0x3000 &&
+                    cLib_distanceAngleS(sVar7, playerAngle) > 0x5800)
+                {
+                    sVar3 = sVar7;
+                }
+                break;
+            case 1:
+                sVar3 -= 0x1000;
+                break;
+            case 2:
+                sVar3 += 0x1000;
+                break;
+            case 3:
+                sVar3 -= 0x4000;
+                break;
+            case 4:
+                sVar3 += 0x4000;
+                break;
+            }
+
+            if (!havePlayerPos) {
+                sVar3 += field_0xc74;
+            }
+            field_0xc72 = sVar3;
+        }
+
+        int outOfGate = checkOutOfGate(current.pos);
+        if (outOfGate) {
+            field_0xc90 = 0x96;
+            field_0xc9d = outOfGate;
+        }
+
+        if (field_0xc9d == 1) {
+            field_0xc72 = gate_dir - 0x8000;
+        } else if (field_0xc9d == 2) {
+            field_0xc72 = pen_dir - 0x8000;
+        }
+        int cowIn = checkCowIn(800.0f, 300.0f);
+        if (cowIn != 1) {
+            setProcess(&daCow_c::action_enter, 0);
+        } else {
+            if (cowIn == 2) {
+                fVar12 = field_0xc7c * (field_0xc6c / 1000.0f);
+            }
+            if (field_0xca3 == 0) {
+                field_0xca1 = 0;
+            } else {
+                this->mShouldSetEffect = 1;
+                fVar11 = 4.0f;
+                fVar12 = (field_0xc6c / 1000.0f) * 45.0f;
+                field_0xca1 = field_0xca1 + 1;
+                f32 rand = cM_rndF(50.0f);
+
+                if ((((int)(rand + 100.0f) & 0xffU) <= field_0xca1) &&
+                        daPy_getPlayerActorClass()->checkHorseRide() ||
+                    daPy_getPlayerActorClass()->checkNowWolf())
+                {
+                    field_0xca0 = 0;
+                    field_0xca1 = 0;
+
+                    setProcess(&daCow_c::action_angry, 0);
+                    return;
+                }
+            }
+            if (fVar12 < 0.0f) {
+                fVar12 = 0.0f;
+            }
+            cLib_chaseF(&speedF, fVar12, fVar11);
+            cLib_addCalcAngleS2(&current.angle.y, field_0xc72, 8, 0x400);
+            cLib_addCalcAngleS2(&shape_angle.y, current.angle.y, 8, 0x400);
+            (field_0xc32).y = shape_angle.y;
+            if (speedF == 0.0f) {
+                setProcess(&daCow_c::action_wait, 0);
+            }
+        }
+        break;
+    case 3:
+        mNoNearCheckTimer = 0x1e;
+        field_0xca3 = 0;
     }
 }
 
