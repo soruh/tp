@@ -3185,7 +3185,7 @@ int daCow_c::createHeapCallBack(fopAc_ac_c* actor) {
 }
 
 /* 80661D44-80662228 009864 04E4+00 1/1 0/0 0/0 .text            initialize__7daCow_cFv */
-int daCow_c::initialize() {
+u16 daCow_c::initialize() {
     fopAcM_SetMtx(this, mpMorf->getModel()->getBaseTRMtx());
     mSound.init(&current.pos, &eyePos, 3, 1);
 
@@ -3302,38 +3302,37 @@ int daCow_c::initialize() {
 
 /* 80662228-806623D4 009D48 01AC+00 1/1 0/0 0/0 .text            create__7daCow_cFv */
 int daCow_c::create() {
-    daCow_c* _this;
-    if (fopAcM_CheckCondition(this, 8)) {
-        _this = new daCow_c();
+    if (!fopAcM_CheckCondition(this, 8)) {
+        new (this) daCow_c();
         fopAcM_OnCondition(this, 8);
     }
 
     mPrm0 = fopAcM_GetParam(this);
 
-    if (this->mPrm0 == -1 || this->mPrm0 > 4) {
-        this->mPrm0 = 0;
+    if (mPrm0 == (u8)-1 || mPrm0 >= 5) {
+        mPrm0 = 0;
     }
 
-    if (mPrm0 == 2) {
-        setEnterCow20();
-        field_0xca6 = 1;
-        return cPhs_ERROR_e;
-    } else if (mPrm0 < 2 && mPrm0 != 0) {
+    switch (mPrm0) {
+    case 1:
         setEnterCow10();
         field_0xca6 = 1;
         return cPhs_ERROR_e;
-    } else {
+    case 2:
+        setEnterCow20();
+        field_0xca6 = 1;
+        return cPhs_ERROR_e;
+    default:
         int res = dComIfG_resLoad(&mPhase, "Cow");
-        if (res != cPhs_COMPLEATE_e) {
-            return res;
+        if (res == cPhs_COMPLEATE_e) {
+            if (!fopAcM_entrySolidHeap(this, daCow_c::createHeapCallBack, 0x1df0)) {
+                return cPhs_ERROR_e;
+            }
+            if (!initialize()) {
+                return cPhs_ERROR_e;
+            }
         }
-        if (!fopAcM_entrySolidHeap(_this, daCow_c::createHeapCallBack, 0x1df0)) {
-            return cPhs_ERROR_e;
-        }
-        if (!initialize()) {
-            return cPhs_ERROR_e;
-        }
-        return cPhs_COMPLEATE_e;
+        return res;
     }
 }
 
