@@ -3049,15 +3049,6 @@ void daCow_c::setAttnPos() {
 /* 80663500-80663504 0000A8 0004+00 0/0 0/0 0/0 .bss             m_search_range */
 static f32 m_search_range;
 
-/* 80663514-80663520 0000BC 000C+00 0/1 0/0 0/0 .bss             headOfst$7630 */
-static cXyz headOfst(20.0f, 10.0f, 0.0f);
-
-/* 80663530-8066353C 0000D8 000C+00 0/1 0/0 0/0 .bss             backBornOfst$7634 */
-static cXyz backBornOfst(60.0f, 20.0f, 0.0f);
-
-/* 8066354C-80663558 0000F4 000C+00 0/1 0/0 0/0 .bss             waistOfst$7638 */
-static cXyz waistOfst(-30.0f, 30.0f, 0.0f);
-
 /* 80661720-80661940 009240 0220+00 1/1 0/0 0/0 .text            setCollisions__7daCow_cFv */
 void daCow_c::setCollisions() {
     J3DModel* pJVar1;
@@ -3066,6 +3057,15 @@ void daCow_c::setCollisions() {
     cXyz acStack_28[2];
 
     if (!field_0xca6) {
+        /* 80663514-80663520 0000BC 000C+00 0/1 0/0 0/0 .bss             headOfst$7630 */
+        static cXyz headOfst(20.0f, 10.0f, 0.0f);
+
+        /* 80663530-8066353C 0000D8 000C+00 0/1 0/0 0/0 .bss             backBornOfst$7634 */
+        static cXyz backBornOfst(60.0f, 20.0f, 0.0f);
+
+        /* 8066354C-80663558 0000F4 000C+00 0/1 0/0 0/0 .bss             waistOfst$7638 */
+        static cXyz waistOfst(-30.0f, 30.0f, 0.0f);
+
         // todo: is this an unrolled loop / macro?
         cXyz ofstNow;
 
