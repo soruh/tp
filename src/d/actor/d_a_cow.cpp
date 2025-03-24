@@ -2788,13 +2788,12 @@ void daCow_c::action_thrown() {
 
 /* 806607B8-806608F0 0082D8 0138+00 1/1 0/0 0/0 .text            checkWolfBusters__7daCow_cFv */
 bool daCow_c::checkWolfBusters() {
-    daNpc_Aru_c* aru;
-
     daPy_py_c* player = daPy_getPlayerActorClass();
     if (!player->checkNowWolf()) {
         return false;
     }
 
+    daNpc_Aru_c* aru;
     fopAcM_SearchByName(PROC_NPC_ARU, (fopAc_ac_c**)&aru);
     if (!aru) {
         return false;
@@ -2821,23 +2820,134 @@ bool daCow_c::checkWolfBusters() {
 /* 806608F0-806612DC 008410 09EC+00 2/0 0/0 0/0 .text            action_wolf__7daCow_cFv */
 void daCow_c::action_wolf() {
     daPy_py_c* player = daPy_getPlayerActorClass();
-    daNpc_Aru_c* aru;
 
-    if (!fopAcM_SearchByName(PROC_NPC_ARU, (fopAc_ac_c**)&aru)) {
+    daNpc_Aru_c* aru;
+    fopAcM_SearchByName(PROC_NPC_ARU, (fopAc_ac_c**)&aru);
+    if (!aru) {
         return;
     }
 
     cXyz aruPos = aru->current.pos;
-
     s16 aruAngle = cLib_targetAngleY(&current.pos, &aru->current.pos);
-    int uVar3 = mMode;
-    if (uVar3 == 2) {
-        return;
-    }
-    if (uVar3 > 1) {
-        if (uVar3 > 3) {
+    f32 fVar13;
+
+    switch (mMode) {
+    case 0:
+        mMode = 1;
+        field_0xc9f = 0;
+        calcRunAnime(1);
+        attention_info.flags |= 1;
+        mSound.startCreatureVoice(Z2SE_GOAT_V_ANGRY, -1);
+        field_0xc98 = cM_rndF(90.0f) + 90.0f;
+        break;
+    case 1:
+        if (field_0xc90) {
+            field_0xc90--;
+        }
+        if (field_0xc98) {
+            field_0xc98--;
+        }
+
+        calcRunAnime(0);
+
+        if (player->checkNowWolf()) {
+            setProcess(&daCow_c::action_run, 0);
+            field_0xc9e = 1;
             return;
         }
+
+        if (checkOutOfGate(current.pos)) {
+            setProcess(&daCow_c::action_run, 0);
+            field_0xc9e = 1;
+            return;
+        }
+
+        switch (field_0xc9f) {
+        case 0:
+
+            cLib_chaseF(&speedF, 36.0f, 1.0f);
+            cLib_addCalcAngleS2(&current.angle.y, aruAngle, 8, 0x400);
+            shape_angle.y = current.angle.y;
+            field_0xc32.y = current.angle.y;
+            setBodyAngle2(aruAngle);
+
+            if (aruPos.absXZ(current.pos) < 500.0f) {
+                field_0xc9f = 1;
+            }
+            // goto LAB_80661240;
+            cLib_chaseS(&field_0xc3e.z, 0, 0x400);
+            break;
+        case 1:
+            if (cM_rnd() >= 0.5f) {
+                aruAngle -= 0x3000;
+            } else {
+                aruAngle += 0x3000;
+            }
+
+            field_0xc20 = aruPos;
+
+            field_0xc20.x += cM_ssin(aruAngle) * 500.0f;
+            field_0xc20.z += cM_scos(aruAngle) * 500.0f;
+            field_0xc72 = cLib_targetAngleY(&current.pos, &field_0xc20);
+            field_0xc9f = 2;
+            field_0xc90 = 0x96;
+            break;
+
+        case 2:
+            field_0xc72 = cLib_targetAngleY(&current.pos, &field_0xc20);
+
+            fVar13 = current.pos.absXZ(aru->current.pos) / 100.0f;
+
+            if (fVar13 < 7.0f) {
+                fVar13 = 7.0f;
+            }
+
+            cLib_chaseF(&speedF, fVar13, 1.0f);
+            cLib_addCalcAngleS2(&current.angle.y, field_0xc72, 8, 0x200);
+
+            shape_angle.y = current.angle.y;
+            field_0xc32.y = current.angle.y;
+
+            setBodyAngle2(field_0xc72);
+
+            if (!field_0xc90) {
+                field_0xc9f = 1;
+            } else {
+                if (current.pos.absXZ(field_0xc20) < 100.0f || mAcch.ChkWallHit()) {
+                    field_0xc9f = 1;
+                }
+            }
+
+            if (current.pos.absXZ(aru->current.pos) < 700.0f) {
+                if (!checkOutOfGate(current.pos)) {
+                    if (abs(fopAcM_searchPlayerAngleY(this) - field_0xc32.y) < 0x2000) {
+                        field_0xca0 = 0;
+                        field_0xca1 = 1;
+                        setProcess(&daCow_c::action_angry, 0);
+                        return;
+                    }
+                }
+            }
+            if (!field_0xc98) {
+                field_0xc98 = (int)(cM_rndF(90.0f) + 150.0f);
+                if (!checkOutOfGate(current.pos)) {
+                    m_angry_cow = 0;
+                    if (!fpcEx_Search(s_angry_cow2, this)) {
+                        if (abs(fopAcM_searchPlayerAngleY(this) - field_0xc32.y) < 0x2000) {
+                            setProcess(&daCow_c::action_angry, 0);
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+
+        cLib_chaseS(&field_0xc3e.z, 0, 0x400);
+
+        break;
+    case 2:
+        break;
+    case 3:
         field_0xc98 = 0;
         field_0xc94 = 0;
         field_0xc90 = 0;
@@ -2857,123 +2967,7 @@ void daCow_c::action_wolf() {
             iWolfBuster += 1;
         }
         gWolfBustersID[iWolfBuster] = -1;
-        return;
-    }
-    if (uVar3 == 0) {
-        mMode = 1;
-        field_0xc9f = 0;
-        calcRunAnime(1);
-        attention_info.flags |= 1;
-        mSound.startCreatureVoice(Z2SE_GOAT_V_ANGRY, -1);
-        field_0xc98 = cM_rndF(90.0f) + 90.0f;
-        return;
-    }
-    if (field_0xc90) {
-        field_0xc90--;
-    }
-    if (field_0xc98) {
-        field_0xc98--;
-    }
-
-    calcRunAnime(0);
-
-    if (daPy_getPlayerActorClass()->checkNowWolf()) {
-        setProcess(&daCow_c::action_run, 0);
-        field_0xc9e = 1;
-        return;
-    }
-
-    if (checkOutOfGate(current.pos)) {
-        setProcess(&daCow_c::action_run, 0);
-        field_0xc9e = 1;
-        return;
-    }
-
-    int bVar1 = field_0xc9f;
-    if (bVar1 == 1) {
-        if (cM_rnd() >= 0.5f) {
-            aruAngle -= 0x3000;
-        } else {
-            aruAngle += 0x3000;
-        }
-
-        field_0xc20 = aruPos;
-
-        field_0xc20.x += cM_ssin(aruAngle) * 500.0f;
-        field_0xc20.z += cM_scos(aruAngle) * 500.0f;
-        field_0xc72 = cLib_targetAngleY(&current.pos, &field_0xc20);
-        field_0xc9f = 2;
-        field_0xc90 = 0x96;
-    } else {
-        if (bVar1 == 0) {
-            cLib_chaseF(&speedF, 36.0f, 1.0f);
-            cLib_addCalcAngleS2(&current.angle.y, aruAngle, 8, 0x400);
-            shape_angle.y = current.angle.y;
-            field_0xc32.y = current.angle.y;
-            setBodyAngle2(aruAngle);
-
-            if (aruPos.absXZ(current.pos) < 500.0f) {
-                field_0xc9f = 1;
-            }
-            // goto LAB_80661240;
-            cLib_chaseS(&field_0xc3e.z, 0, 0x400);
-            return;
-        }
-        if (bVar1 > 2) {
-            // goto LAB_80661240;
-            cLib_chaseS(&field_0xc3e.z, 0, 0x400);
-            return;
-        }
-
-        // LAB_80661240;
-        // cLib_chaseS(&field_0xc3e.z, 0, 0x400);
-        // return;
-    }
-    field_0xc72 = cLib_targetAngleY(&current.pos, &field_0xc20);
-
-    f32 fVar13 = current.pos.absXZ(aru->current.pos) / 100.0f;
-
-    if (fVar13 < 7.0f) {
-        fVar13 = 7.0f;
-    }
-
-    cLib_chaseF(&speedF, fVar13, 1.0f);
-    cLib_addCalcAngleS2(&current.angle.y, field_0xc72, 8, 0x200);
-
-    shape_angle.y = current.angle.y;
-    field_0xc32.y = current.angle.y;
-
-    setBodyAngle2(field_0xc72);
-
-    if (!field_0xc90) {
-        field_0xc9f = 1;
-    } else {
-        if (current.pos.absXZ(field_0xc20) < 100.0f || mAcch.ChkWallHit()) {
-            field_0xc9f = 1;
-        }
-    }
-
-    if (current.pos.absXZ(aru->current.pos) < 700.0f) {
-        if (!checkOutOfGate(current.pos)) {
-            if (abs(fopAcM_searchPlayerAngleY(this) - field_0xc32.y) < 0x2000) {
-                field_0xca0 = 0;
-                field_0xca1 = 1;
-                setProcess(&daCow_c::action_angry, 0);
-                return;
-            }
-        }
-    }
-    if (!field_0xc98) {
-        field_0xc98 = (int)(cM_rndF(90.0f) + 150.0f);
-        if (!checkOutOfGate(current.pos)) {
-            m_angry_cow = 0;
-            if (!fpcEx_Search(s_angry_cow2, this)) {
-                if (abs(fopAcM_searchPlayerAngleY(this) - field_0xc32.y) < 0x2000) {
-                    setProcess(&daCow_c::action_angry, 0);
-                    return;
-                }
-            }
-        }
+        break;
     }
 }
 
