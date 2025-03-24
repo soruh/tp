@@ -1102,7 +1102,7 @@ void daCow_c::checkBeforeBg() {
 /* 8065B760-8065B8A8 003280 0148+00 6/6 0/0 0/0 .text            checkOutOfGate__7daCow_cF4cXyz
  */
 int daCow_c::checkOutOfGate(cXyz pos) {
-    if (!isChaseCowGame()) {
+    if (isChaseCowGame()) {
         return 0;
     }
 
