@@ -472,15 +472,13 @@ static s16 m_view_angle;
 
 /* 8065972C-80659814 00124C 00E8+00 2/2 0/0 0/0 .text            s_near_cow__FPvPv */
 static void* s_near_cow(void* param_1, void* param_2) {
-    daCow_c* cow_1 = (daCow_c*)param_1;
-    daCow_c* cow_2 = (daCow_c*)param_2;
+    if (IS_VALID_COW_INTERACTION(param_1, param_2) && !((daCow_c*)param_1)->getCowIn()) {
+        daCow_c* cow_1 = (daCow_c*)param_1;
+        daCow_c* cow_2 = (daCow_c*)param_2;
 
-    if (IS_VALID_COW_INTERACTION(cow_1, cow_2) && !(cow_1)->getCowIn()) {
         s16 actorAngleY = fopAcM_searchActorAngleY(cow_2, cow_1);
 
-        csXyz stackAngle = daCow_c::getShapeAngle(cow_2);
-
-        actorAngleY = cLib_distanceAngleS(actorAngleY, stackAngle.y);
+        actorAngleY = cLib_distanceAngleS(actorAngleY, cow_2->getShapeAngle().y);
 
         if (cLib_distanceAngleS(actorAngleY, m_view_angle) < m_view_angle_wide) {
             f32 dVar5 = fopAcM_searchActorDistance(cow_1, cow_2);
@@ -3503,8 +3501,8 @@ static void func_80662D68() {
 
 // todo
 /* 80662D70-80662D84 00A890 0014+00 1/1 0/0 0/0 .text            getShapeAngle__7daCow_cFv */
-csXyz daCow_c::getShapeAngle(daCow_c* cow) {
-    return cow->field_0xc32;
+csXyz daCow_c::getShapeAngle() {
+    return field_0xc32;
 }
 
 /* 80663390-806633B0 -00001 0020+00 1/0 0/0 0/0 .data            daCow_MethodTable */

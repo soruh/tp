@@ -102,7 +102,7 @@ public:
     /* 80662920 */ static int ctrlJointCallBack(J3DJoint*, int);
     /* 8066296C */ int Draw();
     /* 80662BE4 */ int Delete();
-    /* 80662D70 */ static csXyz getShapeAngle(daCow_c* cow);
+    /* 80662D70 */ csXyz getShapeAngle();
 
     // todo: use these
     void setNaderu() { mFlags |= 0x80; }
