@@ -227,7 +227,7 @@ bool daCow_c::checkNadeNade() {
 /* 80658CD0-80658D3C 0007F0 006C+00 3/3 0/0 0/0 .text            setSeSnort__7daCow_cFv */
 void daCow_c::setSeSnort() {
     if (mpMorf->checkFrame(1.0f)) {
-        mSound.startCreatureVoice(JAISoundID(0x50079), -1);
+        mSound.startCreatureVoice(0x50079, -1);
     }
 }
 
@@ -684,7 +684,7 @@ void daCow_c::action_eat() {
         if (mpMorf->checkFrame(10.0f) || mpMorf->checkFrame(40.0f) || mpMorf->checkFrame(68.0f) ||
             mpMorf->checkFrame(98.0f))
         {
-            mSound.startCreatureVoice(JAISoundID(Z2SE_GOAT_V_EAT), -1);
+            mSound.startCreatureVoice(Z2SE_GOAT_V_EAT, -1);
         }
 
         if (!field_0xca5) {
@@ -747,7 +747,7 @@ void daCow_c::action_moo() {
         }
     case 2:
         if (mpMorf->checkFrame(35.0f)) {
-            mSound.startCreatureVoice(JAISoundID(Z2SE_GOAT_V_CRY), -1);
+            mSound.startCreatureVoice(Z2SE_GOAT_V_CRY, -1);
         }
 
         if (!field_0xca5) {
@@ -800,7 +800,7 @@ void daCow_c::action_shake() {
     case 2:
 
         if (mpMorf->checkFrame(68.0f)) {
-            mSound.startCreatureVoice(JAISoundID(Z2SE_GOAT_V_NOSE), -1);
+            mSound.startCreatureVoice(Z2SE_GOAT_V_NOSE, -1);
         }
 
         if (!field_0xca5) {
@@ -876,7 +876,7 @@ bool daCow_c::checkPlayerSurprise() {
     }
 
     if (fopAcM_searchPlayerDistance(this) < 1500.0f && player->checkCowGameLash()) {
-        mSound.startCreatureVoice(JAISoundID(Z2SE_GOAT_V_CRY), -1);
+        mSound.startCreatureVoice(Z2SE_GOAT_V_CRY, -1);
         field_0xca3 = 0x32;
         return true;
     } else {
@@ -2009,7 +2009,7 @@ void daCow_c::executeCrazyDash() {
     setRushVibration(2);
 
     if (field_0xc90 == 1) {
-        mSound.startCreatureVoice(JAISoundID(Z2SE_GOAT_V_ANGRY), -1);
+        mSound.startCreatureVoice(Z2SE_GOAT_V_ANGRY, -1);
     }
     if (field_0xc10 == 4 || field_0xc10 == 5) {
         cLib_chaseS(&field_0xc3e.z, 0x1000, 0x400);
@@ -2227,100 +2227,82 @@ void daCow_c::initCrazyThrow(int param_1) {
 /* 8065EBF0-8065F088 006710 0498+00 2/2 0/0 0/0 .text            executeCrazyThrow__7daCow_cFv
  */
 void daCow_c::executeCrazyThrow() {
-    int bVar1 = field_0xc60;
-    if (bVar1 != 3) {
-        if (bVar1 < 3) {
-            if (bVar1 != 1) {
-                if (bVar1 == 0) {
-                    current.pos = field_0xc20;
+    dBgS_LinChk linChk;
 
-                    if (mpMorf->checkFrame(10.0f)) {
-                        mSound.startCreatureVoice(JAISoundID(Z2SE_GOAT_V_THROWN), -1);
-                    }
-                    if (mpMorf->checkFrame(34.0f)) {
-                        field_0xc60 = 1;
-                        field_0xc62 = 2;
-                        field_0xc63 = 0;
-                        gravity = -4.0f;
+    switch (field_0xc60) {
+    case 0:
+        current.pos = field_0xc20;
 
-                        for (int iSphere = 0; iSphere < N_COW_COLLIDERS; iSphere++) {
-                            mSph[iSphere].OnCoSetBit();
-                        }
+        if (mpMorf->checkFrame(10.0f)) {
+            mSound.startCreatureVoice(Z2SE_GOAT_V_THROWN, -1);
+        }
+        if (mpMorf->checkFrame(34.0f)) {
+            field_0xc60 = 1;
+            field_0xc62 = 2;
+            field_0xc63 = 0;
+            gravity = -4.0f;
 
-                        if (!field_0xc61) {
-                            current.angle.y = daPy_getPlayerActorClass()->shape_angle.y + -0x6800;
-                        } else {
-                            current.angle.y = daPy_getPlayerActorClass()->shape_angle.y + 0x7000;
-                        }
-                        speedF = 10.0f;
-                        speed.y = 10.0f;
-                    }
-                    return;
-                }
+            for (int iSphere = 0; iSphere < N_COW_COLLIDERS; iSphere++) {
+                mSph[iSphere].OnCoSetBit();
+            }
+
+            if (!field_0xc61) {
+                current.angle.y = daPy_getPlayerActorClass()->shape_angle.y + -0x6800;
             } else {
-                field_0xc20.y += 100.0f;
-
-                dBgS_LinChk linChk;
-                linChk.Set(&field_0xc20, &current.pos, NULL);
-                if (dComIfG_Bgsp().LineCross(&linChk)) {
-                    current.pos = linChk.GetCross();
-
-                    cM3dGPla plane;
-                    dComIfG_Bgsp().GetTriPla(linChk, &plane);
-
-                    cXyz* normal = plane.GetNP();
-                    current.pos.x += normal->x * 50.0f;
-                    current.pos.z += normal->z * 50.0f;
-                    speedF = 0.0f;
-                    old.pos = current.pos;
-                }
-                field_0xc60 = 2;
+                current.angle.y = daPy_getPlayerActorClass()->shape_angle.y + 0x7000;
             }
+            speedF = 10.0f;
+            speed.y = 10.0f;
+        }
+        break;
+    case 1:
+        field_0xc20.y += 100.0f;
 
-            cLib_chaseAngleS(&field_0xc32.x, 0, 0x800);
-            field_0xc62 = 3;
+        linChk.Set(&field_0xc20, &current.pos, NULL);
+        if (dComIfG_Bgsp().LineCross(&linChk)) {
+            current.pos = linChk.GetCross();
 
-            if (mAcch.ChkGroundHit()) {
-                shape_angle.x = field_0xc32.x;
+            cM3dGPla plane;
+            dComIfG_Bgsp().GetTriPla(linChk, &plane);
 
-                mSound.startCreatureSound(JAISoundID(Z2SE_GOAT_V_ANGRY), 0, -1);
-                dComIfGp_getVibration().StartShock(5, 0x1f, cXyz(0.0f, 1.0f, 0.0f));
+            cXyz* normal = plane.GetNP();
+            current.pos.x += normal->x * 50.0f;
+            current.pos.z += normal->z * 50.0f;
+            speedF = 0.0f;
+            old.pos = current.pos;
+        }
+        field_0xc60 = 2;
 
-                speed.y = 0.0f;
-                field_0xc90 = 0x5a;
-                field_0xc60 = 3;
-                field_0xc62 = 0;
-                mShouldSetEffect = 2;
+    case 2:
 
-                if (field_0xc61) {
-                    setBck(8, 2, 0.0f, 1.0f);
-                    field_0xc32.y -= 0x7000;
-                    field_0xc76 = 0xfc18;
+        cLib_chaseAngleS(&field_0xc32.x, 0, 0x800);
+        field_0xc62 = 3;
 
-                } else {
-                    setBck(7, 2, 0.0f, 1.0f);
-                    field_0xc32.y += 0x7000;
-                    field_0xc76 = 1000;
-                }
-            }
-        } else {
-            if (bVar1 == 5) {
-                if (!field_0xc90) {
-                    initCrazyBack(0);
-                }
-            } else if (bVar1 < 5) {
-                if (mpMorf->isStop()) {
-                    if (this->mPrm0 == 3) {
-                        setBck(0x1a, 2, 10.0f, 1.0f);
-                        field_0xc60 = 5;
-                        field_0xc90 = 10;
-                    } else {
-                        initCrazyBack(0);
-                    }
-                }
+        if (mAcch.ChkGroundHit()) {
+            shape_angle.x = field_0xc32.x;
+
+            mSound.startCreatureSound(Z2SE_CM_BODYFALL_M, 0, -1);
+            dComIfGp_getVibration().StartShock(5, 0x1f, cXyz(0.0f, 1.0f, 0.0f));
+
+            speed.y = 0.0f;
+            field_0xc90 = 0x5a;
+            field_0xc60 = 3;
+            field_0xc62 = 0;
+            mShouldSetEffect = 2;
+
+            if (field_0xc61) {
+                setBck(8, 2, 0.0f, 1.0f);
+                field_0xc32.y -= 0x7000;
+                field_0xc76 = 0xfc18;
+
+            } else {
+                setBck(7, 2, 0.0f, 1.0f);
+                field_0xc32.y += 0x7000;
+                field_0xc76 = 1000;
             }
         }
-    } else {
+        break;
+    case 3:
         field_0xc32.y += field_0xc76;
         cLib_chaseAngleS(&field_0xc76, 0, 0x1e);
         if (cLib_chaseF(&speedF, 0.0f, 0.5f) && !field_0xc90) {
@@ -2331,6 +2313,22 @@ void daCow_c::executeCrazyThrow() {
                 setBck(0xd, 0, 5.0f, 1.0f);
             }
             shape_angle.y = field_0xc32.y;
+        }
+        break;
+    case 4:
+        if (mpMorf->isStop()) {
+            if (this->mPrm0 == 3) {
+                setBck(0x1a, 2, 10.0f, 1.0f);
+                field_0xc60 = 5;
+                field_0xc90 = 10;
+            } else {
+                initCrazyBack(0);
+            }
+        }
+        break;
+    case 5:
+        if (!field_0xc90) {
+            initCrazyBack(0);
         }
     }
 }
@@ -2362,7 +2360,7 @@ void daCow_c::executeCrazyAttack() {
             cLib_chaseF(&speedF, 10.0f, 1.0f);
 
             if (mpMorf->checkFrame(2.0f)) {
-                mSound.startCreatureVoice(JAISoundID(Z2SE_GOAT_V_BREATH_SHAKE), -1);
+                mSound.startCreatureVoice(Z2SE_GOAT_V_BREATH_SHAKE, -1);
             }
             if (mpMorf->isStop()) {
                 initCrazyAway(0);
@@ -2372,7 +2370,7 @@ void daCow_c::executeCrazyAttack() {
         }
     } else {
         if (mpMorf->checkFrame(2.0f)) {
-            mSound.startCreatureVoice(JAISoundID(Z2SE_GOAT_V_BREATH_SHAKE), -1);
+            mSound.startCreatureVoice(Z2SE_GOAT_V_BREATH_SHAKE, -1);
         }
 
         if (mpMorf->checkFrame(10.0f)) {
@@ -2506,7 +2504,7 @@ void daCow_c::executeCrazyBack() {
         break;
     case 2:
         if (mpMorf->checkFrame(35.0f)) {
-            mSound.startCreatureVoice(JAISoundID(Z2SE_GOAT_V_BREATH_SHAKE), -1);
+            mSound.startCreatureVoice(Z2SE_GOAT_V_BREATH_SHAKE, -1);
         }
         if (mpMorf->isStop()) {
             setBck(0x1c, 2, 10.0f, 1.0f);
@@ -2704,7 +2702,7 @@ void daCow_c::executeCrazyBack2() {
             }
         } else if (bVar1 < 4) {
             if (mpMorf->checkFrame(35.0f)) {
-                mSound.startCreatureVoice(JAISoundID(Z2SE_GOAT_V_CRY), -1);
+                mSound.startCreatureVoice(Z2SE_GOAT_V_CRY, -1);
             }
             if (mpMorf->isStop()) {
                 setBck(0x1c, 2, 10.0f, 1.0f);
@@ -2852,7 +2850,7 @@ void daCow_c::action_wolf() {
         field_0xc9f = 0;
         calcRunAnime(1);
         attention_info.flags |= 1;
-        mSound.startCreatureVoice(JAISoundID(Z2SE_GOAT_V_ANGRY), -1);
+        mSound.startCreatureVoice(Z2SE_GOAT_V_ANGRY, -1);
         field_0xc98 = cM_rndF(90.0f) + 90.0f;
         return;
     }
