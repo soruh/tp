@@ -347,9 +347,8 @@ void daCow_c::damage_check() {
 
     cCcD_ObjHitInf* hitObject = NULL;
     for (int iSphere = 0; iSphere < N_COW_COLLIDERS; iSphere++) {
-        dCcD_Sph* sphere = &mSph[iSphere];
-        if (sphere->ChkTgHit()) {
-            hitObject = sphere->GetTgHitObj();
+        if (mSph[iSphere].ChkTgHit()) {
+            hitObject = mSph[iSphere].GetTgHitObj();
             break;
         }
     }
