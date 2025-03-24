@@ -1456,131 +1456,130 @@ void daCow_c::action_enter() {
     mDoMtx_stack_c::YrotS(-pen_dir);
     mDoMtx_stack_c::multVecSR(&penDistanceNow, &penDistanceNow);
 
-    int nextAction = mMode;
-    if (nextAction != 2) {
-        if (nextAction < 2) {
-            if (nextAction != 0) {
-                if (field_0xc9f == 2) {
-                    s16 targetAngle = cLib_targetAngleY(&current.pos, &field_0xc20);
-                    cLib_addCalcAngleS2(&current.angle.y, targetAngle, 4, 0x100);
-                    cLib_addCalcAngleS2(&shape_angle.y, current.angle.y, 8, 0x800);
+    s16 targetAngle;
 
-                    field_0xc32.y = shape_angle.y;
+    switch (mMode) {
+    case 0:
+        calcRunAnime(1);
+        mMode = 1;
+        field_0xc9f = 0;
+        for (int iSphere = 0; iSphere < N_COW_COLLIDERS; iSphere++) {
+            mSph[iSphere].OffCoSetBit();
+            mCcStts.ClrCcMove();
+        }
 
-                    if (current.pos.abs(field_0xc20) < 50.0f) {
-                        setBck(0xf, 0, 12.0f, 1.0f);
-                        this->speedF = 0;
-                        field_0xc9f = 3;
-                    }
-                    if (checkCurringPen()) {
-                        field_0xc9f = 4;
-                        setCowInCage();
-                    }
+        break;
+    case 1:
+        f32 fVar2 = 30.0f;
+        switch (field_0xc9f) {
+        case 0:
+            calcRunAnime(0);
 
-                } else {
-                    u8 bVar1 = field_0xc9f;
-                    if (bVar1 < 2) {
-                        if (bVar1 == 0) {
-                            calcRunAnime(0);
-
-                            if (penDistanceAbs >= 80.0f) {
-                                field_0xc72 = getCowshedAngle();
-                                if (penDistanceAbs >= 200.0f) {
-                                    cLib_addCalcAngleS2(&current.angle.y, field_0xc72, 8, 0x800);
-                                    cLib_addCalcAngleS2(&shape_angle.y, current.angle.y, 8, 0x800);
-                                } else {
-                                    cLib_addCalcAngleS2(&current.angle.y, field_0xc72, 4, 0x1000);
-                                    cLib_addCalcAngleS2(&shape_angle.y, current.angle.y, 4, 0x1000);
-                                }
-                                field_0xc32.y = shape_angle.y;
-                            } else {
-                                setEnterCount();
-                            }
-                        } else {
-                            calcRunAnime(0);
-                            field_0xc72 = 0xc000;
-                            cLib_addCalcAngleS2(&current.angle.y, field_0xc72, 4, 0x800);
-                            cLib_addCalcAngleS2(&shape_angle.y, current.angle.y, 8, 0x800);
-                            field_0xc32.y = shape_angle.y;
-                            if (penDistanceNow.z > 500.0f) {
-                                for (int iSphere = 0; iSphere < N_COW_COLLIDERS; iSphere++) {
-                                    mSph[iSphere].OnCoSetBit();
-                                }
-                                mSph[0].SetCoSPrm(0x19);
-                                if (!cLib_calcTimer((int*)&field_0xc90)) {
-                                    penDistanceNow.set(cM_rndFX(4.0f) * 40.0f, 0.0f,
-                                                       cM_rndFX(5.0f) * 40.0f + 2000.0f);
-                                    mDoMtx_stack_c::YrotS(pen_dir);
-                                    mDoMtx_stack_c::multVecSR(&penDistanceNow, &penDistanceNow);
-
-                                    field_0xc20 = pen_pos + penDistance;
-
-                                    setBck(0x1b, 2, 12.0f, 1.0f);
-                                    this->speedF = 0x40400000;
-                                    field_0xc9f = 2;
-
-                                    if ((u32)dMeter2Info_getNowCount() ==
-                                            (u32)dMeter2Info_getMaxCount() &&
-                                        field_0xca9)
-                                    {
-                                        daNpc_Aru_c* aru;
-                                        if (fopAcM_SearchByName(PROC_NPC_ARU, (fopAc_ac_c**)&aru)) {
-                                            aru->setLastIn();
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    } else if (bVar1 == 4) {
-                        this->speedF = 0;
-                        field_0xca5 = 1;
-
-                        setProcess(&daCow_c::action_wait, 0);
-                        mAcchCir.SetWall(100.0f, 110.0f);
-                    } else if (bVar1 < 4) {
-                        if (mpMorf->isStop()) {
-                            if (current.pos.abs(field_0xc20) <= 100.0f) {
-                                setBck(0xf, 0, 12.0f, 1.0f);
-                            } else {
-                                field_0xc9f = 2;
-                                this->speedF = 0x40400000;
-                                setBck(0x1b, 2, 12.0f, 1.0f);
-                            }
-                        }
-                        if (checkCurringPen()) {
-                            field_0xc9f = 4;
-                            setCowInCage();
-                        }
-                    }
-                    if (field_0xc9f < 2) {
-                        m_near_dist = 200.0f;
-                        m_view_angle = 0;
-                        m_view_angle_wide = 0x2000;
-                        fpcM_Search(s_near_cow, this);
-
-                        f32 fVar2 = 30.0f;
-                        if (m_near_dist < 200.0f) {
-                            fVar2 = 2.0f;
-                        }
-                        if (fVar2 <= 30.0f) {
-                            if (fVar2 < 0.0f) {
-                                fVar2 = 2.0f;
-                            }
-                        } else {
-                            fVar2 = fVar2 - 1.0f;
-                        }
-                        cLib_chaseF(&this->speedF, fVar2, 1.5f);
-                    }
-                }
+            if (penDistanceAbs < 80.0f) {
+                setEnterCount();
             } else {
-                calcRunAnime(1);
-                field_0xc6c = 1;
-                field_0xc9f = 0;
+                field_0xc72 = getCowshedAngle();
+                if (penDistanceAbs < 200.0f) {
+                    cLib_addCalcAngleS2(&current.angle.y, field_0xc72, 4, 0x1000);
+                    cLib_addCalcAngleS2(&shape_angle.y, current.angle.y, 4, 0x1000);
+                } else {
+                    cLib_addCalcAngleS2(&current.angle.y, field_0xc72, 8, 0x800);
+                    cLib_addCalcAngleS2(&shape_angle.y, current.angle.y, 8, 0x800);
+                }
+                field_0xc32.y = shape_angle.y;
+            }
+            break;
+        case 1:
+            calcRunAnime(0);
+            field_0xc72 = pen_dir;
+            cLib_addCalcAngleS2(&current.angle.y, field_0xc72, 4, 0x800);
+            cLib_addCalcAngleS2(&shape_angle.y, current.angle.y, 8, 0x800);
+            field_0xc32.y = shape_angle.y;
+            if (penDistanceNow.z > 500.0f) {
                 for (int iSphere = 0; iSphere < N_COW_COLLIDERS; iSphere++) {
-                    mSph[iSphere].OffCoSetBit();
-                    mCcStts.ClrCcMove();
+                    mSph[iSphere].OnCoSetBit();
+                }
+                mSph[0].SetCoSPrm(0x19);
+                if (!cLib_calcTimer((int*)&field_0xc90)) {
+                    penDistanceNow.set(cM_rndFX(4.0f) * 40.0f, 0.0f,
+                                       cM_rndFX(5.0f) * 40.0f + 2000.0f);
+                    mDoMtx_stack_c::YrotS(pen_dir);
+                    mDoMtx_stack_c::multVecSR(&penDistanceNow, &penDistanceNow);
+
+                    field_0xc20 = pen_pos + penDistance;
+
+                    setBck(0x1b, 2, 12.0f, 1.0f);
+                    this->speedF = 0x40400000;
+                    field_0xc9f = 2;
+
+                    if ((u32)dMeter2Info_getNowCount() == (u32)dMeter2Info_getMaxCount() &&
+                        field_0xca9)
+                    {
+                        daNpc_Aru_c* aru;
+                        fopAcM_SearchByName(PROC_NPC_ARU, (fopAc_ac_c**)&aru);
+                        if (aru) {
+                            aru->setLastIn();
+                        }
+                    }
                 }
             }
+            break;
+        case 2:
+            targetAngle = cLib_targetAngleY(&current.pos, &field_0xc20);
+            cLib_addCalcAngleS2(&current.angle.y, targetAngle, 4, 0x100);
+            cLib_addCalcAngleS2(&shape_angle.y, current.angle.y, 8, 0x800);
+
+            field_0xc32.y = shape_angle.y;
+
+            if (current.pos.abs(field_0xc20) < 50.0f) {
+                setBck(0xf, 0, 12.0f, 1.0f);
+                this->speedF = 0;
+                field_0xc9f = 3;
+            }
+            if (checkCurringPen()) {
+                field_0xc9f = 4;
+                setCowInCage();
+            }
+            break;
+        case 3:
+            if (mpMorf->isStop()) {
+                if (current.pos.abs(field_0xc20) > 100.0f) {
+                    field_0xc9f = 2;
+                    this->speedF = 0x40400000;
+                    setBck(0x1b, 2, 12.0f, 1.0f);
+                } else {
+                    setBck(0xf, 0, 12.0f, 1.0f);
+                }
+            }
+            if (checkCurringPen()) {
+                field_0xc9f = 4;
+                setCowInCage();
+            }
+            break;
+        case 4:
+            this->speedF = 0;
+            field_0xca5 = 1;
+
+            setProcess(&daCow_c::action_wait, 0);
+            mAcchCir.SetWall(100.0f, 110.0f);
+            break;
+        }
+
+        if (field_0xc9f <= 1) {
+            m_near_dist = 200.0f;
+            m_view_angle = 0;
+            m_view_angle_wide = 0x2000;
+            fpcM_Search(s_near_cow, this);
+
+            if (m_near_dist < 200.0f) {
+                fVar2 = 2.0f;
+            }
+            if (fVar2 > 30.0f) {
+                fVar2 -= 1.0f;
+            } else if (fVar2 < 0.0f) {
+                fVar2 = 2.0f;
+            }
+            cLib_chaseF(&this->speedF, fVar2, 1.5f);
         }
     }
 
