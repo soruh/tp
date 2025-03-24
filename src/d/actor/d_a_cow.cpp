@@ -728,58 +728,52 @@ void daCow_c::action_eat() {
 
 /* 8065A594-8065A8A4 0020B4 0310+00 9/0 0/0 0/0 .text            action_moo__7daCow_cFv */
 void daCow_c::action_moo() {
-    int nextAction = mMode;
-    if (nextAction != 2) {
-        if (nextAction < 2) {
-            if (nextAction != 0) {
-                if (!field_0xcaa) {
-                    setBck(0xf, 0, 0.0f, 1.0f);
-                    mMode = 2;
-                } else {
-                    setBck(0xf, 0, 12.0f, 1.0f);
-                    mpMorf->setFrame(mpMorf->getEndFrame());
-                    mpMorf->setPlaySpeed(-1.0f);
-                    mMode = 1;
-                }
+    switch (mMode) {
+    case 0:
+        if (!field_0xcaa) {
+            setBck(0xf, 0, 12.0f, 1.0f);
+            mMode = 2;
+        } else {
+            setBck(0x6, 0, 12.0f, 1.0f);
+            mpMorf->setFrame(mpMorf->getEndFrame());
+            mpMorf->setPlaySpeed(-1.0f);
+            mMode = 1;
+        }
+        break;
+    case 1:
+        if (mpMorf->isStop()) {
+            setBck(0xf, 0, 0.0f, 1.0f);
+            mMode = 2;
+        }
+    case 2:
+        if (mpMorf->checkFrame(35.0f)) {
+            mSound.startCreatureVoice(JAISoundID(Z2SE_GOAT_V_CRY), -1);
+        }
+
+        if (!field_0xca5) {
+            if (checkNearCowRun() || checkPlayerWait()) {
+                setProcess(&daCow_c::action_wait, 0);
                 return;
             } else {
-                if (mpMorf->isStop()) {
-                    setBck(0xf, 0, 0.0f, 1.0f);
-                    mMode = 2;
+                setCarryStatus();
+                if (checkThrow()) {
+                    return;
                 }
             }
-        } else {
-            return;
         }
-    }
-
-    if (mpMorf->checkFrame(35.0f)) {
-        mSound.startCreatureVoice(JAISoundID(Z2SE_GOAT_V_CRY), -1);
-    }
-
-    if (!field_0xca5) {
-        if (checkNearCowRun() || checkPlayerWait()) {
-            setProcess(&daCow_c::action_wait, 0);
-            return;
-        } else {
-            setCarryStatus();
-            if (checkThrow()) {
-                return;
-            }
-        }
-    }
-    if (mpMorf->isStop()) {
-        if (checkNearWolf()) {
-            setProcess(&daCow_c::action_shake, 1);
-        } else {
-            f32 rand = cM_rnd();
-            if (rand < 0.4f) {
-                setProcess(&daCow_c::action_eat, 1);
+        if (mpMorf->isStop()) {
+            if (checkNearWolf()) {
+                setProcess(&daCow_c::action_shake, 1);
             } else {
-                if (rand < 0.7f) {
-                    setProcess(&daCow_c::action_shake, 1);
+                f32 rand = cM_rnd();
+                if (rand < 0.4f) {
+                    setProcess(&daCow_c::action_eat, 1);
                 } else {
-                    setProcess(&daCow_c::action_wait, 0);
+                    if (rand < 0.7f) {
+                        setProcess(&daCow_c::action_shake, 1);
+                    } else {
+                        setProcess(&daCow_c::action_wait, 0);
+                    }
                 }
             }
         }
