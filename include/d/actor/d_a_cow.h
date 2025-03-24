@@ -51,7 +51,7 @@ public:
     /* 8065AE88 */ bool checkPlayerPos();
     /* 8065B034 */ void checkBeforeBg();
     /* 8065B760 */ int checkOutOfGate(cXyz);
-    /* 8065B8A8 */ int getCowshedAngle();
+    /* 8065B8A8 */ s16 getCowshedAngle();
     /* 8065B8D8 */ double getCowshedDist();
     /* 8065BA30 */ int checkCowIn(f32, f32);
     /* 8065BB34 */ bool checkCowInOwn(int);

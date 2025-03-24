@@ -1122,7 +1122,7 @@ int daCow_c::checkOutOfGate(cXyz pos) {
 }
 
 /* 8065B8A8-8065B8D8 0033C8 0030+00 3/3 0/0 0/0 .text            getCowshedAngle__7daCow_cFv */
-int daCow_c::getCowshedAngle() {
+s16 daCow_c::getCowshedAngle() {
     return cLib_targetAngleY(&current.pos, &pen_pos);
 }
 
@@ -1250,10 +1250,9 @@ void daCow_c::action_run() {
             mCowP = 0;
             fVar11 = 2.0f;
 
-            daPy_py_c* player = daPy_getPlayerActorClass();
-
-            // checkNowWolf should not get inlined...
-            if (player->checkHorseRide() || player->checkNowWolf()) {
+            if (daPy_getPlayerActorClass()->checkHorseRide() ||
+                (u32)daPy_getPlayerActorClass()->checkNowWolf() != 0)
+            {
                 f32 rand = cM_rndF(100.0f);
                 field_0xc90 = (int)(rand + 30.0f) & 0xff;
             }
@@ -1283,14 +1282,14 @@ void daCow_c::action_run() {
                 sVar3 = getCowP()->field_0xc2c.y;
             }
 
-            int sVar7;
+            s16 sVar7;
             s16 playerAngle;
 
             switch (field_0xc61) {
             case 0:
                 sVar7 = getCowshedAngle();
                 playerAngle = fopAcM_searchPlayerAngleY(this);
-                sVar3 = playerAngle - 0x8000;
+                sVar3 = playerAngle - (s16)0x8000;
                 if (isChaseCowGame() && cLib_distanceAngleS(sVar7, (field_0xc32).y) < 0x3000 &&
                     cLib_distanceAngleS(sVar7, playerAngle) > 0x5800)
                 {
@@ -1324,21 +1323,19 @@ void daCow_c::action_run() {
         }
 
         if (field_0xc9d == 1) {
-            field_0xc72 = gate_dir - 0x8000;
+            field_0xc72 = gate_dir - (s16)0x8000;
         } else if (field_0xc9d == 2) {
-            field_0xc72 = pen_dir - 0x8000;
+            field_0xc72 = pen_dir - (s16)0x8000;
         }
         int cowIn = checkCowIn(800.0f, 300.0f);
-        if (cowIn != 1) {
+        if (cowIn == 1) {
             setProcess(&daCow_c::action_enter, 0);
         } else {
             if (cowIn == 2) {
                 fVar12 = field_0xc7c * (field_0xc6c / 1000.0f);
             }
-            if (field_0xca3 == 0) {
-                field_0xca1 = 0;
-            } else {
-                this->mShouldSetEffect = 1;
+            if (field_0xca3) {
+                mShouldSetEffect = 1;
                 fVar11 = 4.0f;
                 fVar12 = (field_0xc6c / 1000.0f) * 45.0f;
                 field_0xca1 = field_0xca1 + 1;
@@ -1346,7 +1343,7 @@ void daCow_c::action_run() {
 
                 if ((((int)(rand + 100.0f) & 0xffU) <= field_0xca1) &&
                         daPy_getPlayerActorClass()->checkHorseRide() ||
-                    daPy_getPlayerActorClass()->checkNowWolf())
+                    (u32)daPy_getPlayerActorClass()->checkNowWolf() != 0)
                 {
                     field_0xca0 = 0;
                     field_0xca1 = 0;
@@ -1354,6 +1351,8 @@ void daCow_c::action_run() {
                     setProcess(&daCow_c::action_angry, 0);
                     return;
                 }
+            } else {
+                field_0xca1 = 0;
             }
             if (fVar12 < 0.0f) {
                 fVar12 = 0.0f;
@@ -1362,7 +1361,7 @@ void daCow_c::action_run() {
             cLib_addCalcAngleS2(&current.angle.y, field_0xc72, 8, 0x400);
             cLib_addCalcAngleS2(&shape_angle.y, current.angle.y, 8, 0x400);
             (field_0xc32).y = shape_angle.y;
-            if (speedF == 0.0f) {
+            if (!speedF) {
                 setProcess(&daCow_c::action_wait, 0);
             }
         }
