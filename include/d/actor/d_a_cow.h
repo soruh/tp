@@ -165,7 +165,7 @@ private:
     /* 0xc78 */ f32 field_0xc78;
     /* 0xc7c */ f32 field_0xc7c;
     /* 0xc80 */ int field_0xc80;
-    /* 0xc84 */ u32 field_0xc84;
+    /* 0xc84 */ s32 field_0xc84;
     /* 0xc88 */ int field_0xc88;  // some timer
     /* 0xc8c */ int field_0xc8c;  // some timer
     /* 0xc90 */ s32 field_0xc90;
