@@ -1678,9 +1678,6 @@ void daCow_c::action_angry() {
     f32 playerDistance = fopAcM_searchPlayerDistance(this);
     s16 playerAngle = fopAcM_searchPlayerAngleY(this);
 
-    s16 angleDist;
-    s32 angleToPlayer;
-
     s16 targetZ = 0;
     switch (mMode) {
     case 0:
@@ -1722,32 +1719,34 @@ void daCow_c::action_angry() {
             return;
         }
         if (!field_0xc84) {
-            if (!player->checkHorseRide() && mSph[0].ChkCoHit()) {
-                if (fopAcM_GetName(mSph[0].GetCoHitObj()->GetAc()) == PROC_ALINK) {
-                    cXyz pos = daPy_getPlayerActorClass()->current.pos;
-                    pos.y += 100.0f;
-                    cXyz pos2;
-                    mDoMtx_stack_c::transS(pos);
-                    mDoMtx_stack_c::YrotM(shape_angle.y);
-                    mDoMtx_stack_c::transM(0.0f, 0.0f, 200.0f);
-                    mDoMtx_stack_c::multVecZero(&pos2);
+            if (!player->checkHorseRide() && mSph[0].ChkCoHit() &&
+                fopAcM_GetName(mSph[0].GetCoHitObj()->GetAc()) == PROC_ALINK)
+            {
+                s16 sangle = shape_angle.y;
+                cXyz pos = daPy_getPlayerActorClass()->current.pos;
+                pos.y += 100.0f;
+                cXyz pos2;
+                mDoMtx_stack_c::transS(pos);
+                mDoMtx_stack_c::YrotM(sangle);
+                mDoMtx_stack_c::transM(0.0f, 0.0f, 200.0f);
+                mDoMtx_stack_c::multVecZero(&pos2);
 
-                    dBgS_LinChk linkChck;
-                    linkChck.Set(&pos, &pos2, this);
+                dBgS_LinChk linkChck;
+                linkChck.Set(&pos, &pos2, this);
 
-                    s16 angle;
-                    if (dComIfG_Bgsp().LineCross(&linkChck)) {
-                        angle = shape_angle.y - (s16)0x8000;
-                    } else {
-                        angle = shape_angle.y;
-                    }
-
-                    field_0xc84 = 0x1e;
-                    daPy_getPlayerActorClass()->setThrowDamage(angle, 35.0f, 40.0f, 0, 0, 0);
+                if (dComIfG_Bgsp().LineCross(&linkChck)) {
+                    sangle = shape_angle.y - (s16)0x8000;
                 }
+
+                field_0xc84 = 0x1e;
+                daPy_getPlayerActorClass()->setThrowDamage(sangle, 35.0f, 40.0f, 0, 0, 0);
             }
+        } else {
+            field_0xc84--;
         }
-        if (!field_0xc98) {
+        if (field_0xc98) {
+            field_0xc98--;
+        } else {
             if (field_0xc9f != 5) {
                 setProcess(&daCow_c::action_run, 0);
                 field_0xc9e = 1;
@@ -1831,7 +1830,7 @@ void daCow_c::action_angry() {
             }
             if (field_0xc94 == 0) {
                 field_0xc72 = playerAngle;
-                angleToPlayer = cLib_distanceAngleS(playerAngle, field_0xc32.y);
+                s32 angleToPlayer = cLib_distanceAngleS(playerAngle, field_0xc32.y);
 
                 if (player->getSpeedF() <= 5.0f) {
                     if (playerDistance >= 500.0f) {
@@ -1887,8 +1886,7 @@ void daCow_c::action_angry() {
                 current.angle.y = field_0xc32.y;
             }
             break;
-        case 3:
-
+        case 3: {
             calcRunAnime(0);
             speedF = 15.0f;
             cLib_addCalcAngleS2(&current.angle.y, field_0xc72, 8, 0x400);
@@ -1896,7 +1894,7 @@ void daCow_c::action_angry() {
             shape_angle.y = targetZ;
             (field_0xc32).y = targetZ;
             setBodyAngle(field_0xc72);
-            angleDist = cLib_distanceAngleS(field_0xc72, field_0xc32.y);
+            s16 angleDist = cLib_distanceAngleS(field_0xc72, field_0xc32.y);
             if (angleDist < 0x200 && field_0xc3e.y < 0x200) {
                 if (field_0xc9f == 4) {
                     setProcess(&daCow_c::action_run, 0);
@@ -1907,6 +1905,7 @@ void daCow_c::action_angry() {
                 }
             }
             break;
+        }
         case 4:
             calcRunAnime(0);
             if (field_0xc90) {
