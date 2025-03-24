@@ -2457,25 +2457,28 @@ void daCow_c::executeCrazyBack() {
     s16 angle;
 
     switch (field_0xc61) {
-    case 0:
+    case 0: {
         setActetcStatus();
 
         pointPos = dPath_GetPnt(mPath, field_0xc10)->m_position;
-        angle = cLib_targetAngleY(current.pos, pointPos);
+        angle = cLib_targetAngleY(&current.pos, &pointPos);
         cLib_addCalcAngleS(&current.angle.y, angle, 0x10, 0x100, 0x80);
-        if (speedF <= 3.0f) {
-            cLib_chaseF(&speedF, 2.0f, 1.0f);
-        } else {
+        if (speedF > 3.0f) {
             cLib_chaseF(&speedF, 2.0f, 3.0f);
+        } else {
+            cLib_chaseF(&speedF, 2.0f, 1.0f);
         }
         cLib_addCalcAngleS(&shape_angle.y, current.angle.y, 8, 0x100, 0x80);
         field_0xc32.y = shape_angle.y;
         setBodyAngle(angle);
 
-        if (current.pos.abs(pointPos) < 300.0f && --field_0xc10 < 0) {
-            speedF = 0.0f;
-            field_0xc61 = 3;
-            field_0xc72 -= 0x2000;
+        if (current.pos.abs(pointPos) < 300.0f) {
+            field_0xc10 -= 1;
+            if (field_0xc10 < 0) {
+                speedF = 0.0f;
+                field_0xc61 = 3;
+                field_0xc72 -= 0x2000;
+            }
         }
         if (checkNadeNade()) {
             setBck(0x1a, 2, 10.0f, 1.0f);
@@ -2483,6 +2486,7 @@ void daCow_c::executeCrazyBack() {
             speedF = 0.0f;
         }
         break;
+    }
     case 1:
         if (checkNadeNadeFinish()) {
             setBck(0xf, 0, 10.0f, 1.0f);
@@ -2492,7 +2496,7 @@ void daCow_c::executeCrazyBack() {
         break;
     case 2:
         if (mpMorf->checkFrame(35.0f)) {
-            mSound.startCreatureVoice(Z2SE_GOAT_V_BREATH_SHAKE, -1);
+            mSound.startCreatureVoice(Z2SE_GOAT_V_CRY, -1);
         }
         if (mpMorf->isStop()) {
             setBck(0x1c, 2, 10.0f, 1.0f);
@@ -2500,7 +2504,7 @@ void daCow_c::executeCrazyBack() {
         }
         break;
     case 3:
-        if (mpMorf->checkFrame(1.0f)) {
+        if (mpMorf->checkFrame(11.0f)) {
             setBck(0x1a, 2, 10.0f, 1.0f);
             field_0xc61 = 4;
         }
@@ -2514,7 +2518,6 @@ void daCow_c::executeCrazyBack() {
     case 5:
         setBck(0x18, 0, 3.0f, 1.0f);
         field_0xc61 = 6;
-        break;
     case 6:
         if (mpMorf->isStop()) {
             if (field_0xc10 < 0) {
@@ -2531,9 +2534,9 @@ void daCow_c::executeCrazyBack() {
             }
         }
         break;
-    case 7:
+    case 7: {
         pointPos = dPath_GetPnt(mPath, field_0xc10)->m_position;
-        angle = cLib_targetAngleY(current.pos, pointPos);
+        angle = cLib_targetAngleY(&current.pos, &pointPos);
         cLib_addCalcAngleS(&current.angle.y, angle, 0x10, 0x100, 0x80);
 
         if (field_0xc10 < 2) {
@@ -2546,10 +2549,15 @@ void daCow_c::executeCrazyBack() {
         setBodyAngle(angle);
         calcRunAnime(0);
 
-        if (current.pos.abs(pointPos) < 300.0f && --field_0xc10 < 1 && !field_0xc90) {
-            setBck(0x1c, 2, 10.0f, 1.0f);
-            field_0xc61 = 0;
+        if (current.pos.abs(pointPos) < 300.0f) {
+            field_0xc10 -= 1;
+            if (field_0xc10 < 1 && !field_0xc90) {
+                setBck(0x1c, 2, 10.0f, 1.0f);
+                field_0xc61 = 0;
+            }
         }
+        break;
+    }
     }
 }
 
