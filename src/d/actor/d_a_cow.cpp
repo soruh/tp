@@ -336,64 +336,64 @@ STATIC_ASSERT(COW_ATTACK_TYPES == 0x482022);
 void daCow_c::damage_check() {
     mCcStts.Move();
 
-    if (field_0xca5 == 0) {
-        if (field_0xc80) {
-            field_0xc80--;
-        } else {
-            cCcD_ObjHitInf* hitObject = NULL;
-            for (int iSphere = 0; iSphere < N_COW_COLLIDERS; iSphere++) {
-                dCcD_Sph* sphere = &mSph[iSphere];
-                if (sphere->ChkTgHit()) {
-                    hitObject = sphere->GetTgHitObj();
-                    break;
+    if (field_0xca5) {
+        return;
+    }
+
+    if (field_0xc80) {
+        field_0xc80--;
+        return;
+    }
+
+    cCcD_ObjHitInf* hitObject = NULL;
+    for (int iSphere = 0; iSphere < N_COW_COLLIDERS; iSphere++) {
+        dCcD_Sph* sphere = &mSph[iSphere];
+        if (sphere->ChkTgHit()) {
+            hitObject = sphere->GetTgHitObj();
+            break;
+        }
+    }
+
+    if (!hitObject) {
+        return;
+    }
+    field_0xc80 = 10;
+
+    if (checkProcess(&daCow_c::action_crazy)) {
+        if (field_0xc9f == 8) {
+            if (field_0xc61 == 0) {
+                if (hitObject->ChkAtType(COW_ATTACK_TYPES)) {
+                    field_0xc8c = 0x96;
+                } else {
+                    field_0xc8c += 0x3c;
+                }
+                if (field_0xc8c >= 0x96) {
+                    field_0xc61 = 5;
                 }
             }
+        }
+    } else if (checkProcess(&daCow_c::action_angry)) {
+        field_0xc98 = 200;
+    } else if (hitObject->ChkAtType(COW_ATTACK_TYPES)) {
+        setProcess(&daCow_c::action_damage, 0);
+    } else {
+        field_0xc8c += 0x3c;
+        if (field_0xc8c >= 0x96) {
+            setProcess(&daCow_c::action_damage, 0);
+        } else {
+            field_0xc88 = 0x5a;
 
-            if (hitObject) {
-                field_0xc80 = 10;
-
-                if (checkProcess(&daCow_c::action_crazy)) {
-                    if (field_0xc9f == 8) {
-                        if (field_0xc61 == 0) {
-                            if (hitObject->ChkAtType(COW_ATTACK_TYPES)) {
-                                field_0xc8c = 0x96;
-                            } else {
-                                field_0xc8c += 0x3c;
-                            }
-                            if (field_0xc8c >= 0x95) {
-                                field_0xc61 = 5;
-                            }
-                        }
-                    }
-                } else {
-                    if (checkProcess(&daCow_c::action_angry)) {
-                        field_0xc98 = 200;
-                    } else {
-                        if (hitObject->ChkAtType(COW_ATTACK_TYPES)) {
-                            setProcess(&daCow_c::action_damage, 0);
-                        } else {
-                            field_0xc8c += 0x3c;
-                            if (field_0xc8c >= 0x96) {
-                                setProcess(&daCow_c::action_damage, 0);
-                            } else {
-                                field_0xc88 = 0x5a;
-
-                                if (!checkProcess(&daCow_c::action_wait)) {
-                                    speedF = 0.0f;
-                                    setProcess(&daCow_c::action_wait, 0);
-                                }
-                            }
-                        }
-                    }
-                }
-
-                mSph[0].ClrTgHit();
-                mSph[1].ClrTgHit();
-                mSph[2].ClrTgHit();
-                STATIC_ASSERT(sizeof(mSph) / sizeof(dCcD_Sph) == 3);
+            if (!checkProcess(&daCow_c::action_wait)) {
+                speedF = 0.0f;
+                setProcess(&daCow_c::action_wait, 0);
             }
         }
     }
+
+    mSph[0].ClrTgHit();
+    mSph[1].ClrTgHit();
+    mSph[2].ClrTgHit();
+    STATIC_ASSERT(N_COW_COLLIDERS == 3);
 }
 
 /* 8065945C-80659540 000F7C 00E4+00 1/1 0/0 0/0 .text            setEnterCow20__7daCow_cFv */
