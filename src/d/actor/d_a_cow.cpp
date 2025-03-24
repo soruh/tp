@@ -2780,7 +2780,6 @@ void daCow_c::action_thrown() {
         field_0xc3e.z = 0;
         field_0xc38.y = 0;
         field_0xc3e.y = 0;
-
         dComIfGoat_SetThrow(0);
     }
 }
@@ -2798,7 +2797,7 @@ bool daCow_c::checkWolfBusters() {
         return false;
     }
 
-    if (checkOutOfGate(current.pos)) {
+    if (checkOutOfGate(aru->current.pos)) {
         return false;
     }
 
