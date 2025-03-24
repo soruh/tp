@@ -1203,7 +1203,7 @@ void daCow_c::action_run() {
         field_0xc9e = 0;
         field_0xc9d = 0;
         break;
-    case 1:
+    case 1: {
         calcRunAnime(0);
 
         if (field_0xc90) {
@@ -1255,8 +1255,8 @@ void daCow_c::action_run() {
                 fVar12 = (field_0xc7c - 10.0f) * (field_0xc6c / 1000.0f);
             }
         } else {
-            f32 rand = cM_rndFX(200.0f);
-            field_0xc74 = rand * 20.0f;
+            f32 rand = cM_rndFX(200.0f) * 20.0f;
+            field_0xc74 = rand;
             mCowP = 0;
             fVar11 = 2.0f;
 
@@ -1269,7 +1269,7 @@ void daCow_c::action_run() {
             fVar12 = field_0xc7c * (field_0xc6c / 1000.0f);
         }
 
-        if (fVar12 == 0.0f) {
+        if (!fVar12) {
             m_near_dist = 200.0f;
             m_view_angle = -0x8000;
             m_view_angle_wide = 0x2000;
@@ -1283,29 +1283,26 @@ void daCow_c::action_run() {
             m_view_angle_wide = 0x2000;
             fpcEx_Search(s_near_cow, this);
             if (m_near_dist < 200.0f) {
-                fVar12 = (field_0xc6c / 1000.0f) * 0.5f * field_0xc7c;
+                fVar12 = field_0xc7c * (field_0xc6c / 1000.0f) / 2.0f;
             }
         }
         if ((field_0xc54 == 0) || (field_0xc54 == 10)) {
             s16 sVar3 = current.angle.y;
             if (!field_0xca2 && mCowP) {
-                sVar3 = getCowP()->field_0xc2c.y;
+                sVar3 = getCowP()->field_0xc32.y;
             }
 
-            s16 sVar7;
-            s16 playerAngle;
-
             switch (field_0xc61) {
-            case 0:
-                sVar7 = getCowshedAngle();
-                playerAngle = fopAcM_searchPlayerAngleY(this);
+            case 0: {
+                s16 sVar7 = getCowshedAngle();
+                s16 playerAngle = fopAcM_searchPlayerAngleY(this);
                 sVar3 = playerAngle - (s16)0x8000;
                 if (isChaseCowGame() && cLib_distanceAngleS(sVar7, (field_0xc32).y) < 0x3000 &&
                     cLib_distanceAngleS(sVar7, playerAngle) > 0x5800)
                 {
                     sVar3 = sVar7;
                 }
-                break;
+            } break;
             case 1:
                 sVar3 -= 0x1000;
                 break;
@@ -1376,9 +1373,13 @@ void daCow_c::action_run() {
             }
         }
         break;
+    }
+    case 2:
+        break;
     case 3:
         mNoNearCheckTimer = 0x1e;
         field_0xca3 = 0;
+        break;
     }
 }
 
