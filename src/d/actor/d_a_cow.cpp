@@ -567,6 +567,7 @@ bool daCow_c::checkNearCowRun() {
 /* 80659ADC-8065A0E8 0015FC 060C+00 15/0 0/0 0/0 .text            action_wait__7daCow_cFv */
 void daCow_c::action_wait() {
     f32 rand = cM_rnd();
+    s16 angle;
 
     switch (mMode) {
     case 0:
@@ -584,88 +585,88 @@ void daCow_c::action_wait() {
 
             mMode = 1;
         }
-        return;
+        break;
 
     case 1:
         if (mpMorf->isStop()) {
             setBck(0x1a, 2, 0.0f, 1.0f);
             mMode = 2;
         }
-        break;
 
     case 2:
-        break;
+        angle = 0;
+        if (field_0xc88 > 0x1e) {
+            angle = field_0xc32.y - fopAcM_searchPlayerAngleY(this);
+            CLAMP(angle, -0x2800, 0x2800);
+        }
 
+        cLib_addCalcAngleS2(&field_0xc3e.y, angle * 0.9f, 0x10, 0x100);
+        cLib_addCalcAngleS2(&field_0xc38.y, angle * 0.1f, 0x10, 0x100);
+
+        if (!field_0xca5) {
+            if (checkCowInOwn(0x8000)) {
+                return;
+            }
+            if (field_0xca8) {
+                field_0xc88 = 0;
+                if (!checkNadeNadeFinish()) {
+                    return;
+                }
+                setProcess(&daCow_c::action_moo, 0);
+                return;
+            }
+            if (checkPlayerWait() && (checkPlayerSurprise() || checkPlayerPos())) {
+                setProcess(&daCow_c::action_run, 0);
+                return;
+            }
+            if (checkWolfBusters()) {
+                return;
+            }
+            setActetcStatus();
+            if (checkNadeNade()) {
+                return;
+            }
+            setCarryStatus();
+            if (checkThrow()) {
+                return;
+            }
+            if (checkNearCowRun()) {
+                setProcess(&daCow_c::action_run, 0);
+                return;
+            }
+        }
+        if (!cLib_calcTimer((int*)&field_0xc58) && !field_0xc88) {
+            if (checkNearWolf()) {
+                setProcess(&daCow_c::action_moo, 0);
+            } else {
+                daPy_py_c* playerActor = daPy_getPlayerActorClass();
+                if (current.pos.absXZ(playerActor->current.pos) > 500.0f && rand < 0.4f) {
+                    setProcess(&daCow_c::action_moo, 0);
+                } else {
+                    if (rand < 0.5f) {
+                        setProcess(&daCow_c::action_eat, 1);
+                    } else {
+                        setProcess(&daCow_c::action_shake, 1);
+                    }
+                }
+            }
+        }
+        break;
     case 3:
         field_0xc38.y = 0;
         field_0xc3e.y = 0;
         field_0xc88 = 0;
         field_0xca8 = 0;
-    default:
-        return;
-    }
-
-    s16 angle = 0;
-    if (field_0xc88 > 0x1e) {
-        angle = field_0xc32.y - fopAcM_searchPlayerAngleY(this);
-        CLAMP(angle, -0x2800, 0x2800);
-    }
-
-    cLib_addCalcAngleS2(&field_0xc3e.y, angle * 0.9f, 0x10, 0x100);
-    cLib_addCalcAngleS2(&field_0xc38.y, angle * 0.1f, 0x10, 0x100);
-
-    if (!field_0xca5) {
-        if (checkCowInOwn(0x8000)) {
-            return;
-        }
-        if (field_0xca8) {
-            field_0xc88 = 0;
-            if (!checkNadeNadeFinish()) {
-                return;
-            }
-            setProcess(&daCow_c::action_moo, 0);
-            return;
-        }
-        if (checkPlayerWait() && (checkPlayerSurprise() || checkPlayerPos())) {
-            setProcess(&daCow_c::action_run, 0);
-            return;
-        }
-        if (checkWolfBusters()) {
-            return;
-        }
-        setActetcStatus();
-        if (checkNadeNade()) {
-            return;
-        }
-        setCarryStatus();
-        if (checkThrow()) {
-            return;
-        }
-        if (checkNearCowRun()) {
-            setProcess(&daCow_c::action_run, 0);
-            return;
-        }
-    }
-    if (!cLib_calcTimer((int*)&field_0xc58) && !field_0xc88) {
-        if (checkNearWolf()) {
-            setProcess(&daCow_c::action_moo, 0);
-        } else {
-            daPy_py_c* playerActor = daPy_getPlayerActorClass();
-            if (current.pos.absXZ(playerActor->current.pos) > 500.0f && rand < 0.4f) {
-                setProcess(&daCow_c::action_moo, 0);
-            } else {
-                if (rand < 0.5f) {
-                    setProcess(&daCow_c::action_eat, 1);
-                } else {
-                    setProcess(&daCow_c::action_shake, 1);
-                }
-            }
-        }
+        break;
     }
 }
 
 /* 8065A0E8-8065A594 001C08 04AC+00 4/0 0/0 0/0 .text            action_eat__7daCow_cFv */
 void daCow_c::action_eat() {
+    // switch (mMode) {
+    // case 2:
+    //     break;
+    // }
     int nextAction = mMode;
     if (nextAction != 2) {
         if (nextAction < 2) {
