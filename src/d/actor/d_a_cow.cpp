@@ -1951,26 +1951,26 @@ void daCow_c::action_angry() {
 /* 8065DC08-8065DE70 005728 0268+00 4/4 0/0 0/0 .text            calcCatchPos__7daCow_cFfi */
 void daCow_c::calcCatchPos(f32 distance, int someBool) {
     daPy_py_c* player = daPy_getPlayerActorClass();
-    s16 offsetAngle = player->shape_angle.y + -0x8000;
-    s16 angle =
-        cM_atan2s(current.pos.absXZ(player->current.pos), player->current.pos.y - field_0xc44);
+    s16 offsetAngle = player->shape_angle.y - (s16)0x8000;
+    f32 abs = current.pos.absXZ(player->current.pos);
+    int angle = cM_atan2s(abs, player->current.pos.y - field_0xc44);
 
     cXyz catchPos(0.0f, distance * cM_scos(angle), distance * cM_ssin(angle));
     shape_angle.x = angle - 0x4000;
     field_0xc32.x = angle - 0x4000;
 
-    if (someBool != 0) {
+    if (someBool) {
         cLib_addCalcAngleS(&shape_angle.y, offsetAngle, 8, 0x400, 0x100);
         angle = shape_angle.y;
         current.angle.y = angle;
         field_0xc32.y = angle;
         cXyz target;
-        player = daPy_getPlayerActorClass();
-        cLib_offsetPos(&target, &player->current.pos, offsetAngle, &catchPos);
+        cXyz* pos = &daPy_getPlayerActorClass()->current.pos;
+        cLib_offsetPos(&target, pos, offsetAngle, &catchPos);
         cLib_chasePos(&current.pos, target, 30.0f);
     } else {
-        player = daPy_getPlayerActorClass();
-        cLib_offsetPos(&current.pos, &player->current.pos, offsetAngle, &catchPos);
+        cXyz* pos = &daPy_getPlayerActorClass()->current.pos;
+        cLib_offsetPos(&current.pos, pos, offsetAngle, &catchPos);
         shape_angle.y = offsetAngle;
         current.angle.y = offsetAngle;
         field_0xc32.y = offsetAngle;
