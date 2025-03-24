@@ -1875,13 +1875,18 @@ void daCow_c::action_angry() {
                 current.angle.y = field_0xc32.y;
             }
             break;
+        case 4:
+            calcRunAnime(0);
+            if (field_0xc90) {
+                return;
+            }
         case 3: {
             calcRunAnime(0);
             speedF = 15.0f;
             cLib_addCalcAngleS2(&current.angle.y, field_0xc72, 8, 0x400);
             targetZ = current.angle.y;
             shape_angle.y = targetZ;
-            (field_0xc32).y = targetZ;
+            field_0xc32.y = targetZ;
             setBodyAngle(field_0xc72);
             s32 angleDist = cLib_distanceAngleS(field_0xc72, field_0xc32.y);
             if (angleDist < 0x200 && field_0xc3e.y < 0x200) {
@@ -1895,12 +1900,7 @@ void daCow_c::action_angry() {
             }
             break;
         }
-        case 4:
-            calcRunAnime(0);
-            if (field_0xc90) {
-                cLib_chaseS(&field_0xc3e.z, targetZ, 0x400);
-            }
-            break;
+
         case 5:
             mpMorf->setPlaySpeed(1.0f);
 
