@@ -2848,7 +2848,7 @@ void daCow_c::action_wolf() {
 
         calcRunAnime(0);
 
-        if (player->checkNowWolf() && checkOutOfGate(current.pos)) {
+        if (player->checkNowWolf() && checkOutOfGate(aru->current.pos)) {
             setProcess(&daCow_c::action_run, 0);
             field_0xc9e = 1;
             return;
@@ -2859,7 +2859,7 @@ void daCow_c::action_wolf() {
 
             cLib_chaseF(&speedF, 36.0f, 1.0f);
             cLib_addCalcAngleS2(&current.angle.y, aruAngle, 8, 0x400);
-            shape_angle.y = field_0xc32.y = current.angle.y;
+            field_0xc32.y = shape_angle.y = current.angle.y;
             setBodyAngle2(aruAngle);
 
             if (aruPos.absXZ(current.pos) < 500.0f) {
@@ -2891,7 +2891,7 @@ void daCow_c::action_wolf() {
 
             cLib_chaseF(&speedF, fVar13, 1.0f);
             cLib_addCalcAngleS2(&current.angle.y, field_0xc72, 8, 0x200);
-            shape_angle.y = field_0xc32.y = current.angle.y;
+            field_0xc32.y = shape_angle.y = current.angle.y;
             setBodyAngle2(field_0xc72);
 
             if (!field_0xc90 || current.pos.absXZ(field_0xc20) < 100.0f || mAcch.ChkWallHit()) {
@@ -2900,6 +2900,7 @@ void daCow_c::action_wolf() {
 
             if (current.pos.absXZ(aru->current.pos) < 700.0f) {
                 if (!checkOutOfGate(current.pos)) {
+                    // todo: fix
                     // this uses `fopAcM_searchPlayerAngleY(this)` in the debug rom
                     s16 angleDifference = fopAcM_searchActorAngleY(this, player) - field_0xc32.y;
                     if (abs(angleDifference) < 0x2000) {
@@ -2942,7 +2943,6 @@ void daCow_c::action_wolf() {
 
         attention_info.flags &= ~0x1;
 
-        // todo: clean up
         for (int iWolfBuster = 0; iWolfBuster < N_WOLF_BUSTERS; iWolfBuster++) {
             if (gWolfBustersID[iWolfBuster] == fopAcM_GetID(this)) {
                 gWolfBustersID[iWolfBuster] = -1;
