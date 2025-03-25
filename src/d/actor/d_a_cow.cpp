@@ -1774,7 +1774,7 @@ void daCow_c::action_angry() {
             return;
         }
         if (field_0xca1) {
-            if (!checkOutOfGate(daPy_getPlayerActorClass()->current.pos) &&
+            if (checkOutOfGate(daPy_getPlayerActorClass()->current.pos) ||
                 checkOutOfGate(current.pos))
             {
                 setProcess(&daCow_c::action_run, 0);
@@ -1857,7 +1857,7 @@ void daCow_c::action_angry() {
 
             int lockedOn = false;
             if (field_0xca1 && field_0xc94 && dComIfGp_getAttention().LockonTruth() &&
-                !dComIfGp_getAttention().LockonTarget(0) &&
+                (dComIfGp_getAttention().LockonTarget(0) == this) &&
                 (s16)cLib_distanceAngleS(playerAngle, field_0xc32.y) < 0x800)
             {
                 field_0xc72 = playerAngle;
@@ -1888,15 +1888,13 @@ void daCow_c::action_angry() {
         case 4:
             calcRunAnime(0);
             if (field_0xc90) {
-                return;
+                break;
             }
         case 3: {
             calcRunAnime(0);
             speedF = 15.0f;
             cLib_addCalcAngleS2(&current.angle.y, field_0xc72, 8, 0x400);
-            targetZ = current.angle.y;
-            shape_angle.y = targetZ;
-            field_0xc32.y = targetZ;
+            field_0xc32.y = shape_angle.y = current.angle.y;
             setBodyAngle(field_0xc72);
             s32 angleDist = cLib_distanceAngleS(field_0xc72, field_0xc32.y);
             if (angleDist < 0x200 && field_0xc3e.y < 0x200) {
