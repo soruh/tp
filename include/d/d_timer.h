@@ -64,10 +64,9 @@ public:
     bool isVisible() { return mTimerVisible; }
 
     f32 acc(s16 param_0, s16 param_1, s16 param_2) {
-        return ((f32)(param_1 - param_2) * (f32)(param_1 - param_2)) /
-               ((f32)(param_0 - param_2) * (f32)(param_0 - param_2));
+        return ((f32)(param_1 - param_2) * (f32)(param_1 - param_2)) / ((f32)(param_0 - param_2) * (f32)(param_0 - param_2));
     }
-
+    
     void setTimerTrans(f32 x, f32 y) {
         mTimerTransX = x;
         mTimerTransY = y;

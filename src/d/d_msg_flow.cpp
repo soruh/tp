@@ -4,16 +4,16 @@
 //
 
 #include "d/d_msg_flow.h"
-#include "SSystem/SComponent/c_math.h"
 #include "d/actor/d_a_alink.h"
-#include "d/actor/d_a_midna.h"
 #include "d/d_com_static.h"
 #include "d/d_item.h"
-#include "d/d_meter2_info.h"
 #include "d/d_msg_object.h"
 #include "d/d_shop_system.h"
+#include "d/d_meter2_info.h"
 #include "f_op/f_op_msg_mng.h"
 #include "m_Do/m_Do_graphic.h"
+#include "d/actor/d_a_midna.h"
+#include "SSystem/SComponent/c_math.h"
 
 /* 803C14B8-803C14C4 01E5D8 000C+00 1/1 0/0 0/0 .data            cNullVec__6Z2Calc */
 static u8 cNullVec__6Z2Calc[12] = {
@@ -79,66 +79,67 @@ static void dummy() {
 /* 8024A13C-8024A2D8 244A7C 019C+00 2/0 0/0 2/2 .text checkOpenDoor__10dMsgFlow_cFP10fopAc_ac_cPi
  */
 // NONMATCHING regalloc, instruction issues
-int dMsgFlow_c::checkOpenDoor(fopAc_ac_c* param_1, int* param_2) {
-    if (dMsgObject_isTalkNowCheck()) {
-        return 0;
-    } else {
-        int iVar3 = 0;
-        int iVar7 = 0;
-        s32 bVar2 = 0;
-        mesg_flow_node* iVar8;
-        u16 uVar5 = getInitNodeIndex(mFlow);
-        while (((uVar5 != 0xffff && (!iVar3)) && (!bVar2))) {
-            iVar8 = &mFlowNodeTBL[uVar5];
-            switch (iVar8->type) {
-            case 0:
-            default:
-                break;
-            case 1:
-                uVar5 = *(u16*)iVar8->params;
-                iVar7 = iVar7 + 1;
-                break;
-            case 2:
-                mesg_flow_node_branch* nodeBranch = (mesg_flow_node_branch*)iVar8;
-                switch (iVar8->msg_index) {
-                case 0:
-                case 4:
-                case 7:
-                case 8:
-                case 9:
-                case 0x19:
-                    bVar2 = 1;
-                    break;
-                }
-                u32 sVar6 = (this->*mQueryList[iVar8->msg_index])(nodeBranch, param_1, 0);
-                uVar5 = field_0x14[(*(u16*)(iVar8->params + 2)) + sVar6];
-                break;
-
-            case 3:
-                switch (iVar8->field_0x1) {
-                case 8:
-                case 9:
-                case 0xd:
-                case 0x10:
-                case 0x13:
-                case 0x1d:
-                    bVar2 = 1;
-                    break;
-                case 0xc:
-                    iVar3 = 1;
-                    break;
-                default:
-                    uVar5 = field_0x14[iVar8->msg_index];
-                    break;
-                }
-                break;
-            }
+int dMsgFlow_c::checkOpenDoor(fopAc_ac_c *param_1,int *param_2) {
+  if (dMsgObject_isTalkNowCheck()) {
+    return 0;
+  } else {
+    int iVar3 = 0;
+    int iVar7 = 0;
+    s32 bVar2 = 0;
+    mesg_flow_node* iVar8;
+    u16 uVar5 = getInitNodeIndex(mFlow);
+    while (((uVar5 != 0xffff && (!iVar3)) && (!bVar2))) {
+      iVar8 = &mFlowNodeTBL[uVar5];
+      switch(iVar8->type) {
+      case 0:
+      default:
+          break;
+      case 1:
+          uVar5 = *(u16*)iVar8->params;
+          iVar7 = iVar7 + 1;
+          break;
+      case 2:
+        mesg_flow_node_branch* nodeBranch = (mesg_flow_node_branch*)iVar8;
+        switch(iVar8->msg_index) {
+        case 0:
+        case 4:
+        case 7:
+        case 8:
+        case 9:
+        case 0x19:
+          bVar2 = 1;
+          break;
         }
-        if (param_2 != NULL) {
-            *param_2 = iVar7;
+        u32 sVar6 = (this->*mQueryList[iVar8->msg_index])(nodeBranch, param_1, 0);
+        uVar5 = field_0x14[(*(u16*)(iVar8->params + 2)) + sVar6];
+        break;
+      
+      case 3:    
+        switch(iVar8->field_0x1) {
+        case 8:
+        case 9:
+        case 0xd:
+        case 0x10:
+        case 0x13:
+        case 0x1d:
+          bVar2 = 1;
+          break;
+        case 0xc:
+          iVar3 = 1;
+          break;
+        default:
+          uVar5 = field_0x14[iVar8->msg_index];
+          break;
         }
-        return iVar3;
+        break;
+      }
     }
+    if (param_2 != NULL) {
+      *param_2 = iVar7;
+    }
+  return iVar3;
+  }
+  
 }
 
 /* 8024A2D8-8024A424 244C18 014C+00 0/0 21/21 78/78 .text
@@ -389,7 +390,8 @@ void dMsgFlow_c::setNodeIndex(u16 param_1, fopAc_ac_c** param_2) {
             break;
         case 3:
             mesg_flow_node* node = &mFlowNodeTBL[param_1];
-            if (node->field_0x1 == 21 || node->field_0x1 == 32 || node->field_0x1 == 33) {
+            if (node->field_0x1 == 21 || node->field_0x1 == 32 ||
+                node->field_0x1 == 33) {
                 if (node->field_0x1 == 21) {
                     field_0x3c = getParam(node->params);
                 } else {
@@ -427,10 +429,10 @@ int dMsgFlow_c::setSelectMsg(mesg_flow_node* param_1, mesg_flow_node* param_2,
     u32 uVar2;
     u16* iVar3;
 
-    iVar3 = (u16*)getMsgDataBlock("INF1");
+    iVar3 = (u16*) getMsgDataBlock("INF1");
     uVar1 = ((iVar3 + (param_2->msg_index) * 10))[10];
     uVar2 = ((iVar3 + (param_1->msg_index) * 10))[10];
-
+    
     if (mMsg != -1) {
         msg_class* iVar3 = fopMsgM_SearchByID(mMsg);
         iVar3->mode = 0xf;
@@ -455,9 +457,9 @@ int dMsgFlow_c::setNormalMsg(mesg_flow_node* param_1, fopAc_ac_c* param_2) {
     u32 uVar2;
     u16* iVar3;
 
-    iVar3 = (u16*)getMsgDataBlock("INF1");
+    iVar3 = (u16*) getMsgDataBlock("INF1");
     uVar2 = ((iVar3 + (param_1->msg_index) * 10))[10];
-
+    
     if (mMsg != -1) {
         msg_class* iVar3 = fopMsgM_SearchByID(mMsg);
         iVar3->mode = 0xf;
@@ -485,14 +487,17 @@ int dMsgFlow_c::messageNodeProc(fopAc_ac_c* param_1, fopAc_ac_c** param_2) {
     if (field_0x25 != 0) {
         if (field_0x46 != 0) {
             u16 pars = *(u16*)uVar1->params;
-            if ((field_0x46 == 1) && (mFlowNodeTBL[pars].type == 1)) {
-                if (setSelectMsg(mFlowNodeTBL + field_0x10, mFlowNodeTBL + pars, param_1)) {
+            if ((field_0x46 == 1) &&
+                (mFlowNodeTBL[pars].type == 1)) {
+                if (setSelectMsg(mFlowNodeTBL + field_0x10,
+                    mFlowNodeTBL + pars, param_1)) {
                     field_0x10 = pars;
                     field_0x46 = 0;
                     field_0x25 = 0;
                 }
-            } else if ((field_0x46 == 2) && (mFlowNodeTBL[pars].type == 2)) {
-                if (setNormalMsg(mFlowNodeTBL + field_0x10, param_1)) {
+            } else if ((field_0x46 == 2) &&
+                    (mFlowNodeTBL[pars].type == 2)) {
+                if (setNormalMsg(mFlowNodeTBL + field_0x10,param_1)) {
                     field_0x46 = 0;
                     field_0x25 = 0;
                 }
@@ -539,16 +544,17 @@ int dMsgFlow_c::messageNodeProc(fopAc_ac_c* param_1, fopAc_ac_c** param_2) {
                 setNodeIndex(*(u16*)uVar1->params, param_2);
                 mesg_flow_node* iVar4 = &mFlowNodeTBL[*(u16*)uVar1->params];
                 if (iVar4->field_0x1 == 0x15 || iVar4->field_0x1 == 0x20 ||
-                    iVar4->field_0x1 == 0x21)
-                {
-                    return 0;
+                    iVar4->field_0x1 == 0x21) {
+                return 0;
                 }
                 return 1;
             }
         }
+        
     }
     return 0;
 }
+
 
 /* 8024AD54-8024ADEC 245694 0098+00 1/1 0/0 0/0 .text
  * branchNodeProc__10dMsgFlow_cFP10fopAc_ac_cPP10fopAc_ac_c     */
@@ -586,7 +592,8 @@ int dMsgFlow_c::eventNodeProc(fopAc_ac_c* param_0, fopAc_ac_c** param_1) {
             int msgNum;
             if (daAlink_getAlinkActorClass()->getMidnaMsgNum() == 0xFFFF) {
                 s32 stayNo = dComIfGp_roomControl_getStayNo();
-                msgNum = dComIfGp_roomControl_getStatusRoomDt(stayNo)->getFileListInfo()->mMsg;
+                msgNum =
+                    dComIfGp_roomControl_getStatusRoomDt(stayNo)->getFileListInfo()->mMsg;
             } else {
                 msgNum = daAlink_getAlinkActorClass()->getMidnaMsgNum();
                 daAlink_getAlinkActorClass()->setMidnaMsg();
@@ -701,8 +708,11 @@ queryFunc dMsgFlow_c::mQueryList[53] = {
 /* 8024B138-8024B180 245A78 0048+00 1/0 0/0 0/0 .text
  * query001__10dMsgFlow_cFP21mesg_flow_node_branchP10fopAc_ac_ci */
 int dMsgFlow_c::query001(mesg_flow_node_branch* flow_node, fopAc_ac_c*, int) {
-    return dComIfGs_isEventBit(dSv_event_flag_c::saveBitLabels[flow_node->params[0] & 0xFFFF]) ==
-           false;
+    return dComIfGs_isEventBit(dSv_event_flag_c::saveBitLabels[flow_node->params[0] & 0xFFFF]) == false;
+}
+
+BOOL daPy_py_c::checkNowWolf() {
+    return dComIfGp_getLinkPlayer()->checkWolf();
 }
 
 /* 8024B180-8024B208 245AC0 0088+00 1/0 0/0 0/0 .text
@@ -711,8 +721,7 @@ int dMsgFlow_c::query002(mesg_flow_node_branch*, fopAc_ac_c*, int) {
     if (daPy_py_c::checkNowWolf()) {
         return 1;
     } else if (daPy_getPlayerActorClass()->checkHorseRide() ||
-               daPy_getPlayerActorClass()->checkBoarRide())
-    {
+               daPy_getPlayerActorClass()->checkBoarRide()) {
         return 2;
     }
 
@@ -725,6 +734,7 @@ int dMsgFlow_c::query003(mesg_flow_node_branch* flow_node, fopAc_ac_c*, int) {
     return cM_rndF(flow_node->params[0]);
 }
 
+
 /* 8024B250-8024B2C0 245B90 0070+00 1/0 0/0 0/0 .text
  * query004__10dMsgFlow_cFP21mesg_flow_node_branchP10fopAc_ac_ci */
 int dMsgFlow_c::query004(mesg_flow_node_branch* flow_node, fopAc_ac_c* param_1, int param_2) {
@@ -733,16 +743,16 @@ int dMsgFlow_c::query004(mesg_flow_node_branch* flow_node, fopAc_ac_c* param_1, 
     int p0 = flow_node->params[0];
     BOOL ret;
 
-    if (uVar1 == 0) {
+    if ( uVar1 == 0 ) {
         uVar2 = dComIfGs_getRupeeMax();
         uVar1 = dComIfGs_getRupee();
         ret = uVar1 < uVar2;
-
+        
     } else {
         ret = dComIfGs_getRupee() < (u16)p0;
     }
 
-    return ret;
+    return ret;    
 }
 
 /* 8024B2C0-8024B2F8 245C00 0038+00 2/1 1/1 1/1 .text
@@ -766,19 +776,20 @@ int dMsgFlow_c::query007(mesg_flow_node_branch* flow_node, fopAc_ac_c* param_1, 
     u16 uVar3 = *(u16*)(flow_node->params);
     cXyz this_00 = daPy_getPlayerActorClass()->attention_info.position;
     this_00.y -= daPy_getPlayerActorClass()->getAttentionOffsetY();
-    s16 uVar8 = cSGlobe(param_1->attention_info.position - this_00).U() -
-                fopAcM_GetShapeAngle_p(daPy_getPlayerActorClass())->y;
+    s16 uVar8 = cSGlobe(param_1->attention_info.position - this_00).U()
+                - fopAcM_GetShapeAngle_p(daPy_getPlayerActorClass())->y;
     u8 attentionId = param_1->attention_info.distances[fopAc_attn_SPEAK_e];
     f32 fVar1 = dAttention_c::getDistTable(attentionId).mDistMaxRelease;
     if (uVar3 != 0) {
         fVar1 = uVar3;
     }
 
-    return (u16)dComIfGp_getAttention().checkDistance(
+    return (u16) dComIfGp_getAttention().checkDistance(
         &this_00, uVar8, &param_1->attention_info.position, fVar1,
         dAttention_c::getDistTable(attentionId).mDistanceAdjust,
         dAttention_c::getDistTable(attentionId).mUpperY,
         dAttention_c::getDistTable(attentionId).mLowerY);
+
 }
 
 /* 8024B45C-8024B4A4 245D9C 0048+00 1/0 0/0 0/0 .text
@@ -804,8 +815,7 @@ int dMsgFlow_c::query010(mesg_flow_node_branch* flow_node, fopAc_ac_c* param_1, 
 /* 8024B504-8024B54C 245E44 0048+00 1/0 0/0 0/0 .text
  * query011__10dMsgFlow_cFP21mesg_flow_node_branchP10fopAc_ac_ci */
 int dMsgFlow_c::query011(mesg_flow_node_branch* flow_node, fopAc_ac_c* param_1, int param_2) {
-    return dComIfGs_isTmpBit(dSv_event_tmp_flag_c::tempBitLabels[flow_node->params[0] & 0xFFFF]) ==
-           0;
+    return dComIfGs_isTmpBit(dSv_event_tmp_flag_c::tempBitLabels[flow_node->params[0] & 0xFFFF]) == 0;
 }
 
 /* 8024B54C-8024B584 245E8C 0038+00 1/0 0/0 0/0 .text
@@ -843,11 +853,11 @@ int dMsgFlow_c::query016(mesg_flow_node_branch* flow_node, fopAc_ac_c* param_1, 
 int dMsgFlow_c::query017(mesg_flow_node_branch* flow_node, fopAc_ac_c* actor, int param_2) {
     int zone = flow_node->params[0];
     int roomNo = -1;
-
+    
     if (actor != NULL) {
         roomNo = fopAcM_GetRoomNo(actor);
     }
-
+    
     return dComIfGs_isZoneSwitch(zone, roomNo) == 0;
 }
 
@@ -856,11 +866,11 @@ int dMsgFlow_c::query017(mesg_flow_node_branch* flow_node, fopAc_ac_c* actor, in
 int dMsgFlow_c::query018(mesg_flow_node_branch* flow_node, fopAc_ac_c* actor, int param_2) {
     int zone = flow_node->params[0];
     int roomNo = -1;
-
+    
     if (actor != NULL) {
         roomNo = fopAcM_GetRoomNo(actor);
     }
-
+    
     return dComIfGs_isZoneItem(zone, roomNo) == 0;
 }
 
@@ -869,11 +879,11 @@ int dMsgFlow_c::query018(mesg_flow_node_branch* flow_node, fopAc_ac_c* actor, in
 int dMsgFlow_c::query019(mesg_flow_node_branch* flow_node, fopAc_ac_c* actor, int param_2) {
     int zone = flow_node->params[0];
     int roomNo = -1;
-
+    
     if (actor != NULL) {
         roomNo = fopAcM_GetRoomNo(actor);
     }
-
+    
     return dComIfGs_isOneZoneSwitch(zone, roomNo) == 0;
 }
 
@@ -882,11 +892,11 @@ int dMsgFlow_c::query019(mesg_flow_node_branch* flow_node, fopAc_ac_c* actor, in
 int dMsgFlow_c::query020(mesg_flow_node_branch* flow_node, fopAc_ac_c* actor, int param_2) {
     int zone = flow_node->params[0];
     int roomNo = -1;
-
+    
     if (actor != NULL) {
         roomNo = fopAcM_GetRoomNo(actor);
     }
-
+    
     return dComIfGs_isOneZoneItem(zone, roomNo) == 0;
 }
 
@@ -905,6 +915,7 @@ int dMsgFlow_c::query022(mesg_flow_node_branch* flow_node, fopAc_ac_c*, int) {
     return checkItemGet(flow_node->params[0], 1) == 0;
 }
 
+
 /* 8024B918-8024B954 246258 003C+00 1/0 0/0 0/0 .text
  * query023__10dMsgFlow_cFP21mesg_flow_node_branchP10fopAc_ac_ci */
 int dMsgFlow_c::query023(mesg_flow_node_branch* flow_node, fopAc_ac_c* param_1, int param_2) {
@@ -914,13 +925,13 @@ int dMsgFlow_c::query023(mesg_flow_node_branch* flow_node, fopAc_ac_c* param_1, 
 /* 8024B954-8024B974 246294 0020+00 1/0 0/0 0/0 .text
  * query024__10dMsgFlow_cFP21mesg_flow_node_branchP10fopAc_ac_ci */
 int dMsgFlow_c::query024(mesg_flow_node_branch* flow_node, fopAc_ac_c* param_1, int param_2) {
-    return dComIfGs_getArrowNum() - (u8) * (u16*)flow_node->params < 0;
+    return dComIfGs_getArrowNum() - (u8)*(u16*)flow_node->params < 0;
 }
 
 /* 8024B974-8024B9BC 2462B4 0048+00 1/0 0/0 0/0 .text
  * query025__10dMsgFlow_cFP21mesg_flow_node_branchP10fopAc_ac_ci */
 int dMsgFlow_c::query025(mesg_flow_node_branch* flow_node, fopAc_ac_c* param_1, int param_2) {
-    u8 par = (u8) * (u16*)flow_node->params;
+    u8 par = (u8)*(u16*)flow_node->params;
     return dComIfGs_checkEmptyBottle() - par < 0;
 }
 
@@ -1055,20 +1066,20 @@ int dMsgFlow_c::query038(mesg_flow_node_branch* param_0, fopAc_ac_c* param_1, in
     }
 
     u8 uVar4 = 0;
-    switch (dComIfGs_getItem((u8)(val + 0xf), 0)) {
-    case 0x70:
-        uVar4 = 1;
-        break;
-    case 0x71:
-        uVar4 = 2;
-        break;
-    case 0x72:
-        uVar4 = 3;
-        break;
+    switch(dComIfGs_getItem((u8)(val + 0xf), 0)) {
+        case 0x70:
+            uVar4 = 1;
+            break;
+        case 0x71:
+            uVar4 = 2;
+            break;
+        case 0x72:
+            uVar4 = 3;
+            break;
     }
     dMsgObject_setEquipBombInfo();
     return uVar4;
-}
+} 
 
 /* 8024BDB0-8024BE4C 2466F0 009C+00 1/0 0/0 0/0 .text
  * query039__10dMsgFlow_cFP21mesg_flow_node_branchP10fopAc_ac_ci */
@@ -1208,7 +1219,7 @@ int dMsgFlow_c::query049(mesg_flow_node_branch*, fopAc_ac_c*, int) {
 
     if (num == 0) {
         uVar1 = 0;
-    } else if ((u8)num <= 19) {
+    } else if ((u8)num <= 19)  {
         uVar1 = 1;
     } else if ((u8)num <= 39) {
         uVar1 = 2;
@@ -1252,8 +1263,8 @@ int dMsgFlow_c::query051(mesg_flow_node_branch*, fopAc_ac_c*, int) {
  * query052__10dMsgFlow_cFP21mesg_flow_node_branchP10fopAc_ac_ci */
 int dMsgFlow_c::query052(mesg_flow_node_branch*, fopAc_ac_c*, int) {
     bool phi_r4 = false;
-    if (daPy_getPlayerActorClass()->checkWaterInMove() || dComIfGp_checkPlayerStatus0(0, 0x100000))
-    {
+    if (daPy_getPlayerActorClass()->checkWaterInMove() ||
+        dComIfGp_checkPlayerStatus0(0, 0x100000)) {
         phi_r4 = true;
     }
 
@@ -1345,6 +1356,7 @@ int dMsgFlow_c::event004(mesg_flow_node_event* flow_node, fopAc_ac_c*) {
     return 1;
 }
 
+
 /* 8024C5F0-8024C654 246F30 0064+00 1/0 0/0 0/0 .text
  * event005__10dMsgFlow_cFP20mesg_flow_node_eventP10fopAc_ac_c  */
 int dMsgFlow_c::event005(mesg_flow_node_event* flow_node, fopAc_ac_c*) {
@@ -1354,6 +1366,7 @@ int dMsgFlow_c::event005(mesg_flow_node_event* flow_node, fopAc_ac_c*) {
     dComIfGp_setItemLifeCount(prm1, 0);
     return 1;
 }
+
 
 /* 8024C654-8024C694 246F94 0040+00 1/0 0/0 0/0 .text
  * event006__10dMsgFlow_cFP20mesg_flow_node_eventP10fopAc_ac_c  */
@@ -1574,7 +1587,8 @@ int dMsgFlow_c::event018(mesg_flow_node_event* flow_node, fopAc_ac_c* actor) {
     if (actor != NULL) {
         int stayNo = dComIfGp_roomControl_getStayNo();
         if (stayNo != 0) {
-            mDoAud_messageSePlay(field_0x45, &actor->current.pos, dComIfGp_getReverb(stayNo));
+            mDoAud_messageSePlay(field_0x45, &actor->current.pos,
+                                 dComIfGp_getReverb(stayNo));
         } else {
             mDoAud_messageSePlay(field_0x45, &actor->current.pos, 0);
         }
@@ -1692,8 +1706,7 @@ int dMsgFlow_c::event026(mesg_flow_node_event*, fopAc_ac_c* actor) {
 
     if (actor != NULL) {
         if (fopAcM_GetName(actor) == PROC_OBJ_SSITEM || fopAcM_GetName(actor) == PROC_OBJ_SSDRINK ||
-            fopAcM_GetName(actor) == PROC_TAG_SSDRINK)
-        {
+            fopAcM_GetName(actor) == PROC_TAG_SSDRINK) {
         }
     }
 
@@ -1787,6 +1800,7 @@ int dMsgFlow_c::event027(mesg_flow_node_event* flow_node, fopAc_ac_c*) {
     return 1;
 }
 
+
 /* 8024D3C4-8024D500 247D04 013C+00 1/0 0/0 0/0 .text
  * event028__10dMsgFlow_cFP20mesg_flow_node_eventP10fopAc_ac_c  */
 // NONMATCHING regalloc
@@ -1874,7 +1888,7 @@ int dMsgFlow_c::event032(mesg_flow_node_event* param_0, fopAc_ac_c* param_1) {
         } else {
             color = g_saftyWhiteColor;
         }
-        mDoGph_gInf_c::fadeOut(-(1.0f / uVar1), color);
+        mDoGph_gInf_c::fadeOut( -(1.0f / uVar1), color);
     }
     cLib_calcTimer(&field_0x3c);
     return 1;
@@ -1920,9 +1934,7 @@ int dMsgFlow_c::event035(mesg_flow_node_event* flow_node, fopAc_ac_c*) {
         dComIfGs_offItemFirstBit(prm0);
     } else if (prm0 == fpcNm_ITEM_RAFRELS_MEMO || prm0 == fpcNm_ITEM_ASHS_SCRIBBLING) {
         dComIfGs_setItem(SLOT_19, fpcNm_ITEM_NONE);
-    } else if (prm0 == fpcNm_ITEM_LETTER || prm0 == fpcNm_ITEM_BILL ||
-               prm0 == fpcNm_ITEM_WOOD_STATUE || prm0 == fpcNm_ITEM_IRIAS_PENDANT)
-    {
+    } else if (prm0 == fpcNm_ITEM_LETTER || prm0 == fpcNm_ITEM_BILL || prm0 == fpcNm_ITEM_WOOD_STATUE || prm0 == fpcNm_ITEM_IRIAS_PENDANT) {
         dComIfGs_setWarashibeItem(fpcNm_ITEM_NONE);
     }
 

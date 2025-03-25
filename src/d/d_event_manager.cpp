@@ -9,6 +9,10 @@
 #include "d/d_com_inf_game.h"
 #include "stdio.h"
 
+BOOL daPy_py_c::checkNowWolf() {
+    return dComIfGp_getLinkPlayer()->checkWolf();
+}
+
 void dEvent_exception_c::init() {
     mEventInfoIdx = -1;
     mState = 0;
@@ -547,8 +551,7 @@ s16 dEvent_manager_c::getEventIdx(char const* eventName, u8 mapToolID, s32 roomN
 /* 80047698-80047758 041FD8 00C0+00 0/0 3/3 25/25 .text
  * getEventIdx__16dEvent_manager_cFP10fopAc_ac_cUc              */
 s16 dEvent_manager_c::getEventIdx(fopAc_ac_c* pActor, u8 mapToolID) {
-    dStage_MapEvent_dt_c* data =
-        dEvt_control_c::searchMapEventData(mapToolID, fopAcM_GetRoomNo(pActor));
+    dStage_MapEvent_dt_c* data = dEvt_control_c::searchMapEventData(mapToolID, fopAcM_GetRoomNo(pActor));
     if (data != NULL) {
         switch (data->mType) {
         case 1:
@@ -1074,7 +1077,7 @@ static int dEv_talkman_get_action(int param_0) {
             "TALK1",
         };
         int actIdx = dComIfGp_getEventManager().getMyActIdx(staffId, action_table,
-                                                            ARRAY_SIZE(action_table), 0, 0);
+                                                              ARRAY_SIZE(action_table), 0, 0);
         if (actIdx == param_0) {
             dComIfGp_getEventManager().cutEnd(staffId);
         }
