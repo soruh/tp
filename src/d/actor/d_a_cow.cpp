@@ -2480,7 +2480,7 @@ void daCow_c::executeCrazyBack() {
             if (field_0xc10 < 0) {
                 speedF = 0.0f;
                 field_0xc61 = 3;
-                field_0xc72 -= 0x2000;
+                field_0xc72 = field_0xc32.y - 0x2000;
             }
         }
         if (checkNadeNade()) {
