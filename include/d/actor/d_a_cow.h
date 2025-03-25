@@ -164,9 +164,6 @@ private:
     /* 0xc08 */ daCow_c* mCowP;
     /* 0xc0c */ dPath* mPath;
     /* 0xc10 */ s8 mPointIndex;
-    /* 0xc11 */ u8 field_0xc11;  // undefined
-    /* 0xc12 */ u8 field_0xc12;  // undefined
-    /* 0xc13 */ u8 field_0xc13;  // undefined
     /* 0xc14 */ cXyz field_0xc14;
     /* 0xc20 */ cXyz field_0xc20;
     /* 0xc2c */ csXyz field_0xc2c;
@@ -187,8 +184,6 @@ private:
     /* 0xc64 */ u32 field_0xc64;
     /* 0xc68 */ u8 field_0xc68;
     /* 0xc69 */ u8 mISpeed;
-    /* 0xc6a */ u8 field_0xc6a;  // undefined
-    /* 0xc6b */ u8 field_0xc6b;  // undefined
     /* 0xc6c */ f32 field_0xc6c;
     /* 0xc70 */ s16 field_0xc70;
     /* 0xc72 */ s16 mTargetAngle;
@@ -209,7 +204,7 @@ private:
     /* 0xc9f */ u8 mCrazy;
     /* 0xca0 */ u8 field_0xca0;
     /* 0xca1 */ u8 field_0xca1;
-    /* 0xca2 */ u8 field_0xca2;  // undefined
+    /* 0xca2 */ u8 field_0xca2;
     /* 0xca3 */ u8 mTimer3;
     /* 0xca4 */ u8 mNoNearCheckTimer;
     /* 0xca5 */ u8 mCowIn;
@@ -218,7 +213,6 @@ private:
     /* 0xca8 */ u8 field_0xca8;
     /* 0xca9 */ bool field_0xca9;
     /* 0xcaa */ u8 mWaitForMorf;
-    /* 0xcab */ u8 field_0xcab;  // undefined
     /* 0xcac */ f32 field_0xcac;
     /* 0xcb0 */ f32 field_0xcb0;
     /* 0xcb4 */ u8 field_0xcb4;
