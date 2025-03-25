@@ -186,7 +186,7 @@ private:
     /* 0xc54 */ int mTimer6;
     /* 0xc58 */ int mTimer7;
     /* 0xc5c */ u16 mMode;
-    /* 0xc5e */ s8 mAnimationPhase;
+    /* 0xc5e */ s8 mRunType;
     /* 0xc5f */ u8 mPrm0;
     /* 0xc60 */ u8 field_0xc60;
     /* 0xc61 */ u8 mAction;
@@ -281,16 +281,22 @@ enum daCow_Animation {
     daCow_Animation_16_e = 16,
     daCow_Animation_17_e = 17,
     daCow_Animation_18_e = 18,
-    daCow_Animation_19_e = 19,
+    daCow_Animation_Run_e = 19,
     daCow_Animation_20_e = 20,
     daCow_Animation_21_e = 21,
     daCow_Animation_22_e = 22,
     daCow_Animation_23_e = 23,
     daCow_Animation_24_e = 24,
-    daCow_Animation_25_e = 25,
+    daCow_Animation_Walk_e = 25,
     daCow_Animation_26_e = 26,
     daCow_Animation_27_e = 27,
     daCow_Animation_28_e = 28,
+};
+
+enum daCow_RunType {
+    daCow_RunType_None_e = 0,
+    daCow_RunType_Walk_e = 1,
+    daCow_RunType_Run_e = 2,
 };
 
 #endif /* D_A_COW_H */

@@ -46,37 +46,37 @@ static f32 l_CowRoomPosZ[2] = {-19646.0f, -20926.0f};
 extern fpc_ProcID gWolfBustersID[N_WOLF_BUSTERS] = {-1, -1, -1};
 
 /* 806585CC-80658730 0000EC 0164+00 6/6 0/0 0/0 .text            calcRunAnime__7daCow_cFi */
-int daCow_c::calcRunAnime(int resetAnimation) {
-    if (resetAnimation != 0) {
-        mAnimationPhase = 0;
+int daCow_c::calcRunAnime(int resetRunType) {
+    if (resetRunType) {
+        mRunType = daCow_RunType_None_e;
     }
 
-    switch (mAnimationPhase) {
-    case 0:
+    switch (mRunType) {
+    case daCow_RunType_None_e:
         if (speedF < 35.0f) {
-            setBck(daCow_Animation_25_e, J3DFrameCtrl::EMode_LOOP, 5.0f, 1.0f);
-            mAnimationPhase = 1;
+            setBck(daCow_Animation_Walk_e, J3DFrameCtrl::EMode_LOOP, 5.0f, 1.0f);
+            mRunType = daCow_RunType_Walk_e;
         } else {
-            setBck(daCow_Animation_19_e, J3DFrameCtrl::EMode_LOOP, 5.0f, 1.0f);
-            mAnimationPhase = 2;
+            setBck(daCow_Animation_Run_e, J3DFrameCtrl::EMode_LOOP, 5.0f, 1.0f);
+            mRunType = daCow_RunType_Run_e;
         }
         break;
-    case 1: {
-        f32 newSpeed = (speedF * 3.0f) / 25.0f;
-        if (newSpeed > 5.0f) {
-            newSpeed = 5.0f;
+    case daCow_RunType_Walk_e: {
+        f32 animationSpeed = (speedF * 3.0f) / 25.0f;
+        if (animationSpeed > 5.0f) {
+            animationSpeed = 5.0f;
         }
-        mpMorf->setPlaySpeed(newSpeed);
+        mpMorf->setPlaySpeed(animationSpeed);
         if (speedF > 35.0f) {
-            setBck(daCow_Animation_19_e, J3DFrameCtrl::EMode_LOOP, 5.0f, 1.0f);
-            mAnimationPhase = 2;
+            setBck(daCow_Animation_Run_e, J3DFrameCtrl::EMode_LOOP, 5.0f, 1.0f);
+            mRunType = daCow_RunType_Run_e;
         }
     } break;
-    case 2:
+    case daCow_RunType_Run_e:
         mpMorf->setPlaySpeed(1.3f);
         if (speedF < 35.0f) {
-            setBck(daCow_Animation_25_e, J3DFrameCtrl::EMode_LOOP, 5.0f, 1.0f);
-            mAnimationPhase = 1;
+            setBck(daCow_Animation_Walk_e, J3DFrameCtrl::EMode_LOOP, 5.0f, 1.0f);
+            mRunType = daCow_RunType_Walk_e;
         }
         break;
     }
