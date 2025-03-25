@@ -311,7 +311,7 @@ void daCow_c::setBodyAngle2(s16 angle) {
 
 /* 806590E8-80659114 000C08 002C+00 5/5 0/0 0/0 .text checkProcess__7daCow_cFM7daCow_cFPCvPv_v */
 BOOL daCow_c::checkProcess(void (daCow_c::*process)()) {
-    return this->mProcess == process;
+    return mProcess == process;
 }
 
 /* 80659114-806591BC 000C34 00A8+00 16/16 0/0 0/0 .text setProcess__7daCow_cFM7daCow_cFPCvPv_vi */
@@ -1519,7 +1519,7 @@ void daCow_c::action_enter() {
                     field_0xc20 = pen_pos + penDistance;
 
                     setBck(0x1b, 2, 12.0f, 1.0f);
-                    this->speedF = 0x40400000;
+                    speedF = 0x40400000;
                     field_0xc9f = 2;
 
                     if ((u32)dMeter2Info_getNowCount() == (u32)dMeter2Info_getMaxCount() &&
@@ -1543,7 +1543,7 @@ void daCow_c::action_enter() {
 
             if (current.pos.abs(field_0xc20) < 50.0f) {
                 setBck(0xf, 0, 12.0f, 1.0f);
-                this->speedF = 0;
+                speedF = 0;
                 field_0xc9f = 3;
             }
             if (checkCurringPen()) {
@@ -1555,7 +1555,7 @@ void daCow_c::action_enter() {
             if (mpMorf->isStop()) {
                 if (current.pos.abs(field_0xc20) > 100.0f) {
                     field_0xc9f = 2;
-                    this->speedF = 0x40400000;
+                    speedF = 0x40400000;
                     setBck(0x1b, 2, 12.0f, 1.0f);
                 } else {
                     setBck(0xf, 0, 12.0f, 1.0f);
@@ -1567,7 +1567,7 @@ void daCow_c::action_enter() {
             }
             break;
         case 4:
-            this->speedF = 0;
+            speedF = 0;
             field_0xca5 = 1;
 
             setProcess(&daCow_c::action_wait, 0);
@@ -1589,12 +1589,12 @@ void daCow_c::action_enter() {
             } else if (fVar2 < 0.0f) {
                 fVar2 = 2.0f;
             }
-            cLib_chaseF(&this->speedF, fVar2, 1.5f);
+            cLib_chaseF(&speedF, fVar2, 1.5f);
         }
     }
 
     for (int iSphere = 0; iSphere < N_COW_COLLIDERS; iSphere++) {
-        this->mSph[iSphere].OffTgSetBit();
+        mSph[iSphere].OffTgSetBit();
     }
 }
 
@@ -1921,7 +1921,7 @@ void daCow_c::action_angry() {
             shape_angle.y = targetZ;
             current.angle.y = targetZ;
 
-            if (this->mpMorf->isStop()) {
+            if (mpMorf->isStop()) {
                 field_0xc9f = 1;
                 calcRunAnime(1);
             }
@@ -2000,7 +2000,7 @@ void daCow_c::executeCrazyWait() {
 
 /* 8065DF40-8065E6BC 005A60 077C+00 1/1 0/0 0/0 .text            executeCrazyDash__7daCow_cFv */
 void daCow_c::executeCrazyDash() {
-    this->mShouldSetEffect = 1;
+    mShouldSetEffect = 1;
 
     cXyz cStack_20 = dPath_GetPnt(mPath, field_0xc10)->m_position;
     cXyz cStack_38;
@@ -2100,11 +2100,11 @@ void daCow_c::initCrazyBeforeCatch(int param_0) {
  */
 void daCow_c::executeCrazyBeforeCatch() {
     calcCatchPos(-220.0f, 1);
-    if (this->mFlags & 2) {
+    if (mFlags & 2) {
         initCrazyCatch(0);
         mFlags &= ~2;
         dComIfGp_getVibration().StartShock(8, 0x1f, cXyz(0.0f, 1.0f, 0.0f));
-    } else if (this->mFlags & 4) {
+    } else if (mFlags & 4) {
         if (!daPy_getPlayerActorClass()->speedF) {
             initCrazyAttack(0);
         } else {
@@ -2315,7 +2315,7 @@ void daCow_c::executeCrazyThrow() {
         break;
     case 4:
         if (mpMorf->isStop()) {
-            if (this->mPrm0 != 3) {
+            if (mPrm0 != 3) {
                 initCrazyBack(0);
             } else {
                 setBck(0x1a, 2, 10.0f, 1.0f);
@@ -2403,7 +2403,7 @@ void daCow_c::executeCrazyAway() {
         setRushVibration(2);
     }
 
-    this->mShouldSetEffect = 1;
+    mShouldSetEffect = 1;
     cLib_chaseF(&speedF, 30.0f, 2.0f);
     cLib_chaseS(&field_0xc3e.z, 0x1000, 0x400);
 
@@ -3017,7 +3017,7 @@ void daCow_c::action() {
             mSph[iSphere].OnTgSetBit();
         }
     }
-    if (this->mProcess) {
+    if (mProcess) {
         (this->*mProcess)();
     }
 
@@ -3160,8 +3160,8 @@ int daCow_c::CreateHeap() {
     }
 #endif
 
-    mpMorf = new mDoExt_McaMorfSO(modelData, NULL, NULL, NULL, -1, 1.0f, 0, -1, &this->mSound,
-                                  0x80000, 0x11020084);
+    mpMorf = new mDoExt_McaMorfSO(modelData, NULL, NULL, NULL, -1, 1.0f, 0, -1, &mSound, 0x80000,
+                                  0x11020084);
 
     if (!mpMorf || !mpMorf->getModel()) {
         return cPhs_INIT_e;
@@ -3466,7 +3466,7 @@ static int daCow_Draw(void* param_0) {
 /* 80662BE4-80662C40 00A704 005C+00 1/1 0/0 0/0 .text            Delete__7daCow_cFv */
 int daCow_c::Delete() {
     fopAcM_GetID(this);
-    dComIfG_resDelete(&this->mPhase, "Cow");
+    dComIfG_resDelete(&mPhase, "Cow");
 
     if (heap != NULL) {
         mSound.deleteObject();
