@@ -3435,10 +3435,10 @@ int daCow_c::Draw() {
             if (field_0xc9f == 4) {
                 fVar1 = 1500.0f;
             }
-            field_0xc64 = dComIfGd_setShadow(field_0xc64, 1, model, &current.pos, fVar1, 0.0f,
-                                             current.pos.y, field_0xc44, mAcch.m_gnd, &tevStr, 0,
-                                             1.0f, dDlst_shadowControl_c::getSimpleTex());
         }
+        field_0xc64 = dComIfGd_setShadow(field_0xc64, 1, model, &current.pos, fVar1, 0.0f,
+                                         current.pos.y, field_0xc44, mAcch.m_gnd, &tevStr, 0, 1.0f,
+                                         dDlst_shadowControl_c::getSimpleTex());
     }
     tevStr.TevColor.r = field_0xcac * 50.0f;
     return 1;
