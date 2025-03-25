@@ -978,7 +978,7 @@ void daCow_c::checkBeforeBg() {
     }
 
     if (speedF) {
-        for (u32 iPlane = 0; iPlane < 3; iPlane++) {
+        for (int iPlane = 0; iPlane < 3; iPlane++) {
             c = b;
             if (!iPlane) {
                 c.x += f1 * cM_ssin(field_0xc32.y + x[0]);
@@ -992,7 +992,7 @@ void daCow_c::checkBeforeBg() {
             linChk.Set(&b, &c, this);
             if (dComIfG_Bgsp().LineCross(&linChk)) {
                 planeTri[iPlane] = dComIfG_Bgsp().GetTriPla(linChk, &planes[iPlane]);
-                if (fabs(planes[iPlane].mNormal.y) >= cM_ssin(0x6000)) {
+                if ((f32)fabs(planes[iPlane].mNormal.y) >= cM_ssin(0x6000)) {
                     a = current.pos - linChk.GetCross();
                     y[iPlane] = a.absXZ();
                     z[iPlane] = cM_atan2s(planes[iPlane].mNormal.x, planes[iPlane].mNormal.z);
@@ -1023,70 +1023,7 @@ void daCow_c::checkBeforeBg() {
         return;
     }
 
-    if (planeTri[1] && planeTri[2]) {
-        if (planeTri[0]) {
-            if (planeTri[1]) {
-                if (field_0xc60 <= 3) {
-                    field_0xc61 = 4;
-                } else {
-                    field_0xc61 = 2;
-                }
-
-            } else if (planeTri[2]) {
-                if (field_0xc60 <= 3) {
-                    field_0xc61 = 4;
-                } else {
-                    field_0xc61 = 1;
-                }
-
-            } else {
-                s16 difference = z[0] - field_0xc32.y;
-                if (abs(difference) < 0x7801) {
-                    field_0xc61 = difference <= 0 ? 3 : 4;
-                } else {
-                    field_0xc61 = (field_0xc60 & 1) ? 4 : 3;
-                }
-            }
-        } else if (planeTri[1]) {
-            if (field_0xc60 != 2) {
-                if (field_0xc60 < 2) {
-                    field_0xc61 = 4;
-                    field_0xc54 = 10;
-                } else {
-                    if (field_0xc60 < 4) {
-                        field_0xc61 = 2;
-                    }
-                }
-            } else {
-                if (y[1] < 600.0f) {
-                    field_0xc61 = 2;
-                } else {
-                    field_0xc61 = 0;
-                }
-            }
-        } else if (!planeTri[2]) {
-            if (field_0xc60 == 2) {
-                field_0xc61 = 1;
-            } else {
-                if (field_0xc60 < 2) {
-                    field_0xc61 = field_0xc60 == 0 ? 3 : 4;
-                } else {
-                    field_0xc61 = field_0xc60 <= 3 ? 2 : 0;
-                }
-            }
-        } else {
-            if (field_0xc60 == 2) {
-                field_0xc61 = 1;
-            } else {
-                if (field_0xc60 > 1) {
-                    field_0xc61 = y[2] < 600.0f ? 1 : 0;
-                } else {
-                    field_0xc61 = 3;
-                    field_0xc54 = 10;
-                }
-            }
-        }
-    } else {
+    if (!planeTri[1] || !planeTri[2]) {
         if (field_0xc61 == 3) {
             field_0xc61 = 3;
         } else {
@@ -1106,6 +1043,75 @@ void daCow_c::checkBeforeBg() {
             }
         }
         field_0xc54 = 10;
+        return;
+    }
+
+    if (planeTri[0]) {
+        if (planeTri[1]) {
+            if (field_0xc60 <= 3) {
+                field_0xc61 = 4;
+            } else {
+                field_0xc61 = 2;
+            }
+
+        } else if (planeTri[2]) {
+            if (field_0xc60 <= 3) {
+                field_0xc61 = 4;
+            } else {
+                field_0xc61 = 1;
+            }
+
+        } else {
+            s16 difference = z[0] - field_0xc32.y;
+            if (abs(difference) < 0x7801) {
+                field_0xc61 = difference <= 0 ? 3 : 4;
+            } else {
+                field_0xc61 = (field_0xc60 & 1) ? 4 : 3;
+            }
+        }
+        return;
+    }
+    if (planeTri[1]) {
+        if (field_0xc60 != 2) {
+            if (field_0xc60 < 2) {
+                field_0xc61 = 4;
+                field_0xc54 = 10;
+            } else {
+                if (field_0xc60 < 4) {
+                    field_0xc61 = 2;
+                }
+            }
+        } else {
+            if (y[1] < 600.0f) {
+                field_0xc61 = 2;
+            } else {
+                field_0xc61 = 0;
+            }
+        }
+        return;
+    }
+    if (!planeTri[2]) {
+        if (field_0xc60 == 2) {
+            field_0xc61 = 1;
+        } else {
+            if (field_0xc60 < 2) {
+                field_0xc61 = field_0xc60 == 0 ? 3 : 4;
+            } else {
+                field_0xc61 = field_0xc60 <= 3 ? 2 : 0;
+            }
+        }
+        return;
+    }
+
+    if (field_0xc60 == 2) {
+        field_0xc61 = 1;
+    } else {
+        if (field_0xc60 > 1) {
+            field_0xc61 = y[2] < 600.0f ? 1 : 0;
+        } else {
+            field_0xc61 = 3;
+            field_0xc54 = 10;
+        }
     }
 }
 
@@ -3063,9 +3069,7 @@ void daCow_c::setCollisions() {
 
     if (!field_0xca6) {
         static cXyz headOfst(20.0f, 10.0f, 0.0f);
-
         static cXyz backBornOfst(60.0f, 20.0f, 0.0f);
-
         static cXyz waistOfst(-30.0f, 30.0f, 0.0f);
 
         // todo: is this an unrolled loop / macro?
