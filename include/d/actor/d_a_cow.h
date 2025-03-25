@@ -198,7 +198,7 @@ private:
     /* 0xcb7 */ u8 field_0xcb7;
     /* 0xcb8 */ dPaPoT_c mParticle;
     /* 0xd38 */ u32 field_0xd38;
-    /* 0xd3C */ u32 field_0xd3c;
+    /* 0xd3c */ u32 field_0xd3c;
 };
 
 STATIC_ASSERT(sizeof(daCow_c) == 0xd40);

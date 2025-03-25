@@ -2830,7 +2830,6 @@ void daCow_c::action_wolf() {
 
     cXyz aruPos = aru->current.pos;
     s16 aruAngle = cLib_targetAngleY(&current.pos, &aru->current.pos);
-    f32 fVar13;
 
     switch (mMode) {
     case 0:
@@ -2851,7 +2850,7 @@ void daCow_c::action_wolf() {
 
         calcRunAnime(0);
 
-        if (player->checkNowWolf() && checkOutOfGate(aru->current.pos)) {
+        if (!player->checkNowWolf() || checkOutOfGate(aru->current.pos)) {
             setProcess(&daCow_c::action_run, 0);
             field_0xc9e = 1;
             return;
@@ -2859,7 +2858,6 @@ void daCow_c::action_wolf() {
 
         switch (field_0xc9f) {
         case 0:
-
             cLib_chaseF(&speedF, 36.0f, 1.0f);
             cLib_addCalcAngleS2(&current.angle.y, aruAngle, 8, 0x400);
             field_0xc32.y = shape_angle.y = current.angle.y;
@@ -2877,16 +2875,15 @@ void daCow_c::action_wolf() {
             }
 
             field_0xc20 = aruPos;
-
             field_0xc20.x += cM_ssin(aruAngle) * 500.0f;
             field_0xc20.z += cM_scos(aruAngle) * 500.0f;
             field_0xc72 = cLib_targetAngleY(&current.pos, &field_0xc20);
             field_0xc9f = 2;
             field_0xc90 = 0x96;
-        case 2:
+        case 2: {
             field_0xc72 = cLib_targetAngleY(&current.pos, &field_0xc20);
 
-            fVar13 = current.pos.absXZ(aru->current.pos) / 100.0f;
+            f32 fVar13 = current.pos.absXZ(aru->current.pos) / 100.0f;
 
             if (fVar13 < 7.0f) {
                 fVar13 = 7.0f;
@@ -2915,7 +2912,7 @@ void daCow_c::action_wolf() {
                 }
             }
             if (!field_0xc98) {
-                field_0xc98 = (int)(cM_rndF(90.0f) + 150.0f);
+                field_0xc98 = cM_rndF(90.0f) + 150.0f;
                 if (!checkOutOfGate(current.pos)) {
                     m_angry_cow = 0;
                     if (!fpcEx_Search(s_angry_cow2, this)) {
@@ -2929,8 +2926,8 @@ void daCow_c::action_wolf() {
                     }
                 }
             }
+        } break;
         }
-
         cLib_chaseS(&field_0xc3e.z, 0, 0x400);
         break;
     case 2:
