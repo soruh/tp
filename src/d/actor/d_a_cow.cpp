@@ -2685,14 +2685,14 @@ void daCow_c::executeCrazyBack2() {
     case 1:
 
         setActetcStatus();
-        targetAngle = cLib_targetAngleY(&current.pos, &old.pos);
+        targetAngle = cLib_targetAngleY(&current.pos, &home.pos);
         cLib_addCalcAngleS(&current.angle.y, targetAngle, 0x10, 0x100, 0x80);
         cLib_chaseF(&speedF, 2.0f, 1.0f);
         cLib_addCalcAngleS(&shape_angle.y, current.angle.y, 8, 0x100, 0x800);
         field_0xc32.y = shape_angle.y;
         setBodyAngle(targetAngle);
 
-        if (current.pos.abs(old.pos) < 200.0f || field_0xc90) {
+        if (current.pos.abs(home.pos) < 200.0f || !field_0xc90) {
             speedF = 0.0f;
             setProcess(&daCow_c::action_moo, 0);
         } else {
