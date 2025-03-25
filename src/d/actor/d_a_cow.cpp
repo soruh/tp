@@ -12,7 +12,6 @@
 #include "d/d_com_inf_game.h"
 #include "d/d_meter2_info.h"
 #include "d/d_timer.h"
-#include "dol2asm.h"
 #include "dolphin/types.h"
 #include "f_op/f_op_actor_mng.h"
 #include "m_Do/m_Do_ext.h"
@@ -363,7 +362,7 @@ void daCow_c::damage_check() {
 
     if (checkProcess(&daCow_c::action_crazy)) {
         if (mCrazy == daCow_Crazy_Back_e) {
-            if (mAction == daCow_Action_0_e) {
+            if (mAction == daCow_Action_Wait_e) {
                 if (hitObject->ChkAtType(COW_ATTACK_TYPES)) {
                     setTimer4(150);
                 } else {
@@ -1024,19 +1023,19 @@ void daCow_c::checkBeforeBg() {
 
     if (planeTri[1] && planeTri[2]) {
         switch (mAction) {
-        case daCow_Action_1_e:
-        case daCow_Action_3_e:
-            mAction = daCow_Action_3_e;
+        case daCow_Action_NadeNade_e:
+        case daCow_Action_Die_e:
+            mAction = daCow_Action_Die_e;
             break;
-        case daCow_Action_2_e:
-        case daCow_Action_4_e:
-            mAction = daCow_Action_4_e;
+        case daCow_Action_Cry_e:
+        case daCow_Action_Delete_e:
+            mAction = daCow_Action_Delete_e;
             break;
         default:
             if (field_0xc60 & 1) {
-                mAction = daCow_Action_4_e;
+                mAction = daCow_Action_Delete_e;
             } else {
-                mAction = daCow_Action_3_e;
+                mAction = daCow_Action_Die_e;
             }
         }
         setTimer6(10);
@@ -1044,30 +1043,30 @@ void daCow_c::checkBeforeBg() {
         if (planeTri[0]) {
             if (planeTri[1]) {
                 if (field_0xc60 >= 4) {
-                    mAction = daCow_Action_2_e;
+                    mAction = daCow_Action_Cry_e;
                 } else {
-                    mAction = daCow_Action_4_e;
+                    mAction = daCow_Action_Delete_e;
                 }
             } else {
                 if (planeTri[2]) {
                     if (field_0xc60 >= 4) {
-                        mAction = daCow_Action_1_e;
+                        mAction = daCow_Action_NadeNade_e;
                     } else {
-                        mAction = daCow_Action_3_e;
+                        mAction = daCow_Action_Die_e;
                     }
                 } else {
                     s16 sVar2 = z[0] - mSavedAngle.y;
                     if (abs(sVar2) > 0x7800) {
                         if (field_0xc60 & 1) {
-                            mAction = daCow_Action_4_e;
+                            mAction = daCow_Action_Delete_e;
                         } else {
-                            mAction = daCow_Action_3_e;
+                            mAction = daCow_Action_Die_e;
                         }
                     } else {
                         if (sVar2 > 0) {
-                            mAction = daCow_Action_4_e;
+                            mAction = daCow_Action_Delete_e;
                         } else {
-                            mAction = daCow_Action_3_e;
+                            mAction = daCow_Action_Die_e;
                         }
                     }
                 }
@@ -1076,16 +1075,16 @@ void daCow_c::checkBeforeBg() {
             switch (field_0xc60) {
             case 0:
             case 1:
-                mAction = daCow_Action_4_e;
+                mAction = daCow_Action_Delete_e;
                 setTimer6(10);
                 break;
             case 3:
-                mAction = daCow_Action_2_e;
+                mAction = daCow_Action_Cry_e;
                 break;
             default:
-                mAction = daCow_Action_0_e;
+                mAction = daCow_Action_Wait_e;
                 if (y[1] < 600.0f) {
-                    mAction = daCow_Action_2_e;
+                    mAction = daCow_Action_Cry_e;
                 }
                 break;
             }
@@ -1093,35 +1092,35 @@ void daCow_c::checkBeforeBg() {
             switch (field_0xc60) {
             case 0:
             case 1:
-                mAction = daCow_Action_3_e;
+                mAction = daCow_Action_Die_e;
                 setTimer6(10);
                 break;
             case 2:
-                mAction = daCow_Action_1_e;
+                mAction = daCow_Action_NadeNade_e;
                 break;
             default:
-                mAction = daCow_Action_0_e;
+                mAction = daCow_Action_Wait_e;
                 if (y[2] < 600.0f) {
-                    mAction = daCow_Action_1_e;
+                    mAction = daCow_Action_NadeNade_e;
                 }
                 break;
             }
         } else {
             switch (field_0xc60) {
             case 0:
-                mAction = daCow_Action_3_e;
+                mAction = daCow_Action_Die_e;
                 break;
             case 1:
-                mAction = daCow_Action_4_e;
+                mAction = daCow_Action_Delete_e;
                 break;
             case 2:
-                mAction = daCow_Action_1_e;
+                mAction = daCow_Action_NadeNade_e;
                 break;
             case 3:
-                mAction = daCow_Action_2_e;
+                mAction = daCow_Action_Cry_e;
                 break;
             default:
-                mAction = daCow_Action_0_e;
+                mAction = daCow_Action_Wait_e;
             }
         }
     }
@@ -1296,26 +1295,26 @@ void daCow_c::action_run() {
                 targetSpeed = mSpeed * (mBoostSpeed / 1000.0f) / 2.0f;
             }
         }
-        if ((mTimer6 == 0) || (mTimer6 == 10)) {
+        if (mTimer6 == 0 || mTimer6 == 10) {
             s16 targetAngle = current.angle.y;
             if (!mIntersectedPlanes && mCowP) {
                 targetAngle = getCowP()->mSavedAngle.y;
             }
 
             switch (mAction) {
-            case daCow_Action_1_e:
+            case daCow_Action_NadeNade_e:
                 targetAngle -= 0x1000;
                 break;
-            case daCow_Action_2_e:
+            case daCow_Action_Cry_e:
                 targetAngle += 0x1000;
                 break;
-            case daCow_Action_3_e:
+            case daCow_Action_Die_e:
                 targetAngle -= 0x4000;
                 break;
-            case daCow_Action_4_e:
+            case daCow_Action_Delete_e:
                 targetAngle += 0x4000;
                 break;
-            case daCow_Action_0_e: {
+            case daCow_Action_Wait_e: {
                 s16 cowshedAngle = getCowshedAngle();
                 s16 playerAngle = fopAcM_searchPlayerAngleY(this);
                 targetAngle = playerAngle - (s16)0x8000;
@@ -1994,7 +1993,7 @@ void daCow_c::executeCrazyWait() {
 
         mAcchCir.SetWall(100.0f, 110.0f);
         setTimer1(30);
-        fopAcM_OffStatus(this, 0x100);
+        fopAcM_OffStatus(this, fopAcM_STATUS_UNK_000100);
     }
 }
 
@@ -2241,10 +2240,10 @@ void daCow_c::executeCrazyThrow() {
                 mSph[iSphere].OnCoSetBit();
             }
 
-            if (mAction != daCow_Action_0_e) {
+            if (mAction != daCow_Action_Wait_e) {
                 current.angle.y = daPy_getPlayerActorClass()->shape_angle.y + 0x7000;
             } else {
-                current.angle.y = daPy_getPlayerActorClass()->shape_angle.y + -0x6800;
+                current.angle.y = daPy_getPlayerActorClass()->shape_angle.y - 0x6800;
             }
             speedF = 10.0f;
             speed.y = 10.0f;
@@ -2284,7 +2283,7 @@ void daCow_c::executeCrazyThrow() {
             mJointIndex = 0;
             mShouldSetEffect = 2;
 
-            if (mAction != daCow_Action_0_e) {
+            if (mAction != daCow_Action_Wait_e) {
                 setBck(8, 2, 0.0f, 1.0f);
                 mSavedAngle.y -= 0x7000;
                 mThrowIntensity = -1000;
@@ -2300,7 +2299,7 @@ void daCow_c::executeCrazyThrow() {
         cLib_chaseAngleS(&mThrowIntensity, 0, 30);
         if (cLib_chaseF(&speedF, 0.0f, 0.5f) && !mTimer1) {
             field_0xc60 = 4;
-            if (mAction != daCow_Action_0_e) {
+            if (mAction != daCow_Action_Wait_e) {
                 setBck(13, 0, 5.0f, 1.0f);
             } else {
                 setBck(12, 0, 5.0f, 1.0f);
@@ -2331,11 +2330,11 @@ void daCow_c::initCrazyAttack(int playerMoving) {
     mJoint8Offset.z = 0;
     mCrazy = daCow_Crazy_Attack_e;
     if (playerMoving) {
-        mAction = daCow_Action_1_e;
+        mAction = daCow_Action_NadeNade_e;
         speedF = 0.0f;
         setBck(24, 0, 3.0f, 1.0f);
     } else {
-        mAction = daCow_Action_0_e;
+        mAction = daCow_Action_Wait_e;
         setBck(22, 0, 3.0f, 1.0f);
     }
     for (int iSphere = 0; iSphere < N_COW_COLLIDERS; iSphere++) {
@@ -2347,7 +2346,7 @@ void daCow_c::initCrazyAttack(int playerMoving) {
 /* 8065F144-8065F308 006C64 01C4+00 2/2 0/0 0/0 .text            executeCrazyAttack__7daCow_cFv */
 void daCow_c::executeCrazyAttack() {
     switch (mAction) {
-    case daCow_Action_0_e:
+    case daCow_Action_Wait_e:
         cLib_chaseF(&speedF, 10.0f, 1.0f);
         if (mpMorf->checkFrame(2.0f)) {
             mSound.startCreatureVoice(Z2SE_GOAT_V_BREATH_SHAKE, -1);
@@ -2356,7 +2355,7 @@ void daCow_c::executeCrazyAttack() {
             initCrazyAway(0);
         }
         break;
-    case daCow_Action_1_e:
+    case daCow_Action_NadeNade_e:
         if (mpMorf->checkFrame(2.0f)) {
             mSound.startCreatureVoice(Z2SE_GOAT_V_BREATH_SHAKE, -1);
         }
@@ -2365,14 +2364,15 @@ void daCow_c::executeCrazyAttack() {
                 initCrazyAway(0);
             } else {
                 setBck(21, 0, 7.0f, 1.0f);
-                mAction = daCow_Action_2_e;
+                mAction = daCow_Action_Cry_e;
             }
         }
         break;
-    case daCow_Action_2_e:
+    case daCow_Action_Cry_e:
         if (mpMorf->isStop()) {
             initCrazyAway(0);
         }
+        break;
     }
 }
 
@@ -2443,7 +2443,7 @@ void daCow_c::initCrazyBack(int param_0) {
     }
 
     setTimer1(0);
-    mAction = daCow_Action_0_e;
+    mAction = daCow_Action_Wait_e;
     current.angle.y = shape_angle.y = mSavedAngle.y;
     mCrazy = daCow_Crazy_Back_e;
 }
@@ -2454,7 +2454,7 @@ void daCow_c::executeCrazyBack() {
     s16 angle;
 
     switch (mAction) {
-    case daCow_Action_0_e: {
+    case daCow_Action_Wait_e: {
         setActetcStatus();
 
         pointPos = dPath_GetPnt(mPath, mPointIndex)->m_position;
@@ -2473,42 +2473,41 @@ void daCow_c::executeCrazyBack() {
             mPointIndex -= 1;
             if (mPointIndex < 0) {
                 speedF = 0.0f;
-                mAction = daCow_Action_3_e;
+                mAction = daCow_Action_Die_e;
                 mTargetAngle = mSavedAngle.y - 0x2000;
             }
         }
         if (checkNadeNade()) {
             setBck(26, 2, 10.0f, 1.0f);
-            mAction = daCow_Action_1_e;
+            mAction = daCow_Action_NadeNade_e;
             speedF = 0.0f;
         }
-        break;
-    }
-    case daCow_Action_1_e:
+    } break;
+    case daCow_Action_NadeNade_e:
         if (checkNadeNadeFinish()) {
             setBck(15, 0, 10.0f, 1.0f);
-            mAction = daCow_Action_2_e;
+            mAction = daCow_Action_Cry_e;
             speedF = 0.0f;
         }
         break;
-    case daCow_Action_2_e:
+    case daCow_Action_Cry_e:
         if (mpMorf->checkFrame(35.0f)) {
             mSound.startCreatureVoice(Z2SE_GOAT_V_CRY, -1);
         }
         if (mpMorf->isStop()) {
             setBck(28, 2, 10.0f, 1.0f);
-            mAction = daCow_Action_0_e;
+            mAction = daCow_Action_Wait_e;
         }
         break;
-    case daCow_Action_3_e:
+    case daCow_Action_Die_e:
         if (mpMorf->checkFrame(11.0f)) {
             setBck(26, 2, 10.0f, 1.0f);
-            mAction = daCow_Action_4_e;
+            mAction = daCow_Action_Delete_e;
         }
         break;
-    case daCow_Action_4_e:
-        fopAcM_OnStatus(this, 0x100);
-        if (fopAcM_CheckCondition(this, 4)) {
+    case daCow_Action_Delete_e:
+        fopAcM_OnStatus(this, fopAcM_STATUS_UNK_000100);
+        if (fopAcM_CheckCondition(this, fopAcCnd_NODRAW_e)) {
             fopAcM_delete(this);
         }
         break;
@@ -2519,10 +2518,10 @@ void daCow_c::executeCrazyBack() {
         if (mpMorf->isStop()) {
             if (mPointIndex < 0) {
                 setBck(28, 2, 10.0f, 1.0f);
-                mAction = daCow_Action_3_e;
+                mAction = daCow_Action_Die_e;
             } else if (mPointIndex < 2) {
                 setBck(28, 2, 10.0f, 1.0f);
-                mAction = daCow_Action_0_e;
+                mAction = daCow_Action_Wait_e;
             } else {
                 calcRunAnime(true);
                 mAction = daCow_Action_7_e;
@@ -2550,7 +2549,7 @@ void daCow_c::executeCrazyBack() {
             mPointIndex -= 1;
             if (mPointIndex < 1 && !mTimer1) {
                 setBck(28, 2, 10.0f, 1.0f);
-                mAction = daCow_Action_0_e;
+                mAction = daCow_Action_Wait_e;
             }
         }
         break;
@@ -2583,20 +2582,20 @@ void daCow_c::action_crazy() {
 
         dComIfGoat_SetThrow(this);
         mMode = daCow_Mode_WaitingForMorf_e;
-        fopAcM_OnStatus(this, 0x100);
+        fopAcM_OnStatus(this, fopAcM_STATUS_UNK_000100);
         break;
     case daCow_Mode_WaitingForMorf_e:
         tickTimer2();
         tickTimer1();
 
-        fopAcM_OnStatus(this, 0x4000);
+        fopAcM_OnStatus(this, fopAcM_STATUS_UNK_004000);
 
         if (dComIfGp_event_runCheck() &&
             strcmp(dComIfGp_getEventManager().getRunEventName(), "WILDGOAT") &&
             strcmp(dComIfGp_getEventManager().getRunEventName(), "WILDGOAT_SUCCESS") &&
             strcmp(dComIfGp_getEventManager().getRunEventName(), "WILDGOAT_FAILURE"))
         {
-            fopAcM_OffStatus(this, 0x4000);
+            fopAcM_OffStatus(this, fopAcM_STATUS_UNK_004000);
         }
 
         switch (mCrazy) {
@@ -2666,11 +2665,11 @@ void daCow_c::executeCrazyBack2() {
     }
 
     switch (mAction) {
-    case daCow_Action_0_e:
+    case daCow_Action_Wait_e:
         setBck(28, 2, 10.0f, 1.0f);
-        mAction = daCow_Action_1_e;
+        mAction = daCow_Action_NadeNade_e;
         setTimer1(600);
-    case daCow_Action_1_e: {
+    case daCow_Action_NadeNade_e: {
         setActetcStatus();
         s16 targetAngle = cLib_targetAngleY(&current.pos, &home.pos);
         cLib_addCalcAngleS(&current.angle.y, targetAngle, 0x10, 0x100, 0x80);
@@ -2685,25 +2684,25 @@ void daCow_c::executeCrazyBack2() {
         } else {
             if (checkNadeNade()) {
                 setBck(26, 2, 10.0f, 1.0f);
-                mAction = daCow_Action_2_e;
+                mAction = daCow_Action_Cry_e;
                 speedF = 0.0f;
             }
         }
     } break;
-    case daCow_Action_2_e:
+    case daCow_Action_Cry_e:
         if (checkNadeNadeFinish()) {
             setBck(15, 0, 10.0f, 1.0f);
-            mAction = daCow_Action_3_e;
+            mAction = daCow_Action_Die_e;
             speedF = 0.0f;
         }
         break;
-    case daCow_Action_3_e:
+    case daCow_Action_Die_e:
         if (mpMorf->checkFrame(35.0f)) {
             mSound.startCreatureVoice(Z2SE_GOAT_V_CRY, -1);
         }
         if (mpMorf->isStop()) {
             setBck(28, 2, 10.0f, 1.0f);
-            mAction = daCow_Action_1_e;
+            mAction = daCow_Action_NadeNade_e;
         }
     }
 }
@@ -3163,7 +3162,7 @@ u8 daCow_c::initialize() {
     mAcch.Set(fopAcM_GetPosition_p(this), fopAcM_GetOldPosition_p(this), this, 1, &mAcchCir, &speed,
               fopAcM_GetAngle_p(this), fopAcM_GetShapeAngle_p(this));
 
-    mCcStts.Init(0xdc, 0, this);
+    mCcStts.Init(220, 0, this);
 
     for (int iSphere = 0; iSphere < N_COW_COLLIDERS; iSphere = iSphere + 1) {
         mSph[iSphere].Set(*(dCcD_SrcSph*)&cc_sph_src);  // todo
@@ -3172,13 +3171,14 @@ u8 daCow_c::initialize() {
 
     fopAcM_setCullSizeBox(this, -100.0f, -100.0f, -200.0f, 100.0f, 250.0f, 200.0f);
     fopAcM_OnStatus(this, 0x8000000);
+
     mAcch.CrrPos(dComIfG_Bgsp());
 
     mGroundHeight = mAcch.GetGroundH();
 
-    attention_info.distances[4] = 0x28;
-    attention_info.distances[0] = 0x16;
-    attention_info.distances[7] = 0x30;
+    attention_info.distances[4] = 40;
+    attention_info.distances[0] = 22;
+    attention_info.distances[7] = 48;
     attention_info.flags = 0;
     mParticle.init(&mAcch, 60.0f, 200.0f);
     current.angle.set(0, home.angle.y, 0);
@@ -3186,7 +3186,7 @@ u8 daCow_c::initialize() {
     speedF = 0.0f;
     speed.set(0.0f, 0.0f, 0.0f);
 
-    if (!mPrm0 && dComIfGs_isTmpBit(0xa08)) {
+    if (!mPrm0 && dComIfGs_isTmpBit(dSv_event_tmp_flag_c::T_0091)) {
         mPrm0 = 4;
         setCowInCage();
     }

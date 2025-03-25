@@ -205,7 +205,7 @@ private:
     /* 0xc80 */ int mTimer8;
     /* 0xc84 */ int mTimer9;
     /* 0xc88 */ int mTimer5;
-    /* 0xc8c */ int mTimer4;
+    /* 0xc8c */ int mTimer4;  // related to damage
     /* 0xc90 */ int mTimer1;
     /* 0xc94 */ int mTimer2;
     /* 0xc98 */ int mTimer10;
@@ -256,11 +256,11 @@ enum daCow_Mode {
 };
 
 enum daCow_Action {
-    daCow_Action_0_e = 0,
-    daCow_Action_1_e = 1,
-    daCow_Action_2_e = 2,
-    daCow_Action_3_e = 3,
-    daCow_Action_4_e = 4,
+    daCow_Action_Wait_e = 0,
+    daCow_Action_NadeNade_e = 1,
+    daCow_Action_Cry_e = 2,
+    daCow_Action_Die_e = 3,
+    daCow_Action_Delete_e = 4,
     daCow_Action_5_e = 5,
     daCow_Action_6_e = 6,
     daCow_Action_7_e = 7,
