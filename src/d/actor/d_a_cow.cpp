@@ -2439,13 +2439,11 @@ void daCow_c::executeCrazyEnd() {
 void daCow_c::initCrazyBack(int param_0) {
     if (mPrm0 == 3) {
         setBck(0x1c, 2, 10.0f, 1.0f);
-        u8 pathIndex = (fopAcM_GetParam(this) & 0xff00) >> 8;
-        if (pathIndex == 0xff) {
-            return;
+        u8 pathIndex = getUnknownParam();
+        if (getUnknownParam() != (u8)-1) {
+            mPath = dPath_GetRoomPath(pathIndex, fopAcM_GetRoomNo(this));
+            field_0xc10 = 3;
         }
-
-        mPath = dPath_GetRoomPath(pathIndex, fopAcM_GetRoomNo(this));
-        field_0xc10 = 3;
     }
 
     field_0xc90 = 0;
