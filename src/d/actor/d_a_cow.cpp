@@ -1025,21 +1025,14 @@ void daCow_c::checkBeforeBg() {
 
     if (planeTri[1] && planeTri[2]) {
         switch (field_0xc61) {
-        case 0:
-            break;
         case 1:
-            field_0xc61 = 3;
-            break;
-        case 2:
-            field_0xc61 = 4;
-            break;
         case 3:
             field_0xc61 = 3;
             break;
+        case 2:
         case 4:
             field_0xc61 = 4;
             break;
-        case 5:
         default:
             if (field_0xc60 & 1) {
                 field_0xc61 = 4;
@@ -1051,28 +1044,28 @@ void daCow_c::checkBeforeBg() {
     } else {
         if (planeTri[0]) {
             if (planeTri[1]) {
-                if (field_0xc60 > 3) {
+                if (field_0xc60 >= 3) {
                     field_0xc61 = 2;
                 } else {
                     field_0xc61 = 4;
                 }
             } else {
                 if (planeTri[2]) {
-                    if (field_0xc60 > 3) {
+                    if (field_0xc60 >= 3) {
                         field_0xc61 = 1;
                     } else {
                         field_0xc61 = 3;
                     }
                 } else {
                     s16 sVar2 = z[0] - field_0xc32.y;
-                    if (abs(sVar2) <= 0x7800) {
-                        if (sVar2 > 0) {
+                    if (abs(sVar2) > 0x7800) {
+                        if ((field_0xc60 & 1) != 0) {
                             field_0xc61 = 4;
                         } else {
                             field_0xc61 = 3;
                         }
                     } else {
-                        if ((field_0xc60 & 1) != 0) {
+                        if (sVar2 > 0) {
                             field_0xc61 = 4;
                         } else {
                             field_0xc61 = 3;
@@ -1088,17 +1081,33 @@ void daCow_c::checkBeforeBg() {
                 field_0xc54 = 10;
                 break;
             case 2:
-                if (y[1] < 600.0) {
-                    field_0xc61 = 2;
-                } else {
-                    field_0xc61 = 0;
-                }
-                break;
-            case 3:
                 field_0xc61 = 2;
                 break;
+            case 3:
+                field_0xc61 = 0;
+                if (y[1] < 600.0f) {
+                    field_0xc61 = 2;
+                }
+                break;
             }
-        } else if (!planeTri[2]) {
+        } else if (planeTri[2]) {
+            switch (field_0xc60) {
+            case 0:
+            case 1:
+                field_0xc61 = 3;
+                field_0xc54 = 10;
+                break;
+            case 2:
+                field_0xc61 = 1;
+                break;
+            default:
+                field_0xc61 = 0;
+                if (y[2] < 600.0f) {
+                    field_0xc61 = 1;
+                }
+                break;
+            }
+        } else {
             switch (field_0xc60) {
             case 0:
                 field_0xc61 = 3;
@@ -1114,24 +1123,6 @@ void daCow_c::checkBeforeBg() {
                 break;
             default:
                 field_0xc61 = 0;
-            }
-        } else {
-            switch (field_0xc60) {
-            case 0:
-            case 1:
-                field_0xc61 = 3;
-                field_0xc54 = 10;
-                break;
-            case 2:
-                field_0xc61 = 1;
-                break;
-            default:
-                if (y[2] < 600.0) {
-                    field_0xc61 = 1;
-                } else {
-                    field_0xc61 = 0;
-                }
-                break;
             }
         }
     }
