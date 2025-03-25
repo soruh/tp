@@ -157,7 +157,7 @@ private:
     /* 0xc63 */ u8 field_0xc63;
     /* 0xc64 */ u32 field_0xc64;
     /* 0xc68 */ u8 field_0xc68;
-    /* 0xc69 */ u8 field_0xc69;
+    /* 0xc69 */ u8 mISpeed;
     /* 0xc6a */ u8 field_0xc6a;  // undefined
     /* 0xc6b */ u8 field_0xc6b;  // undefined
     /* 0xc6c */ f32 field_0xc6c;
@@ -165,14 +165,14 @@ private:
     /* 0xc72 */ s16 mTargetAngle;
     /* 0xc74 */ s16 field_0xc74;
     /* 0xc76 */ s16 field_0xc76;
-    /* 0xc78 */ f32 field_0xc78;
-    /* 0xc7c */ f32 field_0xc7c;
+    /* 0xc78 */ f32 mAttentionDistance;
+    /* 0xc7c */ f32 mSpeed;
     /* 0xc80 */ int field_0xc80;
     /* 0xc84 */ s32 field_0xc84;
     /* 0xc88 */ int field_0xc88;  // some timer
     /* 0xc8c */ int field_0xc8c;  // some timer
-    /* 0xc90 */ s32 field_0xc90;
-    /* 0xc94 */ s32 field_0xc94;
+    /* 0xc90 */ s32 mTimer1;
+    /* 0xc94 */ s32 mTimer2;
     /* 0xc98 */ s32 field_0xc98;
     /* 0xc9c */ u8 field_0xc9c;
     /* 0xc9d */ u8 field_0xc9d;
@@ -181,7 +181,7 @@ private:
     /* 0xca0 */ u8 field_0xca0;
     /* 0xca1 */ u8 field_0xca1;
     /* 0xca2 */ u8 field_0xca2;  // undefined
-    /* 0xca3 */ u8 field_0xca3;
+    /* 0xca3 */ u8 mTimer3;
     /* 0xca4 */ u8 mNoNearCheckTimer;
     /* 0xca5 */ u8 field_0xca5;
     /* 0xca6 */ u8 field_0xca6;
