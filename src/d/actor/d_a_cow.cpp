@@ -316,10 +316,9 @@ bool daCow_c::setProcess(void (daCow_c::*process)(), BOOL waitForMorf) {
     return true;
 }
 
+// todo: what do these determine
 #define COW_ATTACK_TYPES                                                                           \
     (AT_TYPE_NORMAL_SWORD | AT_TYPE_BOMB | AT_TYPE_ARROW | AT_TYPE_SPINNER | AT_TYPE_IRON_BALL)
-
-STATIC_ASSERT(COW_ATTACK_TYPES == 0x482022);
 
 /* 806591BC-8065945C 000CDC 02A0+00 1/1 0/0 0/0 .text            damage_check__7daCow_cFv */
 void daCow_c::damage_check() {
@@ -389,7 +388,7 @@ void daCow_c::setEnterCow20() {
     for (int iCow = 0; iCow < 20; iCow++) {
         cXyz spawnPosition(l_CowRoomPosX[iCow], l_CowRoomPosY, l_CowRoomPosZ[iCow & 1]);
 
-        cLib_onBit<u32>(l_CowRoomNo, 1 << iCow);  // todo: what is this flag?
+        cLib_onBit<u32>(l_CowRoomNo, 1 << iCow);
 
         csXyz spawnAngle;
         if (iCow & 1) {
@@ -413,7 +412,7 @@ void daCow_c::setEnterCow10() {
 
         cXyz spawnPosition(l_CowRoomPosX[cowNumber], l_CowRoomPosY, l_CowRoomPosZ[cowNumber & 1]);
 
-        cLib_onBit<u32>(l_CowRoomNo, 1 << cowNumber);  // todo: what is this flag?
+        cLib_onBit<u32>(l_CowRoomNo, 1 << cowNumber);
 
         csXyz spawnAngle;
         if (cowNumber & 1) {
@@ -1411,24 +1410,23 @@ void daCow_c::setCowInCage() {
 
     u8 cowIndex = cM_rndF(20.0f);
     if (cLib_checkBit<u32>(l_CowRoomNo, 1 << cowIndex)) {
-        for (int i = 0; i < 0x14; i++) {
-            if (!cLib_checkBit<u32>(l_CowRoomNo, 1 << i)) {
-                cowIndex = i;
+        for (int iCow = 0; iCow < 20; iCow++) {
+            if (!cLib_checkBit<u32>(l_CowRoomNo, 1 << iCow)) {
+                cowIndex = iCow;
                 break;
             }
         }
     }
 
-    if (cowIndex >= 0x14) {
-        cowIndex = 0x13;
+    if (cowIndex >= 20) {
+        cowIndex = 19;
     }
 
     current.pos.x = l_CowRoomPosX[cowIndex];
     current.pos.z = l_CowRoomPosZ[cowIndex & 1];
-
     old.pos = current.pos;
-
     cLib_onBit<u32>(l_CowRoomNo, 1 << cowIndex);
+
     if ((cowIndex & 1)) {
         mSavedAngle.y = 0;
         shape_angle.y = 0;
