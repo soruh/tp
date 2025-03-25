@@ -152,7 +152,7 @@ private:
     /* 0xc5e */ s8 mAnimationPhase;
     /* 0xc5f */ u8 mPrm0;
     /* 0xc60 */ u8 field_0xc60;
-    /* 0xc61 */ u8 field_0xc61;  // s8 or u8?
+    /* 0xc61 */ u8 mAction;  // s8 or u8?
     /* 0xc62 */ u8 field_0xc62;
     /* 0xc63 */ u8 field_0xc63;
     /* 0xc64 */ u32 field_0xc64;
