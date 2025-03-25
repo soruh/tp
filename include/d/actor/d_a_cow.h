@@ -188,7 +188,7 @@ private:
     /* 0xca7 */ u8 field_0xca7;  // undefined
     /* 0xca8 */ u8 field_0xca8;
     /* 0xca9 */ bool field_0xca9;
-    /* 0xcaa */ u8 field_0xcaa;
+    /* 0xcaa */ u8 mWaitForMorf;
     /* 0xcab */ u8 field_0xcab;  // undefined
     /* 0xcac */ f32 field_0xcac;
     /* 0xcb0 */ f32 field_0xcb0;
@@ -215,11 +215,12 @@ enum daCow_Crazy {
     daCow_Crazy_Back_e = 8,
 };
 
+// todo: these names are only accurate for some cases...
 enum daCow_Mode {
-    daCow_Mode_0_e = 0,
-    daCow_Mode_1_e = 1,
-    daCow_Mode_2_e = 2,
-    daCow_Mode_3_e = 3,
+    daCow_Mode_Starting_e = 0,
+    daCow_Mode_WaitingForMorf_e = 1,
+    daCow_Mode_Active_e = 2,
+    daCow_Mode_Done_e = 3,
 };
 
 #endif /* D_A_COW_H */
