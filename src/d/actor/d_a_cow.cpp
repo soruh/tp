@@ -1998,12 +1998,8 @@ void daCow_c::executeCrazyWait() {
 
 /* 8065DF40-8065E6BC 005A60 077C+00 1/1 0/0 0/0 .text            executeCrazyDash__7daCow_cFv */
 void daCow_c::executeCrazyDash() {
-    cXyz vec1;
-    cXyz vec2;
-    cXyz vec3;
-
     mShouldSetEffect = 1;
-    vec1 = dPath_GetPnt(mPath, field_0xc10)->m_position;
+    cXyz vec1 = dPath_GetPnt(mPath, field_0xc10)->m_position;
 
     setSeSnort();
     setRushVibration(2);
@@ -2031,7 +2027,7 @@ void daCow_c::executeCrazyDash() {
             }
         } else {
             if (field_0xc10 == 4) {
-                vec2 = dPath_GetPnt(mPath, field_0xc10 - 1)->m_position;
+                cXyz vec2 = dPath_GetPnt(mPath, field_0xc10 - 1)->m_position;
                 s16 sVar4 = cLib_targetAngleY(&vec2, &vec1);
 
                 if (current.pos.abs(vec1) > 600.0f) {
@@ -2039,6 +2035,7 @@ void daCow_c::executeCrazyDash() {
                     s16 sVar5 =
                         cLib_targetAngleY(&vec2, &daPy_getPlayerActorClass()->current.pos) - sVar4;
 
+                    cXyz vec3;
                     if (sVar5 < 0) {
                         vec3.set(200.0f, 0.0f, 0.0f);
                     } else {
