@@ -2444,8 +2444,8 @@ void daCow_c::executeCrazyEnd() {
 void daCow_c::initCrazyBack(int param_0) {
     if (mPrm0 == 3) {
         setBck(28, 2, 10.0f, 1.0f);
-        u8 pathIndex = getUnknownParam();
-        if (getUnknownParam() != (u8)-1) {
+        u8 pathIndex = getParam1();
+        if (getParam1() != (u8)-1) {
             mPath = dPath_GetRoomPath(pathIndex, fopAcM_GetRoomNo(this));
             mPointIndex = 3;
         }
@@ -3223,8 +3223,9 @@ u8 daCow_c::initialize() {
 
     switch (mPrm0) {
     case 3: {
-        if (getUnknownParam() != (u8)-1) {
-            mPath = dPath_GetRoomPath(fopAcM_GetParam(this), fopAcM_GetRoomNo(this));
+        u8 prm1 = getParam1();
+        if (prm1 != (u8)-1) {
+            mPath = dPath_GetRoomPath(prm1, fopAcM_GetRoomNo(this));
             mPointIndex = 0;
 
             dStage_dPnt_c* point = dPath_GetPnt(mPath, mPointIndex);

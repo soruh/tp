@@ -118,7 +118,7 @@ public:
     daCow_c* getCowP() { return mCowP; }
 
     // todo
-    u8 getUnknownParam() { return fopAcM_GetParam(this) >> 8; }
+    u8 getParam1() { return fopAcM_GetParam(this) >> 8; }
 
 private:
     /* 0x568 */ u16 mFlags;
