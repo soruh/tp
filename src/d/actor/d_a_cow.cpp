@@ -152,7 +152,7 @@ void daCow_c::setEffect() {
 
 /* 80658AA4-80658B10 0005C4 006C+00 5/5 0/0 0/0 .text            isChaseCowGame__7daCow_cFv */
 bool daCow_c::isChaseCowGame() {
-    if (strcmp(dComIfGp_getStartStageName(), "F_SP00") == 0) {
+    if (!strcmp(dComIfGp_getStartStageName(), "F_SP00")) {
         if (dComIfG_play_c::getLayerNo(0) == 4 || dComIfG_play_c::getLayerNo(0) == 5) {
             return true;
         }
@@ -173,10 +173,9 @@ void daCow_c::setCarryStatus() {
 
     Vec carryPosition;
     mDoMtx_stack_c::multVec(&daPy_getPlayerActorClass()->current.pos, &carryPosition);
-
     if (fabsf(carryPosition.x) < xMax && carryPosition.z > 0.0f && carryPosition.z < zMax) {
         // todo: what does this mean
-        attention_info.flags |= 0x10;  // in debug this is 0x80
+        cLib_onBit<u32>(attention_info.flags, 0x10);  // in debug this is 0x80
     }
     return;
 }
@@ -186,7 +185,7 @@ void daCow_c::setActetcStatus() {
     if (!mNadeNade) {
         s32 playerAngle = fopAcM_seenPlayerAngleY(this);
         if (playerAngle < 0x6000 && playerAngle > 0x2000) {
-            attention_info.flags |= 0x80;  // in debug this is 0x800
+            cLib_onBit<u32>(attention_info.flags, 0x80);  // in debug this is 0x800
         }
     }
 }
@@ -391,7 +390,7 @@ void daCow_c::setEnterCow20() {
     for (int iCow = 0; iCow < 20; iCow++) {
         cXyz spawnPosition(l_CowRoomPosX[iCow], l_CowRoomPosY, l_CowRoomPosZ[iCow & 1]);
 
-        l_CowRoomNo |= 1 << (iCow & ~!0xc0);  // todo: what is this flag?
+        cLib_onBit<u32>(l_CowRoomNo, 1 << iCow);  // todo: what is this flag?
 
         csXyz spawnAngle;
         if (iCow & 1) {
@@ -415,7 +414,7 @@ void daCow_c::setEnterCow10() {
 
         cXyz spawnPosition(l_CowRoomPosX[cowNumber], l_CowRoomPosY, l_CowRoomPosZ[cowNumber & 1]);
 
-        l_CowRoomNo |= 1 << cowNumber;  // todo: what is this flag?
+        cLib_onBit<u32>(l_CowRoomNo, 1 << cowNumber);  // todo: what is this flag?
 
         csXyz spawnAngle;
         if (cowNumber & 1) {
@@ -998,13 +997,13 @@ void daCow_c::checkBeforeBg() {
 
     mIntersectedPlanes = 0;
     if (planeTri[0]) {
-        mIntersectedPlanes |= 1;
+        cLib_onBit<u8>(mIntersectedPlanes, 1);
     }
     if (planeTri[1]) {
-        mIntersectedPlanes |= 2;
+        cLib_onBit<u8>(mIntersectedPlanes, 2);
     }
     if (planeTri[2]) {
-        mIntersectedPlanes |= 4;
+        cLib_onBit<u8>(mIntersectedPlanes, 4);
     }
     if (cLib_calcTimer(&mTimer6)) {
         return;
@@ -1262,7 +1261,7 @@ void daCow_c::action_run() {
                 (u32)daPy_getPlayerActorClass()->checkNowWolf() != 0)
             {
                 f32 rand = cM_rndF(100.0f);
-                setTimer1((int)(rand + 30.0f) & 0xff);
+                setTimer1((int)(u8)(rand + 30.0f));
             }
             targetSpeed = mSpeed * (mBoostSpeed / 1000.0f);
         }
@@ -1412,9 +1411,9 @@ void daCow_c::setCowInCage() {
     mAcchCir.SetWall(0.0f, 0.0f);
 
     u8 cowIndex = cM_rndF(20.0f);
-    if (l_CowRoomNo & 1 << cowIndex) {
+    if (cLib_checkBit<u32>(l_CowRoomNo, 1 << cowIndex)) {
         for (int i = 0; i < 0x14; i++) {
-            if (!(l_CowRoomNo & 1 << i)) {
+            if (!cLib_checkBit<u32>(l_CowRoomNo, 1 << i)) {
                 cowIndex = i;
                 break;
             }
@@ -1430,7 +1429,7 @@ void daCow_c::setCowInCage() {
 
     old.pos = current.pos;
 
-    l_CowRoomNo |= 1 << cowIndex;
+    cLib_onBit<u32>(l_CowRoomNo, 1 << cowIndex);
     if ((cowIndex & 1)) {
         mSavedAngle.y = 0;
         shape_angle.y = 0;
@@ -1716,9 +1715,9 @@ void daCow_c::action_angry() {
         setSeSnort();
 
         if (!player->checkHorseRide()) {
-            attention_info.flags |= 1;
+            cLib_onBit<u32>(attention_info.flags, 1);
         } else {
-            attention_info.flags &= ~1;
+            cLib_offBit<u32>(attention_info.flags, 1);
         }
         if (mCrazy == daCow_Crazy_Dash_e) {
             setCarryStatus();
@@ -2417,7 +2416,7 @@ void daCow_c::executeCrazyEnd() {
     mAcchCir.SetWall(0.0f, 0.0f);
     mDisabled = true;
     mMode = daCow_Mode_Starting_e;
-    mPath = dPath_GetRoomPath((fopAcM_GetParam(this) & 0xff00) >> 8, fopAcM_GetRoomNo(this));
+    mPath = dPath_GetRoomPath(getParam1(), fopAcM_GetRoomNo(this));
 }
 
 /* 8065F744-8065F7DC 007264 0098+00 1/1 0/0 0/0 .text            initCrazyBack__7daCow_cFi */
@@ -2807,7 +2806,7 @@ void daCow_c::action_wolf() {
         mMode = daCow_Mode_WaitingForMorf_e;
         mCrazy = daCow_Crazy_Wait_e;
         calcRunAnime(true);
-        attention_info.flags |= 1;
+        cLib_onBit<u32>(attention_info.flags, 1);
         mSound.startCreatureVoice(Z2SE_GOAT_V_ANGRY, -1);
         setTimer10(cM_rndF(90.0f) + 90.0f);
         break;
@@ -2992,7 +2991,7 @@ void daCow_c::setAttnPos() {
     cXyz pos;
 
     if (mpMorf) {
-        if (attention_info.flags & 0x80) {
+        if (cLib_checkBit<u32>(attention_info.flags, 0x80)) {
             arg.set(0.0f, 0.0f, 0.0f);
             mDoMtx_stack_c::copy(mpMorf->getModel()->getAnmMtx(11));
             mDoMtx_stack_c::multVec(&arg, &eyePos);
@@ -3216,12 +3215,12 @@ u8 daCow_c::initialize() {
     f32 rand = cM_rnd();
     u8 iSpeed = 0;
     if (rand < 0.1f) {
-        if (!(l_CowType & 1)) {
+        if (!cLib_checkBit<u32>(l_CowType, 1)) {
             l_CowType |= 1;
             iSpeed = 1;
         }
     } else {
-        if (rand >= 0.9f && !(l_CowType & 2)) {
+        if (rand >= 0.9f && !cLib_checkBit<u32>(l_CowType, 2)) {
             l_CowType |= 2;
             iSpeed = 2;
         }

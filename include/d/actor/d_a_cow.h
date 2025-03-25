@@ -11,13 +11,13 @@
 
 #define FLAG(name, mask)                                                                           \
     void set##name() {                                                                             \
-        mFlags |= (mask);                                                                          \
+        cLib_onBit<u16>(mFlags, (mask));                                                           \
     }                                                                                              \
     bool get##name() {                                                                             \
-        return mFlags & (mask);                                                                    \
+        return cLib_checkBit<u16>(mFlags, (mask));                                                 \
     }                                                                                              \
     void clear##name() {                                                                           \
-        mFlags &= ~(mask);                                                                         \
+        cLib_offBit<u16>(mFlags, (mask));                                                          \
     }
 
 #define TIMER(name, field)                                                                         \
