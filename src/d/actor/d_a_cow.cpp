@@ -54,10 +54,10 @@ int daCow_c::calcRunAnime(int resetAnimation) {
     switch (mAnimationPhase) {
     case 0:
         if (speedF < 35.0f) {
-            setBck(25, J3DFrameCtrl::EMode_LOOP, 5.0f, 1.0f);
+            setBck(daCow_Animation_25_e, J3DFrameCtrl::EMode_LOOP, 5.0f, 1.0f);
             mAnimationPhase = 1;
         } else {
-            setBck(19, J3DFrameCtrl::EMode_LOOP, 5.0f, 1.0f);
+            setBck(daCow_Animation_19_e, J3DFrameCtrl::EMode_LOOP, 5.0f, 1.0f);
             mAnimationPhase = 2;
         }
         break;
@@ -68,14 +68,14 @@ int daCow_c::calcRunAnime(int resetAnimation) {
         }
         mpMorf->setPlaySpeed(newSpeed);
         if (speedF > 35.0f) {
-            setBck(19, J3DFrameCtrl::EMode_LOOP, 5.0f, 1.0f);
+            setBck(daCow_Animation_19_e, J3DFrameCtrl::EMode_LOOP, 5.0f, 1.0f);
             mAnimationPhase = 2;
         }
     } break;
     case 2:
         mpMorf->setPlaySpeed(1.3f);
         if (speedF < 35.0f) {
-            setBck(25, J3DFrameCtrl::EMode_LOOP, 5.0f, 1.0f);
+            setBck(daCow_Animation_25_e, J3DFrameCtrl::EMode_LOOP, 5.0f, 1.0f);
             mAnimationPhase = 1;
         }
         break;
@@ -570,10 +570,10 @@ void daCow_c::action_wait() {
         mMode = daCow_Mode_WaitingForMorf_e;
         setTimer1(0);
         if (!mWaitForMorf) {
-            setBck(26, J3DFrameCtrl::EMode_LOOP, 12.0f, 1.0f);
+            setBck(daCow_Animation_26_e, J3DFrameCtrl::EMode_LOOP, 12.0f, 1.0f);
             mMode = daCow_Mode_Active_e;
         } else {
-            setBck(6, J3DFrameCtrl::EMode_NONE, 12.0f, 1.0f);
+            setBck(daCow_Animation_6_e, J3DFrameCtrl::EMode_NONE, 12.0f, 1.0f);
 
             mpMorf->setFrame(mpMorf->getEndFrame());
             mpMorf->setPlaySpeed(-1.0f);
@@ -583,7 +583,7 @@ void daCow_c::action_wait() {
 
     case daCow_Mode_WaitingForMorf_e:
         if (mpMorf->isStop()) {
-            setBck(26, J3DFrameCtrl::EMode_LOOP, 0.0f, 1.0f);
+            setBck(daCow_Animation_26_e, J3DFrameCtrl::EMode_LOOP, 0.0f, 1.0f);
             mMode = daCow_Mode_Active_e;
         }
 
@@ -662,16 +662,16 @@ void daCow_c::action_eat() {
         setTimer7(cM_rndF(100.0f) + 300.0f);
         setTimer1(0);
         if (!mWaitForMorf) {
-            setBck(9, J3DFrameCtrl::EMode_LOOP, 12.0f, 1.0f);
+            setBck(daCow_Animation_9_e, J3DFrameCtrl::EMode_LOOP, 12.0f, 1.0f);
             mMode = daCow_Mode_Active_e;
         } else {
-            setBck(6, J3DFrameCtrl::EMode_NONE, 12.0f, 1.0f);
+            setBck(daCow_Animation_6_e, J3DFrameCtrl::EMode_NONE, 12.0f, 1.0f);
             mMode = daCow_Mode_WaitingForMorf_e;
         }
         break;
     case daCow_Mode_WaitingForMorf_e:
         if (mpMorf->isStop()) {
-            setBck(9, J3DFrameCtrl::EMode_LOOP, 0.0f, 1.0f);
+            setBck(daCow_Animation_9_e, J3DFrameCtrl::EMode_LOOP, 0.0f, 1.0f);
             mMode = daCow_Mode_Active_e;
         }
     case daCow_Mode_Active_e:
@@ -728,10 +728,10 @@ void daCow_c::action_moo() {
     switch (mMode) {
     case daCow_Mode_Starting_e:
         if (!mWaitForMorf) {
-            setBck(15, J3DFrameCtrl::EMode_NONE, 12.0f, 1.0f);
+            setBck(daCow_Animation_15_e, J3DFrameCtrl::EMode_NONE, 12.0f, 1.0f);
             mMode = daCow_Mode_Active_e;
         } else {
-            setBck(6, J3DFrameCtrl::EMode_NONE, 12.0f, 1.0f);
+            setBck(daCow_Animation_6_e, J3DFrameCtrl::EMode_NONE, 12.0f, 1.0f);
             mpMorf->setFrame(mpMorf->getEndFrame());
             mpMorf->setPlaySpeed(-1.0f);
             mMode = daCow_Mode_WaitingForMorf_e;
@@ -739,7 +739,7 @@ void daCow_c::action_moo() {
         break;
     case daCow_Mode_WaitingForMorf_e:
         if (mpMorf->isStop()) {
-            setBck(15, J3DFrameCtrl::EMode_NONE, 0.0f, 1.0f);
+            setBck(daCow_Animation_15_e, J3DFrameCtrl::EMode_NONE, 0.0f, 1.0f);
             mMode = daCow_Mode_Active_e;
         }
     case daCow_Mode_Active_e:
@@ -784,16 +784,16 @@ void daCow_c::action_shake() {
     switch (mMode) {
     case daCow_Mode_Starting_e:
         if (!mWaitForMorf) {
-            setBck(21, J3DFrameCtrl::EMode_LOOP, 12.0f, 1.0f);
+            setBck(daCow_Animation_21_e, J3DFrameCtrl::EMode_LOOP, 12.0f, 1.0f);
             mMode = daCow_Mode_Active_e;
         } else {
-            setBck(6, J3DFrameCtrl::EMode_NONE, 12.0f, 1.0f);
+            setBck(daCow_Animation_6_e, J3DFrameCtrl::EMode_NONE, 12.0f, 1.0f);
             mMode = daCow_Mode_WaitingForMorf_e;
         }
         break;
     case daCow_Mode_WaitingForMorf_e:
         if (mpMorf->isStop()) {
-            setBck(21, J3DFrameCtrl::EMode_LOOP, 0.0f, 1.0f);
+            setBck(daCow_Animation_21_e, J3DFrameCtrl::EMode_LOOP, 0.0f, 1.0f);
             mMode = daCow_Mode_Active_e;
         }
     case daCow_Mode_Active_e:
@@ -1515,7 +1515,7 @@ void daCow_c::action_enter() {
 
                     mTarget = pen_pos + penDistanceNow;
 
-                    setBck(27, J3DFrameCtrl::EMode_LOOP, 12.0f, 1.0f);
+                    setBck(daCow_Animation_27_e, J3DFrameCtrl::EMode_LOOP, 12.0f, 1.0f);
                     speedF = 3.0f;
                     mCrazy = daCow_Crazy_BeforeCatch_e;
 
@@ -1539,7 +1539,7 @@ void daCow_c::action_enter() {
             mSavedAngle.y = shape_angle.y;
 
             if (current.pos.abs(mTarget) < 50.0f) {
-                setBck(15, J3DFrameCtrl::EMode_NONE, 12.0f, 1.0f);
+                setBck(daCow_Animation_15_e, J3DFrameCtrl::EMode_NONE, 12.0f, 1.0f);
                 speedF = 0;
                 mCrazy = daCow_Crazy_Catch_e;
             }
@@ -1553,9 +1553,9 @@ void daCow_c::action_enter() {
                 if (current.pos.abs(mTarget) > 100.0f) {
                     mCrazy = daCow_Crazy_BeforeCatch_e;
                     speedF = 3.0f;
-                    setBck(27, J3DFrameCtrl::EMode_LOOP, 12.0f, 1.0f);
+                    setBck(daCow_Animation_27_e, J3DFrameCtrl::EMode_LOOP, 12.0f, 1.0f);
                 } else {
-                    setBck(15, J3DFrameCtrl::EMode_NONE, 12.0f, 1.0f);
+                    setBck(daCow_Animation_15_e, J3DFrameCtrl::EMode_NONE, 12.0f, 1.0f);
                 }
             }
             if (checkCurringPen()) {
@@ -1679,7 +1679,7 @@ void daCow_c::setRedTev() {
 
 /* 8065D29C-8065D2F0 004DBC 0054+00 1/1 0/0 0/0 .text            setAngryTurn__7daCow_cFv */
 void daCow_c::setAngryTurn() {
-    setBck(14, J3DFrameCtrl::EMode_NONE, 0.0f, 1.0f);
+    setBck(daCow_Animation_14_e, J3DFrameCtrl::EMode_NONE, 0.0f, 1.0f);
     speedF = mSpeed;
     mCrazy = daCow_Crazy_Attack_e;
 }
@@ -1978,7 +1978,7 @@ void daCow_c::executeCrazyWait() {
     if (getUnkFlag2()) {
         mCrazy = daCow_Crazy_Dash_e;
         speedF = 30.0f;
-        setBck(20, J3DFrameCtrl::EMode_LOOP, 12.0f, 1.0f);
+        setBck(daCow_Animation_20_e, J3DFrameCtrl::EMode_LOOP, 12.0f, 1.0f);
         mDisabled = false;
         clearAllFlags();
 
@@ -2103,7 +2103,7 @@ void daCow_c::executeCrazyBeforeCatch() {
 
 /* 8065E7D0-8065E888 0062F0 00B8+00 3/3 0/0 0/0 .text            initCrazyCatch__7daCow_cFi */
 void daCow_c::initCrazyCatch(int param_0) {
-    setBck(23, J3DFrameCtrl::EMode_NONE, 0.0f, 1.0f);
+    setBck(daCow_Animation_23_e, J3DFrameCtrl::EMode_NONE, 0.0f, 1.0f);
     mCrazy = daCow_Crazy_Catch_e;
     speedF = 0.0f;
     mJoint8Offset.z = 0;
@@ -2129,19 +2129,19 @@ void daCow_c::executeCrazyCatch() {
     case 1:
         mShouldSetEffect = 1;
         if (!field_0xc60 && mpMorf->isStop()) {
-            setBck(5, J3DFrameCtrl::EMode_LOOP, 0.0f, 1.0f);
+            setBck(daCow_Animation_5_e, J3DFrameCtrl::EMode_LOOP, 0.0f, 1.0f);
             field_0xc60 = 1;
         }
 
         if (!daPy_getPlayerActorClass()->speedF) {
-            setBck(16, J3DFrameCtrl::EMode_NONE, 0.0f, 1.0f);
+            setBck(daCow_Animation_16_e, J3DFrameCtrl::EMode_NONE, 0.0f, 1.0f);
             field_0xc60 = 2;
         }
         break;
     case 2:
         fVar2 = -260.0f;
         if (mpMorf->isStop()) {
-            setBck(18, J3DFrameCtrl::EMode_LOOP, 0.0f, 1.0f);
+            setBck(daCow_Animation_18_e, J3DFrameCtrl::EMode_LOOP, 0.0f, 1.0f);
             setTimer1(60);
             field_0xc60 = 4;
         }
@@ -2152,11 +2152,11 @@ void daCow_c::executeCrazyCatch() {
 
         if (!getTimer1()) {
             if (field_0xc60 == 3) {
-                setBck(18, J3DFrameCtrl::EMode_LOOP, 0.0f, 1.0f);
+                setBck(daCow_Animation_18_e, J3DFrameCtrl::EMode_LOOP, 0.0f, 1.0f);
                 setTimer1(60);
                 field_0xc60 = 4;
             } else {
-                setBck(17, J3DFrameCtrl::EMode_LOOP, 0.0f, 1.0f);
+                setBck(daCow_Animation_17_e, J3DFrameCtrl::EMode_LOOP, 0.0f, 1.0f);
                 setTimer1(60);
                 field_0xc60 = 3;
             }
@@ -2185,9 +2185,9 @@ void daCow_c::executeCrazyCatch() {
 /* 8065EAF4-8065EBF0 006614 00FC+00 1/1 0/0 0/0 .text            initCrazyThrow__7daCow_cFi */
 void daCow_c::initCrazyThrow(int param_1) {
     if (param_1) {
-        setBck(11, J3DFrameCtrl::EMode_NONE, 5.0f, 1.0f);
+        setBck(daCow_Animation_11_e, J3DFrameCtrl::EMode_NONE, 5.0f, 1.0f);
     } else {
-        setBck(10, J3DFrameCtrl::EMode_NONE, 5.0f, 1.0f);
+        setBck(daCow_Animation_10_e, J3DFrameCtrl::EMode_NONE, 5.0f, 1.0f);
     }
     mAction = param_1;
 
@@ -2275,11 +2275,11 @@ void daCow_c::executeCrazyThrow() {
             mShouldSetEffect = 2;
 
             if (mAction != daCow_Action_Wait_e) {
-                setBck(8, J3DFrameCtrl::EMode_LOOP, 0.0f, 1.0f);
+                setBck(daCow_Animation_8_e, J3DFrameCtrl::EMode_LOOP, 0.0f, 1.0f);
                 mSavedAngle.y -= 0x7000;
                 mThrowIntensity = -1000;
             } else {
-                setBck(7, J3DFrameCtrl::EMode_LOOP, 0.0f, 1.0f);
+                setBck(daCow_Animation_7_e, J3DFrameCtrl::EMode_LOOP, 0.0f, 1.0f);
                 mSavedAngle.y += 0x7000;
                 mThrowIntensity = 1000;
             }
@@ -2291,9 +2291,9 @@ void daCow_c::executeCrazyThrow() {
         if (cLib_chaseF(&speedF, 0.0f, 0.5f) && !mTimer1) {
             field_0xc60 = 4;
             if (mAction != daCow_Action_Wait_e) {
-                setBck(13, J3DFrameCtrl::EMode_NONE, 5.0f, 1.0f);
+                setBck(daCow_Animation_13_e, J3DFrameCtrl::EMode_NONE, 5.0f, 1.0f);
             } else {
-                setBck(12, J3DFrameCtrl::EMode_NONE, 5.0f, 1.0f);
+                setBck(daCow_Animation_12_e, J3DFrameCtrl::EMode_NONE, 5.0f, 1.0f);
             }
             shape_angle.y = mSavedAngle.y;
         }
@@ -2303,7 +2303,7 @@ void daCow_c::executeCrazyThrow() {
             if (mPrm0 != 3) {
                 initCrazyBack(0);
             } else {
-                setBck(26, J3DFrameCtrl::EMode_LOOP, 10.0f, 1.0f);
+                setBck(daCow_Animation_26_e, J3DFrameCtrl::EMode_LOOP, 10.0f, 1.0f);
                 field_0xc60 = 5;
                 setTimer1(10);
             }
@@ -2323,10 +2323,10 @@ void daCow_c::initCrazyAttack(int playerMoving) {
     if (playerMoving) {
         mAction = daCow_Action_NadeNade_e;
         speedF = 0.0f;
-        setBck(24, J3DFrameCtrl::EMode_NONE, 3.0f, 1.0f);
+        setBck(daCow_Animation_24_e, J3DFrameCtrl::EMode_NONE, 3.0f, 1.0f);
     } else {
         mAction = daCow_Action_Wait_e;
-        setBck(22, J3DFrameCtrl::EMode_NONE, 3.0f, 1.0f);
+        setBck(daCow_Animation_22_e, J3DFrameCtrl::EMode_NONE, 3.0f, 1.0f);
     }
     for (int iSphere = 0; iSphere < N_COW_COLLIDERS; iSphere++) {
         mSph[iSphere].OnCoSetBit();
@@ -2354,7 +2354,7 @@ void daCow_c::executeCrazyAttack() {
             if (mPrm0 == 3) {
                 initCrazyAway(0);
             } else {
-                setBck(21, J3DFrameCtrl::EMode_NONE, 7.0f, 1.0f);
+                setBck(daCow_Animation_21_e, J3DFrameCtrl::EMode_NONE, 7.0f, 1.0f);
                 mAction = daCow_Action_Cry_e;
             }
         }
@@ -2371,7 +2371,7 @@ void daCow_c::executeCrazyAttack() {
 void daCow_c::initCrazyAway(int param_0) {
     mCrazy = daCow_Crazy_Away_e;
     if (mPrm0 == 3) {
-        setBck(20, J3DFrameCtrl::EMode_LOOP, 0.0f, 1.0f);
+        setBck(daCow_Animation_20_e, J3DFrameCtrl::EMode_LOOP, 0.0f, 1.0f);
     }
     mSavedAngle.y = current.angle.y = shape_angle.y;
     gravity = -4.0f;
@@ -2425,7 +2425,7 @@ void daCow_c::executeCrazyEnd() {
 /* 8065F744-8065F7DC 007264 0098+00 1/1 0/0 0/0 .text            initCrazyBack__7daCow_cFi */
 void daCow_c::initCrazyBack(int param_0) {
     if (mPrm0 == 3) {
-        setBck(28, J3DFrameCtrl::EMode_LOOP, 10.0f, 1.0f);
+        setBck(daCow_Animation_28_e, J3DFrameCtrl::EMode_LOOP, 10.0f, 1.0f);
         u8 pathIndex = getParam1();
         if (getParam1() != (u8)-1) {
             mPath = dPath_GetRoomPath(pathIndex, fopAcM_GetRoomNo(this));
@@ -2469,14 +2469,14 @@ void daCow_c::executeCrazyBack() {
             }
         }
         if (checkNadeNade()) {
-            setBck(26, J3DFrameCtrl::EMode_LOOP, 10.0f, 1.0f);
+            setBck(daCow_Animation_26_e, J3DFrameCtrl::EMode_LOOP, 10.0f, 1.0f);
             mAction = daCow_Action_NadeNade_e;
             speedF = 0.0f;
         }
     } break;
     case daCow_Action_NadeNade_e:
         if (checkNadeNadeFinish()) {
-            setBck(15, J3DFrameCtrl::EMode_NONE, 10.0f, 1.0f);
+            setBck(daCow_Animation_15_e, J3DFrameCtrl::EMode_NONE, 10.0f, 1.0f);
             mAction = daCow_Action_Cry_e;
             speedF = 0.0f;
         }
@@ -2486,13 +2486,13 @@ void daCow_c::executeCrazyBack() {
             mSound.startCreatureVoice(Z2SE_GOAT_V_CRY, -1);
         }
         if (mpMorf->isStop()) {
-            setBck(28, J3DFrameCtrl::EMode_LOOP, 10.0f, 1.0f);
+            setBck(daCow_Animation_28_e, J3DFrameCtrl::EMode_LOOP, 10.0f, 1.0f);
             mAction = daCow_Action_Wait_e;
         }
         break;
     case daCow_Action_Die_e:
         if (mpMorf->checkFrame(11.0f)) {
-            setBck(26, J3DFrameCtrl::EMode_LOOP, 10.0f, 1.0f);
+            setBck(daCow_Animation_26_e, J3DFrameCtrl::EMode_LOOP, 10.0f, 1.0f);
             mAction = daCow_Action_Delete_e;
         }
         break;
@@ -2503,15 +2503,15 @@ void daCow_c::executeCrazyBack() {
         }
         break;
     case daCow_Action_Damaged_e:
-        setBck(24, J3DFrameCtrl::EMode_NONE, 3.0f, 1.0f);
+        setBck(daCow_Animation_24_e, J3DFrameCtrl::EMode_NONE, 3.0f, 1.0f);
         mAction = daCow_Action_AfterDamage_e;
     case daCow_Action_AfterDamage_e:
         if (mpMorf->isStop()) {
             if (mPointIndex < 0) {
-                setBck(28, J3DFrameCtrl::EMode_LOOP, 10.0f, 1.0f);
+                setBck(daCow_Animation_28_e, J3DFrameCtrl::EMode_LOOP, 10.0f, 1.0f);
                 mAction = daCow_Action_Die_e;
             } else if (mPointIndex < 2) {
-                setBck(28, J3DFrameCtrl::EMode_LOOP, 10.0f, 1.0f);
+                setBck(daCow_Animation_28_e, J3DFrameCtrl::EMode_LOOP, 10.0f, 1.0f);
                 mAction = daCow_Action_Wait_e;
             } else {
                 calcRunAnime(true);
@@ -2539,7 +2539,7 @@ void daCow_c::executeCrazyBack() {
         if (current.pos.abs(pointPos) < 300.0f) {
             mPointIndex -= 1;
             if (mPointIndex < 1 && !getTimer1()) {
-                setBck(28, J3DFrameCtrl::EMode_LOOP, 10.0f, 1.0f);
+                setBck(daCow_Animation_28_e, J3DFrameCtrl::EMode_LOOP, 10.0f, 1.0f);
                 mAction = daCow_Action_Wait_e;
             }
         }
@@ -2657,7 +2657,7 @@ void daCow_c::executeCrazyBack2() {
 
     switch (mAction) {
     case daCow_Action_Wait_e:
-        setBck(28, J3DFrameCtrl::EMode_LOOP, 10.0f, 1.0f);
+        setBck(daCow_Animation_28_e, J3DFrameCtrl::EMode_LOOP, 10.0f, 1.0f);
         mAction = daCow_Action_NadeNade_e;
         setTimer1(600);
     case daCow_Action_NadeNade_e: {
@@ -2674,7 +2674,7 @@ void daCow_c::executeCrazyBack2() {
             setProcess(&daCow_c::action_moo, 0);
         } else {
             if (checkNadeNade()) {
-                setBck(26, J3DFrameCtrl::EMode_LOOP, 10.0f, 1.0f);
+                setBck(daCow_Animation_26_e, J3DFrameCtrl::EMode_LOOP, 10.0f, 1.0f);
                 mAction = daCow_Action_Cry_e;
                 speedF = 0.0f;
             }
@@ -2682,7 +2682,7 @@ void daCow_c::executeCrazyBack2() {
     } break;
     case daCow_Action_Cry_e:
         if (checkNadeNadeFinish()) {
-            setBck(15, J3DFrameCtrl::EMode_NONE, 10.0f, 1.0f);
+            setBck(daCow_Animation_15_e, J3DFrameCtrl::EMode_NONE, 10.0f, 1.0f);
             mAction = daCow_Action_Die_e;
             speedF = 0.0f;
         }
@@ -2692,7 +2692,7 @@ void daCow_c::executeCrazyBack2() {
             mSound.startCreatureVoice(Z2SE_GOAT_V_CRY, -1);
         }
         if (mpMorf->isStop()) {
-            setBck(28, J3DFrameCtrl::EMode_LOOP, 10.0f, 1.0f);
+            setBck(daCow_Animation_28_e, J3DFrameCtrl::EMode_LOOP, 10.0f, 1.0f);
             mAction = daCow_Action_NadeNade_e;
         }
     }
@@ -2923,7 +2923,7 @@ void daCow_c::action_wolf() {
 void daCow_c::action_damage() {
     switch (mMode) {
     case daCow_Mode_Starting_e:
-        setBck(24, J3DFrameCtrl::EMode_NONE, 3.0f, 1.0f);
+        setBck(daCow_Animation_24_e, J3DFrameCtrl::EMode_NONE, 3.0f, 1.0f);
         mMode = daCow_Mode_WaitingForMorf_e;
         setTimer10(200);
         mTargetRedTev = 1.0f;
@@ -3119,7 +3119,7 @@ int daCow_c::CreateHeap() {
             modelData->getJointNodePointer(iJoint)->setCallBack(daCow_c::ctrlJointCallBack);
         }
     }
-    setBck(26, J3DFrameCtrl::EMode_LOOP, 0.0f, 1.0f);
+    setBck(daCow_Animation_26_e, J3DFrameCtrl::EMode_LOOP, 0.0f, 1.0f);
 
     mpBtp = new mDoExt_btpAnm();
 

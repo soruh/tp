@@ -266,4 +266,31 @@ enum daCow_Action {
     daCow_Action_Running_e = 7,
 };
 
+enum daCow_Animation {
+    daCow_Animation_5_e = 5,
+    daCow_Animation_6_e = 6,
+    daCow_Animation_7_e = 7,
+    daCow_Animation_8_e = 8,
+    daCow_Animation_9_e = 9,
+    daCow_Animation_10_e = 10,
+    daCow_Animation_11_e = 11,
+    daCow_Animation_12_e = 12,
+    daCow_Animation_13_e = 13,
+    daCow_Animation_14_e = 14,
+    daCow_Animation_15_e = 15,
+    daCow_Animation_16_e = 16,
+    daCow_Animation_17_e = 17,
+    daCow_Animation_18_e = 18,
+    daCow_Animation_19_e = 19,
+    daCow_Animation_20_e = 20,
+    daCow_Animation_21_e = 21,
+    daCow_Animation_22_e = 22,
+    daCow_Animation_23_e = 23,
+    daCow_Animation_24_e = 24,
+    daCow_Animation_25_e = 25,
+    daCow_Animation_26_e = 26,
+    daCow_Animation_27_e = 27,
+    daCow_Animation_28_e = 28,
+};
+
 #endif /* D_A_COW_H */
