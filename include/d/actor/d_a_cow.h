@@ -149,7 +149,7 @@ public:
     TIMER(Timer1, mTimer1);
     TIMER(Timer2, mTimer2);
     TIMER(Timer3, mTimer3);
-    TIMER(Timer4, mTimer4);
+    TIMER(DamageTimer, mDamageTimer);
     TIMER(Timer5, mTimer5);
     TIMER(Timer6, mTimer6);
     TIMER(Timer7, mTimer7);
@@ -205,7 +205,7 @@ private:
     /* 0xc80 */ int mTimer8;
     /* 0xc84 */ int mTimer9;
     /* 0xc88 */ int mTimer5;
-    /* 0xc8c */ int mTimer4;  // related to damage
+    /* 0xc8c */ int mDamageTimer;
     /* 0xc90 */ int mTimer1;
     /* 0xc94 */ int mTimer2;
     /* 0xc98 */ int mTimer10;
@@ -261,9 +261,9 @@ enum daCow_Action {
     daCow_Action_Cry_e = 2,
     daCow_Action_Die_e = 3,
     daCow_Action_Delete_e = 4,
-    daCow_Action_5_e = 5,
-    daCow_Action_6_e = 6,
-    daCow_Action_7_e = 7,
+    daCow_Action_Damaged_e = 5,
+    daCow_Action_AfterDamage_e = 6,
+    daCow_Action_Running_e = 7,
 };
 
 #endif /* D_A_COW_H */

@@ -361,12 +361,12 @@ void daCow_c::damage_check() {
         if (mCrazy == daCow_Crazy_Back_e) {
             if (mAction == daCow_Action_Wait_e) {
                 if (hitObject->ChkAtType(COW_ATTACK_TYPES)) {
-                    setTimer4(150);
+                    setDamageTimer(150);
                 } else {
-                    mTimer4 += 60;
+                    mDamageTimer += 60;
                 }
-                if (mTimer4 >= 150) {
-                    mAction = daCow_Action_5_e;
+                if (mDamageTimer >= 150) {
+                    mAction = daCow_Action_Damaged_e;
                 }
             }
         }
@@ -375,8 +375,8 @@ void daCow_c::damage_check() {
     } else if (hitObject->ChkAtType(COW_ATTACK_TYPES)) {
         setProcess(&daCow_c::action_damage, 0);
     } else {
-        mTimer4 += 60;
-        if (mTimer4 >= 150) {
+        mDamageTimer += 60;
+        if (mDamageTimer >= 150) {
             setProcess(&daCow_c::action_damage, 0);
         } else {
             setTimer5(90);
@@ -2508,10 +2508,10 @@ void daCow_c::executeCrazyBack() {
             fopAcM_delete(this);
         }
         break;
-    case daCow_Action_5_e:
+    case daCow_Action_Damaged_e:
         setBck(24, 0, 3.0f, 1.0f);
-        mAction = daCow_Action_6_e;
-    case daCow_Action_6_e:
+        mAction = daCow_Action_AfterDamage_e;
+    case daCow_Action_AfterDamage_e:
         if (mpMorf->isStop()) {
             if (mPointIndex < 0) {
                 setBck(28, 2, 10.0f, 1.0f);
@@ -2521,13 +2521,13 @@ void daCow_c::executeCrazyBack() {
                 mAction = daCow_Action_Wait_e;
             } else {
                 calcRunAnime(true);
-                mAction = daCow_Action_7_e;
+                mAction = daCow_Action_Running_e;
                 setTimer1(30);
                 speedF = 30.0f;
             }
         }
         break;
-    case daCow_Action_7_e: {
+    case daCow_Action_Running_e: {
         pointPos = dPath_GetPnt(mPath, mPointIndex)->m_position;
         angle = cLib_targetAngleY(&current.pos, &pointPos);
         cLib_addCalcAngleS(&current.angle.y, angle, 0x10, 0x100, 0x80);
@@ -2544,7 +2544,7 @@ void daCow_c::executeCrazyBack() {
 
         if (current.pos.abs(pointPos) < 300.0f) {
             mPointIndex -= 1;
-            if (mPointIndex < 1 && !mTimer1) {
+            if (mPointIndex < 1 && !getTimer1()) {
                 setBck(28, 2, 10.0f, 1.0f);
                 mAction = daCow_Action_Wait_e;
             }
@@ -2959,7 +2959,7 @@ void daCow_c::action() {
         speed.y = 0.0f;
     }
     tickNoNearCheckTimer();
-    tickTimer4();
+    tickDamageTimer();
     tickTimer5();
 
     cLib_chaseF(&mRedTev, mTargetRedTev, 0.1f);
