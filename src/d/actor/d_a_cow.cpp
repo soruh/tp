@@ -956,13 +956,10 @@ void daCow_c::checkBeforeBg() {
     s16 x[3] = {0, -0x2000, 0x2000};
     f32 y[3];
     s16 z[3];
-
     cM3dGPla planes[3];
 
-    cXyz a;
     cXyz b = current.pos;
     b.y += 110.0f;
-    cXyz c;
 
     bool planeTri[3];
     for (int iPlane = 0; iPlane < 3; iPlane++) {
@@ -979,7 +976,7 @@ void daCow_c::checkBeforeBg() {
 
     if (speedF) {
         for (int iPlane = 0; iPlane < 3; iPlane++) {
-            c = b;
+            cXyz c = b;
             if (!iPlane) {
                 c.x += f1 * cM_ssin(field_0xc32.y + x[iPlane]);
                 c.z += f1 * cM_scos(field_0xc32.y + x[iPlane]);
@@ -987,13 +984,12 @@ void daCow_c::checkBeforeBg() {
                 c.x += f2 * cM_ssin(field_0xc32.y + x[iPlane]);
                 c.z += f2 * cM_scos(field_0xc32.y + x[iPlane]);
             }
-
             dBgS_LinChk linChk;
             linChk.Set(&b, &c, this);
             if (dComIfG_Bgsp().LineCross(&linChk)) {
                 planeTri[iPlane] = dComIfG_Bgsp().GetTriPla(linChk, &planes[iPlane]);
                 if ((f32)fabs(planes[iPlane].mNormal.y) <= cM_ssin(0x6000)) {
-                    a = current.pos - linChk.GetCross();
+                    cXyz a = current.pos - linChk.GetCross();
                     y[iPlane] = a.absXZ();
                     z[iPlane] = cM_atan2s(planes[iPlane].mNormal.x, planes[iPlane].mNormal.z);
                 } else {
@@ -1044,14 +1040,14 @@ void daCow_c::checkBeforeBg() {
     } else {
         if (planeTri[0]) {
             if (planeTri[1]) {
-                if (field_0xc60 >= 3) {
+                if (field_0xc60 >= 4) {
                     field_0xc61 = 2;
                 } else {
                     field_0xc61 = 4;
                 }
             } else {
                 if (planeTri[2]) {
-                    if (field_0xc60 >= 3) {
+                    if (field_0xc60 >= 4) {
                         field_0xc61 = 1;
                     } else {
                         field_0xc61 = 3;
