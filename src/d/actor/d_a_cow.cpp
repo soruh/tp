@@ -1998,10 +1998,13 @@ void daCow_c::executeCrazyWait() {
 
 /* 8065DF40-8065E6BC 005A60 077C+00 1/1 0/0 0/0 .text            executeCrazyDash__7daCow_cFv */
 void daCow_c::executeCrazyDash() {
-    mShouldSetEffect = 1;
+    cXyz vec1;
+    cXyz vec2;
+    cXyz vec3;
 
-    cXyz cStack_20 = dPath_GetPnt(mPath, field_0xc10)->m_position;
-    cXyz cStack_38;
+    mShouldSetEffect = 1;
+    vec1 = dPath_GetPnt(mPath, field_0xc10)->m_position;
+
     setSeSnort();
     setRushVibration(2);
 
@@ -2019,55 +2022,52 @@ void daCow_c::executeCrazyDash() {
             } else if (mFlags & 2) {
                 initCrazyCatch(0);
                 field_0xc10 = 6;
-                mFlags &= ~4;
+                mFlags &= ~2;
                 dComIfGp_getVibration().StartShock(8, 0x1f, cXyz(0.0f, 1.0f, 0.0f));
-
             } else if (mFlags & 4) {
                 initCrazyAttack(0);
                 field_0xc10 = 6;
                 mFlags &= ~4;
             }
-
         } else {
-            int pointIndex = field_0xc10;
-            if (pointIndex == 4) {
-                cXyz cStack_2c = dPath_GetPnt(mPath, pointIndex - 1)->m_position;
-                s16 sVar4 = cLib_targetAngleY(&cStack_2c, &cStack_20);
+            if (field_0xc10 == 4) {
+                vec2 = dPath_GetPnt(mPath, field_0xc10 - 1)->m_position;
+                s16 sVar4 = cLib_targetAngleY(&vec2, &vec1);
 
-                if (current.pos.abs(cStack_20) > 600.0f) {
+                if (current.pos.abs(vec1) > 600.0f) {
                     field_0xc60 = 0;
                     s16 sVar5 =
-                        cLib_targetAngleY(&cStack_2c, &daPy_getPlayerActorClass()->current.pos) -
-                        sVar4;
+                        cLib_targetAngleY(&vec2, &daPy_getPlayerActorClass()->current.pos) - sVar4;
 
                     if (sVar5 < 0) {
-                        cStack_38.set(200.0f, 0.0f, 0.0f);
+                        vec3.set(200.0f, 0.0f, 0.0f);
                     } else {
-                        cStack_38.set(-200.0f, 0.0f, 0.0f);
+                        vec3.set(-200.0f, 0.0f, 0.0f);
                     }
-                    cLib_offsetPos(&cStack_20, &cStack_20, sVar4, &cStack_38);
-                    field_0xc20 = cStack_20;
+                    cLib_offsetPos(&vec1, &vec1, sVar4, &vec3);
+                    field_0xc20 = vec1;
                 } else {
                     cLib_addCalcAngleS(&current.angle.y, sVar4, 0x10, 0x800, 0x100);
-                    if (current.pos.abs(cStack_20) < 250.0f) {
+                    if (current.pos.abs(vec1) < 250.0f) {
                         field_0xc10++;
                     }
                     return;
                 }
+            } else {
+                field_0xc20 = vec1;
             }
 
-            field_0xc20 = cStack_20;
+            s16 sVar4 = cLib_targetAngleY(&current.pos, &field_0xc20);
+            cLib_addCalcAngleS(&current.angle.y, sVar4, 0x10, 0x800, 0x100);
+            if (current.pos.abs(vec1) < 250.0f) {
+                field_0xc10++;
+            }
         }
 
-        s16 sVar4 = cLib_targetAngleY(&current.pos, &field_0xc20);
-        cLib_addCalcAngleS(&current.angle.y, sVar4, 0x10, 0x800, 0x100);
-        if (current.pos.abs(cStack_20) < 250.0f) {
-            field_0xc10++;
-        }
     } else {
-        s16 sVar4 = cLib_targetAngleY(&current.pos, &cStack_20);
+        s16 sVar4 = cLib_targetAngleY(&current.pos, &vec1);
         cLib_addCalcAngleS(&current.angle.y, sVar4, 0x10, 0x800, 0x100);
-        if (current.pos.abs(cStack_20) < 200.0f) {
+        if (current.pos.abs(vec1) < 200.0f) {
             field_0xc10++;
             if (field_0xc10 >= mPath->m_num) {
                 if ((s16)mPath->m_nextID != -1) {
