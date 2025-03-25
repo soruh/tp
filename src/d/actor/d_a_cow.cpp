@@ -2984,7 +2984,6 @@ void daCow_c::action_damage() {
 void daCow_c::action() {
     if (fopAcM_checkCarryNow(this)) {
         fopAcM_cancelCarryNow(this);
-
         speedF = 0.0f;
         speed.y = 0.0f;
     }
@@ -3001,7 +3000,7 @@ void daCow_c::action() {
     cLib_chaseF(&field_0xcac, field_0xcb0, 0.1f);
     damage_check();
 
-    s16 sVar2 = field_0xc38.y;
+    s16 sVar2 = field_0xc32.y;
     if (!field_0xca5) {
         for (int iSphere = 0; iSphere < N_COW_COLLIDERS; iSphere++) {
             mSph[iSphere].OnTgSetBit();
