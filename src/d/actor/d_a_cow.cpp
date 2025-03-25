@@ -2403,7 +2403,7 @@ void daCow_c::executeCrazyAway() {
     cLib_chaseS(&field_0xc3e.z, 0x1000, 0x400);
 
     cXyz pointPos = dPath_GetPnt(mPath, field_0xc10)->m_position;
-    cLib_addCalcAngleS(&current.angle.y, cLib_targetAngleY(current.pos, pointPos), 0x10, 0x800,
+    cLib_addCalcAngleS(&current.angle.y, cLib_targetAngleY(&current.pos, &pointPos), 0x10, 0x800,
                        0x100);
 
     if (current.pos.abs(pointPos) < 200.0f) {
