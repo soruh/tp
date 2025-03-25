@@ -215,4 +215,11 @@ enum daCow_Crazy {
     daCow_Crazy_Back_e = 8,
 };
 
+enum daCow_Mode {
+    daCow_Mode_0_e = 0,
+    daCow_Mode_1_e = 1,
+    daCow_Mode_2_e = 2,
+    daCow_Mode_3_e = 3,
+};
+
 #endif /* D_A_COW_H */

@@ -316,12 +316,12 @@ BOOL daCow_c::checkProcess(void (daCow_c::*process)()) {
 
 /* 80659114-806591BC 000C34 00A8+00 16/16 0/0 0/0 .text setProcess__7daCow_cFM7daCow_cFPCvPv_vi */
 bool daCow_c::setProcess(void (daCow_c::*process)(), int param_1) {
-    mMode = 3;
+    mMode = daCow_Mode_3_e;
     if (mProcess) {
         (this->*mProcess)();
     }
     field_0xcaa = param_1;
-    mMode = 0;
+    mMode = daCow_Mode_0_e;
     mProcess = process;
     if (mProcess) {
         (this->*mProcess)();
@@ -573,30 +573,30 @@ void daCow_c::action_wait() {
     s16 angle;
 
     switch (mMode) {
-    case 0:
+    case daCow_Mode_0_e:
         field_0xc58 = cM_rndF(100.0f) + 300.0f;
-        mMode = 1;
+        mMode = daCow_Mode_1_e;
         field_0xc90 = 0;
         if (!field_0xcaa) {
             setBck(26, 2, 12.0f, 1.0f);
-            mMode = 2;
+            mMode = daCow_Mode_2_e;
         } else {
             setBck(6, 0, 12.0f, 1.0f);
 
             mpMorf->setFrame(mpMorf->getEndFrame());
             mpMorf->setPlaySpeed(-1.0f);
 
-            mMode = 1;
+            mMode = daCow_Mode_1_e;
         }
         break;
 
-    case 1:
+    case daCow_Mode_1_e:
         if (mpMorf->isStop()) {
             setBck(26, 2, 0.0f, 1.0f);
-            mMode = 2;
+            mMode = daCow_Mode_2_e;
         }
 
-    case 2:
+    case daCow_Mode_2_e:
         angle = 0;
         if (field_0xc88 > 0x1e) {
             angle = mSavedAngle.y - fopAcM_searchPlayerAngleY(this);
@@ -655,7 +655,7 @@ void daCow_c::action_wait() {
             }
         }
         break;
-    case 3:
+    case daCow_Mode_3_e:
         field_0xc38.y = 0;
         field_0xc3e.y = 0;
         field_0xc88 = 0;
@@ -667,23 +667,23 @@ void daCow_c::action_wait() {
 /* 8065A0E8-8065A594 001C08 04AC+00 4/0 0/0 0/0 .text            action_eat__7daCow_cFv */
 void daCow_c::action_eat() {
     switch (mMode) {
-    case 0:
+    case daCow_Mode_0_e:
         field_0xc58 = cM_rndF(100.0f) + 300.0f;
         field_0xc90 = 0;
         if (!field_0xcaa) {
             setBck(9, 2, 12.0f, 1.0f);
-            mMode = 2;
+            mMode = daCow_Mode_2_e;
         } else {
             setBck(6, 0, 12.0f, 1.0f);
-            mMode = 1;
+            mMode = daCow_Mode_1_e;
         }
         break;
-    case 1:
+    case daCow_Mode_1_e:
         if (mpMorf->isStop()) {
             setBck(9, 2, 0.0f, 1.0f);
-            mMode = 2;
+            mMode = daCow_Mode_2_e;
         }
-    case 2:
+    case daCow_Mode_2_e:
         if (mpMorf->checkFrame(10.0f) || mpMorf->checkFrame(40.0f) || mpMorf->checkFrame(68.0f) ||
             mpMorf->checkFrame(98.0f))
         {
@@ -727,7 +727,7 @@ void daCow_c::action_eat() {
             }
         }
         break;
-    case 3:
+    case daCow_Mode_3_e:
         break;
     }
 }
@@ -735,23 +735,23 @@ void daCow_c::action_eat() {
 /* 8065A594-8065A8A4 0020B4 0310+00 9/0 0/0 0/0 .text            action_moo__7daCow_cFv */
 void daCow_c::action_moo() {
     switch (mMode) {
-    case 0:
+    case daCow_Mode_0_e:
         if (!field_0xcaa) {
             setBck(15, 0, 12.0f, 1.0f);
-            mMode = 2;
+            mMode = daCow_Mode_2_e;
         } else {
             setBck(6, 0, 12.0f, 1.0f);
             mpMorf->setFrame(mpMorf->getEndFrame());
             mpMorf->setPlaySpeed(-1.0f);
-            mMode = 1;
+            mMode = daCow_Mode_1_e;
         }
         break;
-    case 1:
+    case daCow_Mode_1_e:
         if (mpMorf->isStop()) {
             setBck(15, 0, 0.0f, 1.0f);
-            mMode = 2;
+            mMode = daCow_Mode_2_e;
         }
-    case 2:
+    case daCow_Mode_2_e:
         if (mpMorf->checkFrame(35.0f)) {
             mSound.startCreatureVoice(Z2SE_GOAT_V_CRY, -1);
         }
@@ -783,7 +783,7 @@ void daCow_c::action_moo() {
                 }
             }
         }
-    case 3:
+    case daCow_Mode_3_e:
         break;
     }
 }
@@ -791,21 +791,21 @@ void daCow_c::action_moo() {
 /* 8065A8A4-8065ACC8 0023C4 0424+00 5/0 0/0 0/0 .text            action_shake__7daCow_cFv */
 void daCow_c::action_shake() {
     switch (mMode) {
-    case 0:
+    case daCow_Mode_0_e:
         if (!field_0xcaa) {
             setBck(21, 2, 12.0f, 1.0f);
-            mMode = 2;
+            mMode = daCow_Mode_2_e;
         } else {
             setBck(6, 0, 12.0f, 1.0f);
-            mMode = 1;
+            mMode = daCow_Mode_1_e;
         }
         break;
-    case 1:
+    case daCow_Mode_1_e:
         if (mpMorf->isStop()) {
             setBck(21, 2, 0.0f, 1.0f);
-            mMode = 2;
+            mMode = daCow_Mode_2_e;
         }
-    case 2:
+    case daCow_Mode_2_e:
 
         if (mpMorf->checkFrame(68.0f)) {
             mSound.startCreatureVoice(Z2SE_GOAT_V_NOSE, -1);
@@ -844,7 +844,7 @@ void daCow_c::action_shake() {
                 }
             }
         }
-    case 3:
+    case daCow_Mode_3_e:
         break;
     }
 }
@@ -1207,16 +1207,16 @@ bool daCow_c::checkCowInOwn(int param_1) {
 /* 8065BC68-8065C32C 003788 06C4+00 9/0 0/0 0/0 .text            action_run__7daCow_cFv */
 void daCow_c::action_run() {
     switch (mMode) {
-    case 0:
+    case daCow_Mode_0_e:
         calcRunAnime(true);
-        mMode = 1;
+        mMode = daCow_Mode_1_e;
         field_0xc90 = 0x1e;
         field_0xc94 = 0x32;
         field_0xca1 = 0;
         field_0xc9e = 0;
         field_0xc9d = 0;
         break;
-    case 1: {
+    case daCow_Mode_1_e: {
         calcRunAnime(false);
 
         if (field_0xc90) {
@@ -1386,9 +1386,9 @@ void daCow_c::action_run() {
         }
         break;
     }
-    case 2:
+    case daCow_Mode_2_e:
         break;
-    case 3:
+    case daCow_Mode_3_e:
         mNoNearCheckTimer = 0x1e;
         field_0xca3 = 0;
         break;
@@ -1480,16 +1480,16 @@ void daCow_c::action_enter() {
     mDoMtx_stack_c::multVecSR(&penDistanceNow, &penDistanceNow);
 
     switch (mMode) {
-    case 0:
+    case daCow_Mode_0_e:
         calcRunAnime(true);
-        mMode = 1;
+        mMode = daCow_Mode_1_e;
         mCrazy = daCow_Crazy_Wait_e;
         for (int iSphere = 0; iSphere < N_COW_COLLIDERS; iSphere++) {
             mSph[iSphere].OffCoSetBit();
             mCcStts.ClrCcMove();
         }
         break;
-    case 1: {
+    case daCow_Mode_1_e: {
         f32 fVar2 = 30.0f;
         switch (mCrazy) {
         case daCow_Crazy_Wait_e:
@@ -1603,7 +1603,7 @@ void daCow_c::action_enter() {
             cLib_chaseF(&speedF, fVar2, 1.5f);
         }
     } break;
-    case 2:
+    case daCow_Mode_2_e:
         break;
     }
 
@@ -1705,9 +1705,9 @@ void daCow_c::action_angry() {
 
     s16 targetZ = 0;
     switch (mMode) {
-    case 0:
+    case daCow_Mode_0_e:
         calcRunAnime(true);
-        mMode = 1;
+        mMode = daCow_Mode_1_e;
         if (field_0xca0) {
             mCrazy = daCow_Crazy_Dash_e;
         } else {
@@ -1727,7 +1727,7 @@ void daCow_c::action_angry() {
         mSound.startCreatureVoice(Z2SE_GOAT_V_ANGRY, -1);
         field_0xc84 = 0;
         break;
-    case 1:
+    case daCow_Mode_1_e:
         setSeSnort();
 
         if (!player->checkHorseRide()) {
@@ -1942,9 +1942,9 @@ void daCow_c::action_angry() {
 
         cLib_chaseS(&field_0xc3e.z, targetZ, 0x400);
         break;
-    case 2:
+    case daCow_Mode_2_e:
         break;
-    case 3:
+    case daCow_Mode_3_e:
         field_0xc94 = 0;
         field_0xc90 = 0;
         field_0xcb0 = 0.0f;
@@ -2435,7 +2435,7 @@ void daCow_c::executeCrazyAway() {
 void daCow_c::executeCrazyEnd() {
     mAcchCir.SetWall(0.0f, 0.0f);
     field_0xca6 = 1;
-    mMode = 0;
+    mMode = daCow_Mode_0_e;
     mPath = dPath_GetRoomPath((fopAcM_GetParam(this) & 0xff00) >> 8, fopAcM_GetRoomNo(this));
 }
 
@@ -2572,7 +2572,7 @@ void daCow_c::action_crazy() {
     s16 angle;
 
     switch (mMode) {
-    case 0:
+    case daCow_Mode_0_e:
         field_0xcb4 = 0;
         mPointIndex = 0;
 
@@ -2590,10 +2590,10 @@ void daCow_c::action_crazy() {
         field_0xca6 = 1;
 
         dComIfGoat_SetThrow(this);
-        mMode = 1;
+        mMode = daCow_Mode_1_e;
         fopAcM_OnStatus(this, 0x100);
         break;
-    case 1:
+    case daCow_Mode_1_e:
         if (field_0xc94) {
             field_0xc94--;
         }
@@ -2645,9 +2645,9 @@ void daCow_c::action_crazy() {
                 mSph[iSphere].OffTgSetBit();
             }
         }
-    case 2:
+    case daCow_Mode_2_e:
         break;
-    case 3:
+    case daCow_Mode_3_e:
         dComIfGoat_SetThrow(0);
         field_0xca6 = 0;
         field_0xcb0 = 0;
@@ -2728,14 +2728,14 @@ void daCow_c::action_thrown() {
     daPy_py_c* player;
 
     switch (mMode) {
-    case 0:
+    case daCow_Mode_0_e:
         mCrazy = daCow_Crazy_BeforeCatch_e;
-        mMode = 1;
+        mMode = daCow_Mode_1_e;
         dComIfGoat_SetThrow(this);
         field_0xc9e = 0;
         break;
 
-    case 1:
+    case daCow_Mode_1_e:
         if (field_0xc94) {
             field_0xc94--;
         }
@@ -2781,7 +2781,7 @@ void daCow_c::action_thrown() {
             }
         }
         break;
-    case 3:
+    case daCow_Mode_3_e:
         field_0xc3e.z = 0;
         field_0xc38.y = 0;
         field_0xc3e.y = 0;
@@ -2834,15 +2834,15 @@ void daCow_c::action_wolf() {
     s16 aruAngle = cLib_targetAngleY(&current.pos, &aru->current.pos);
 
     switch (mMode) {
-    case 0:
-        mMode = 1;
+    case daCow_Mode_0_e:
+        mMode = daCow_Mode_1_e;
         mCrazy = daCow_Crazy_Wait_e;
         calcRunAnime(true);
         attention_info.flags |= 1;
         mSound.startCreatureVoice(Z2SE_GOAT_V_ANGRY, -1);
         field_0xc98 = cM_rndF(90.0f) + 90.0f;
         break;
-    case 1:
+    case daCow_Mode_1_e:
         if (field_0xc90) {
             field_0xc90--;
         }
@@ -2932,9 +2932,9 @@ void daCow_c::action_wolf() {
         }
         cLib_chaseS(&field_0xc3e.z, 0, 0x400);
         break;
-    case 2:
+    case daCow_Mode_2_e:
         break;
-    case 3:
+    case daCow_Mode_3_e:
         field_0xc98 = 0;
         field_0xc94 = 0;
         field_0xc90 = 0;
@@ -2957,15 +2957,15 @@ void daCow_c::action_wolf() {
 /* 806612DC-806613EC 008DFC 0110+00 2/0 0/0 0/0 .text            action_damage__7daCow_cFv */
 void daCow_c::action_damage() {
     switch (mMode) {
-    case 0:
+    case daCow_Mode_0_e:
         setBck(24, 0, 3.0f, 1.0f);
-        mMode = 1;
+        mMode = daCow_Mode_1_e;
         field_0xc98 = 200;
         field_0xcb0 = 1.0f;
         field_0xcb4 = 0;
         speedF = 0.0f;
         break;
-    case 1:
+    case daCow_Mode_1_e:
         setRedTev();
         if (mpMorf->isStop()) {
             field_0xca0 = 0;
@@ -2973,9 +2973,9 @@ void daCow_c::action_damage() {
             setProcess(&daCow_c::action_angry, 0);
         }
         break;
-    case 2:
+    case daCow_Mode_2_e:
         return;
-    case 3:
+    case daCow_Mode_3_e:
         break;
     default:
         break;
