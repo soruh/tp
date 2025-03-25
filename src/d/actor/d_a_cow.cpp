@@ -1023,96 +1023,122 @@ void daCow_c::checkBeforeBg() {
         return;
     }
 
-    if (!planeTri[1] || !planeTri[2]) {
-        if (field_0xc61 == 3) {
-            field_0xc61 = 3;
-        } else {
-            if (field_0xc61 >= 3) {
-                if (field_0xc61 < 5) {
-                    field_0xc61 = 4;
+    if ((planeTri[1] == 0) || (planeTri[2] == 0)) {
+        if (planeTri[0] != 0) {
+            if (planeTri[1] != 0) {
+                if (field_0xc60 > 3) {
+                    field_0xc61 = 2;
                 } else {
-                    field_0xc61 = (field_0xc60 & 1) ? 4 : 3;
+                    field_0xc61 = 4;
                 }
-            } else {
-                if (field_0xc61 == 1) {
+                return;
+            }
+            if (planeTri[2] != 0) {
+                if (field_0xc60 > 3) {
+                    field_0xc61 = 1;
+                } else {
                     field_0xc61 = 3;
                 }
-                if (field_0xc61 != 0) {
+                return;
+            }
+            s16 sVar2 = z[0] - field_0xc32.y;
+            if (abs(sVar2) <= 0x7800) {
+                if (sVar2 > 0) {
                     field_0xc61 = 4;
+                } else {
+                    field_0xc61 = 3;
                 }
+                return;
             }
-        }
-        field_0xc54 = 10;
-        return;
-    }
-
-    if (planeTri[0]) {
-        if (planeTri[1]) {
-            if (field_0xc60 <= 3) {
+            if ((field_0xc60 & 1) != 0) {
                 field_0xc61 = 4;
             } else {
-                field_0xc61 = 2;
+                field_0xc61 = 3;
             }
-
-        } else if (planeTri[2]) {
-            if (field_0xc60 <= 3) {
-                field_0xc61 = 4;
-            } else {
-                field_0xc61 = 1;
-            }
-
-        } else {
-            s16 difference = z[0] - field_0xc32.y;
-            if (abs(difference) < 0x7801) {
-                field_0xc61 = difference <= 0 ? 3 : 4;
-            } else {
-                field_0xc61 = (field_0xc60 & 1) ? 4 : 3;
-            }
+            return;
         }
-        return;
-    }
-    if (planeTri[1]) {
-        if (field_0xc60 != 2) {
-            if (field_0xc60 < 2) {
+        if (planeTri[1] != 0) {
+            switch (field_0xc60) {
+            case 0:
+            case 1:
                 field_0xc61 = 4;
                 field_0xc54 = 10;
-            } else {
-                if (field_0xc60 < 4) {
+                break;
+            case 2:
+                if (y[1] < 600.0) {
                     field_0xc61 = 2;
+                } else {
+                    field_0xc61 = 0;
                 }
-            }
-        } else {
-            if (y[1] < 600.0f) {
+                break;
+            case 3:
                 field_0xc61 = 2;
+                break;
+            }
+            return;
+        }
+        if (planeTri[2] == 0) {
+            switch (field_0xc60) {
+            case 0:
+                field_0xc61 = 3;
+                break;
+            case 1:
+                field_0xc61 = 4;
+                break;
+            case 2:
+                field_0xc61 = 1;
+                break;
+            case 3:
+                field_0xc61 = 2;
+                break;
+            default:
+                field_0xc61 = 0;
+            }
+            return;
+        }
+        switch (field_0xc60) {
+        case 0:
+        case 1:
+            field_0xc61 = 3;
+            field_0xc54 = 10;
+            break;
+        case 2:
+            field_0xc61 = 1;
+            break;
+        default:
+            if (y[2] < 600.0) {
+                field_0xc61 = 1;
             } else {
                 field_0xc61 = 0;
             }
-        }
-        return;
-    }
-    if (!planeTri[2]) {
-        if (field_0xc60 == 2) {
-            field_0xc61 = 1;
-        } else {
-            if (field_0xc60 < 2) {
-                field_0xc61 = field_0xc60 == 0 ? 3 : 4;
-            } else {
-                field_0xc61 = field_0xc60 <= 3 ? 2 : 0;
-            }
+            break;
         }
         return;
     }
 
-    if (field_0xc60 == 2) {
-        field_0xc61 = 1;
-    } else {
-        if (field_0xc60 > 1) {
-            field_0xc61 = y[2] < 600.0f ? 1 : 0;
+    switch (field_0xc61) {
+    case 0:
+        break;
+    case 1:
+        field_0xc61 = 3;
+        break;
+    case 2:
+        field_0xc61 = 4;
+        break;
+    case 3:
+        field_0xc61 = 3;
+        break;
+    case 4:
+        field_0xc61 = 4;
+        break;
+    default:
+        if (field_0xc60 & 1) {
+            field_0xc61 = 4;
         } else {
             field_0xc61 = 3;
-            field_0xc54 = 10;
         }
     }
+    field_0xc54 = 10;
 }
 
 /* 8065B760-8065B8A8 003280 0148+00 6/6 0/0 0/0 .text            checkOutOfGate__7daCow_cF4cXyz
