@@ -554,11 +554,11 @@ bool daCow_c::checkNearCowRun() {
             continue;
         }
 
-        fopAc_ac_c* actor = obj->GetAc();
+        fopAc_ac_c* actor = dCc_GetAc(obj->GetAc());
         if (actor && IS_COW(actor)) {
             daCow_c* cow = static_cast<daCow_c*>(actor);
             if (!cow->getNoNearCheckTimer() && cow->checkRun()) {
-                s16 angle = fopAcM_searchActorAngleY(this, cow);
+                s16 angle = fopAcM_searchActorAngleY(this, actor);
                 int angleDifference = cLib_distanceAngleS(angle, mSavedAngle.y);
                 if (angleDifference >= 0x1000 && angleDifference < 0x7000) {
                     return true;
