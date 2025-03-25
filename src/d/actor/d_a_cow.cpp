@@ -1466,8 +1466,6 @@ void daCow_c::action_enter() {
     mDoMtx_stack_c::YrotS(-pen_dir);
     mDoMtx_stack_c::multVecSR(&penDistanceNow, &penDistanceNow);
 
-    s16 targetAngle;
-
     switch (mMode) {
     case 0:
         calcRunAnime(1);
@@ -1477,9 +1475,8 @@ void daCow_c::action_enter() {
             mSph[iSphere].OffCoSetBit();
             mCcStts.ClrCcMove();
         }
-
         break;
-    case 1:
+    case 1: {
         f32 fVar2 = 30.0f;
         switch (field_0xc9f) {
         case 0:
@@ -1534,8 +1531,8 @@ void daCow_c::action_enter() {
                 }
             }
             break;
-        case 2:
-            targetAngle = cLib_targetAngleY(&current.pos, &field_0xc20);
+        case 2: {
+            s16 targetAngle = cLib_targetAngleY(&current.pos, &field_0xc20);
             cLib_addCalcAngleS2(&current.angle.y, targetAngle, 4, 0x100);
             cLib_addCalcAngleS2(&shape_angle.y, current.angle.y, 8, 0x800);
 
@@ -1550,7 +1547,7 @@ void daCow_c::action_enter() {
                 field_0xc9f = 4;
                 setCowInCage();
             }
-            break;
+        } break;
         case 3:
             if (mpMorf->isStop()) {
                 if (current.pos.abs(field_0xc20) > 100.0f) {
@@ -1591,6 +1588,9 @@ void daCow_c::action_enter() {
             }
             cLib_chaseF(&speedF, fVar2, 1.5f);
         }
+    } break;
+    case 2:
+        break;
     }
 
     for (int iSphere = 0; iSphere < N_COW_COLLIDERS; iSphere++) {
