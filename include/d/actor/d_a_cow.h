@@ -9,6 +9,30 @@
 
 #define N_COW_COLLIDERS 3
 
+#define FLAG(name, mask)                                                                           \
+    void set##name() {                                                                             \
+        mFlags |= (mask);                                                                          \
+    }                                                                                              \
+    bool get##name() {                                                                             \
+        return mFlags & (mask);                                                                    \
+    }                                                                                              \
+    void clear##name() {                                                                           \
+        mFlags &= ~(mask);                                                                         \
+    }
+
+#define TIMER(name, field)                                                                         \
+    bool get##name() {                                                                             \
+        return (field);                                                                            \
+    }                                                                                              \
+    void set##name(int duration) {                                                                 \
+        (field) = duration;                                                                        \
+    }                                                                                              \
+    void tick##name() {                                                                            \
+        if ((field)) {                                                                             \
+            (field)--;                                                                             \
+        }                                                                                          \
+    }
+
 /**
  * @ingroup actors-unsorted
  * @class daCow_c
@@ -104,38 +128,16 @@ public:
     /* 80662BE4 */ int Delete();
     /* 80662D70 */ csXyz getShapeAngle();
 
-    void setCrazyBeforeCatch() { mFlags |= 1; }
-    void setCrazyCatch() { mFlags |= 2; }
-    void setCrazyDash() { mFlags |= 4; }
-    void setCrazyThrowLeft() { mFlags |= 8; }
-    void setCrazyThrowRight() { mFlags |= 0x10; }
-    void setUnkFlag1() { mFlags |= 0x20; }
-    void setUnkFlag2() { mFlags |= 0x40; }
-    void setNaderu() { mFlags |= 0x80; }
-    void setNaderuFinish() { mFlags |= 0x100; }
-    void setUnkFlag3() { mFlags |= 0x200; }
-
-    bool getCrazyBeforeCatch() { return mFlags & 1; }
-    bool getCrazyCatch() { return mFlags & 2; }
-    bool getCrazyDash() { return mFlags & 4; }
-    bool getCrazyThrowLeft() { return mFlags & 8; }
-    bool getCrazyThrowRight() { return mFlags & 0x10; }
-    bool getUnkFlag1() { return mFlags & 0x20; }
-    bool getUnkFlag2() { return mFlags & 0x40; }
-    bool getNaderu() { return mFlags & 0x80; }
-    bool getNaderuFinish() { return mFlags & 0x100; }
-    bool getUnkFlag3() { return mFlags & 0x200; }
-
-    void clearCrazyBeforeCatch() { mFlags &= ~1; }
-    void clearCrazyCatch() { mFlags &= ~2; }
-    void clearCrazyDash() { mFlags &= ~4; }
-    void clearCrazyThrowLeft() { mFlags &= ~8; }
-    void clearCrazyThrowRight() { mFlags &= ~0x10; }
-    void clearUnkFlag1() { mFlags &= ~0x20; }
-    void clearUnkFlag2() { mFlags &= ~0x40; }
-    void clearNaderu() { mFlags &= ~0x80; }
-    void clearNaderuFinish() { mFlags &= ~0x100; }
-    void clearUnkFlag3() { mFlags &= ~0x200; }
+    FLAG(CrazyBeforeCatch, 1 << 0);
+    FLAG(CrazyCatch, 1 << 1);
+    FLAG(CrazyDash, 1 << 2);
+    FLAG(CrazyThrowLeft, 1 << 3);
+    FLAG(CrazyThrowRight, 1 << 4);
+    FLAG(UnkFlag1, 1 << 5);
+    FLAG(UnkFlag2, 1 << 6);
+    FLAG(Naderu, 1 << 7);
+    FLAG(NaderuFinish, 1 << 8);
+    FLAG(UnkFlag3, 1 << 9);
 
     bool anyFlagsSet() { return mFlags; };
     void clearAllFlags() { mFlags = 0; };
@@ -143,7 +145,18 @@ public:
     void setCowIn() { mCowIn = 1; }
     bool getCowIn() { return mCowIn; }
 
-    bool getNoNearCheckTimer() { return mNoNearCheckTimer; }
+    TIMER(NoNearCheckTimer, mNoNearCheckTimer);
+    TIMER(Timer1, mTimer1);
+    TIMER(Timer2, mTimer2);
+    TIMER(Timer3, mTimer3);
+    TIMER(Timer4, mTimer4);
+    TIMER(Timer5, mTimer5);
+    TIMER(Timer6, mTimer6);
+    TIMER(Timer7, mTimer7);
+    TIMER(Timer8, mTimer8);
+    TIMER(Timer9, mTimer9);
+    TIMER(Timer10, mTimer10);
+
     daCow_c* getCowP() { return mCowP; }
 
     // todo
