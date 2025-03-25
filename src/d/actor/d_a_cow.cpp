@@ -177,7 +177,6 @@ void daCow_c::setCarryStatus() {
         // todo: what does this mean
         cLib_onBit<u32>(attention_info.flags, 0x10);  // in debug this is 0x80
     }
-    return;
 }
 
 /* 80658C18-80658C78 000738 0060+00 5/5 0/0 0/0 .text            setActetcStatus__7daCow_cFv */
@@ -215,7 +214,7 @@ bool daCow_c::checkNadeNade() {
 /* 80658CD0-80658D3C 0007F0 006C+00 3/3 0/0 0/0 .text            setSeSnort__7daCow_cFv */
 void daCow_c::setSeSnort() {
     if (mpMorf->checkFrame(1.0f)) {
-        mSound.startCreatureVoice(0x50079, -1);
+        mSound.startCreatureVoice(Z2SE_GOAT_V_BREATH, -1);
     }
 }
 
@@ -1224,7 +1223,7 @@ void daCow_c::action_run() {
 
             u8 willGetAngry = mWillGetAngry;
             if (checkThrow()) {
-                dComIfGp_getVibration().StartShock(2, 0x1f, cXyz(0.0f, 1.0f, 0.0f));
+                dComIfGp_getVibration().StartShock(VIBMODE_S_POWER2, 0x1f, cXyz(0.0f, 1.0f, 0.0f));
                 mWillGetAngry = willGetAngry;
                 return;
             }
@@ -1723,7 +1722,7 @@ void daCow_c::action_angry() {
             setCarryStatus();
         }
         if (checkThrow()) {
-            dComIfGp_getVibration().StartShock(4, 0x1f, cXyz(0.0f, 1.0f, 0.0f));
+            dComIfGp_getVibration().StartShock(VIBMODE_S_POWER4, 0x1f, cXyz(0.0f, 1.0f, 0.0f));
             mWillGetAngry = true;
             return;
         }
@@ -1991,7 +1990,7 @@ void daCow_c::executeCrazyDash() {
     cXyz vec1 = dPath_GetPnt(mPath, mPointIndex)->m_position;
 
     setSeSnort();
-    setRushVibration(2);
+    setRushVibration(VIBMODE_S_POWER2);
 
     if (mTimer1 == 1) {
         mSound.startCreatureVoice(Z2SE_GOAT_V_ANGRY, -1);
@@ -2008,7 +2007,7 @@ void daCow_c::executeCrazyDash() {
                 initCrazyCatch(0);
                 mPointIndex = 6;
                 clearCrazyCatch();
-                dComIfGp_getVibration().StartShock(8, 0x1f, cXyz(0.0f, 1.0f, 0.0f));
+                dComIfGp_getVibration().StartShock(VIBMODE_S_POWER8, 0x1f, cXyz(0.0f, 1.0f, 0.0f));
             } else if (getCrazyDash()) {
                 initCrazyAttack(0);
                 mPointIndex = 6;
@@ -2087,7 +2086,7 @@ void daCow_c::executeCrazyBeforeCatch() {
     if (getCrazyCatch()) {
         initCrazyCatch(0);
         clearCrazyCatch();
-        dComIfGp_getVibration().StartShock(8, 0x1f, cXyz(0.0f, 1.0f, 0.0f));
+        dComIfGp_getVibration().StartShock(VIBMODE_S_POWER8, 0x1f, cXyz(0.0f, 1.0f, 0.0f));
     } else if (getCrazyDash()) {
         if (!daPy_getPlayerActorClass()->speedF) {
             initCrazyAttack(0);
@@ -2263,7 +2262,7 @@ void daCow_c::executeCrazyThrow() {
             shape_angle.x = mSavedAngle.x;
 
             mSound.startCreatureSound(Z2SE_CM_BODYFALL_M, 0, -1);
-            dComIfGp_getVibration().StartShock(5, 0x1f, cXyz(0.0f, 1.0f, 0.0f));
+            dComIfGp_getVibration().StartShock(VIBMODE_S_POWER5, 0x1f, cXyz(0.0f, 1.0f, 0.0f));
 
             speed.y = 0.0f;
             setTimer1(90);
@@ -2379,7 +2378,7 @@ void daCow_c::executeCrazyAway() {
     setSeSnort();
 
     if (current.pos.abs(daPy_getPlayerActorClass()->current.pos) < 2500.0f) {
-        setRushVibration(2);
+        setRushVibration(VIBMODE_S_POWER2);
     }
 
     mShouldSetEffect = 1;
