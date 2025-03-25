@@ -21,16 +21,77 @@
 UNK_REL_DATA;
 UNK_REL_BSS;
 
-static u8 cc_sph_src[sizeof(dCcD_SrcSph)] = {
-    /* 0x00 */ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    /* 0x08 */ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    /* 0x10 */ 0x00, 0xfb, 0xfd, 0xfb, 0x00, 0x00, 0x00, 0x11,
-    /* 0x18 */ 0x00, 0x00, 0x00, 0x79, 0x00, 0x00, 0x00, 0x00,
-    /* 0x20 */ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    /* 0x28 */ 0x00, 0x00, 0x03, 0x04, 0x00, 0x00, 0x00, 0x00,
-    /* 0x30 */ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    /* 0x38 */ 0x00, 0x00, 0x00, 0x00, 0x42, 0x70, 0x00, 0x00,
-};  // todo: parse these bytes
+static dCcD_SrcSph cc_sph_src = {.mObjInf =
+                                     {
+                                         .mObj =
+                                             {
+                                                 .mFlags = 0,
+                                                 .mSrcObjHitInf =
+                                                     {
+                                                         .mObjAt =
+                                                             {
+                                                                 .mType = 0,
+                                                                 .mAtp = 0,
+                                                                 .mBase =
+                                                                     {
+                                                                         .mSPrm = 0,
+                                                                     },
+                                                             },
+                                                         .mObjTg =
+                                                             {
+                                                                 .mType = 0,
+                                                                 .mBase =
+                                                                     {
+                                                                         .mSPrm = 0,
+                                                                     },
+                                                             },
+                                                         .mObjCo =
+                                                             {
+                                                                 .mBase =
+                                                                     {
+                                                                         .mSPrm = 0,
+                                                                     },
+                                                             },
+                                                     },
+                                             },
+                                         .mGObjAt =
+                                             {
+                                                 .mSe = 0,
+                                                 .mHitMark = 0,
+                                                 .mSpl = 0,
+                                                 .mMtrl = 0,
+                                                 .mBase =
+                                                     {
+                                                         .mGFlag = 0,
+                                                     },
+                                             },
+                                         .mGObjTg =
+                                             {
+                                                 .mSe = 0,
+                                                 .mHitMark = 0,
+                                                 .mSpl = 0,
+                                                 .mMtrl = 0,
+                                                 .mBase =
+                                                     {
+                                                         .mGFlag = 0,
+                                                     },
+                                             },
+                                         .mGObjCo =
+                                             {
+                                                 .mBase =
+                                                     {
+                                                         .mGFlag = 0,
+                                                     },
+                                             },
+
+                                     },
+                                 .mSphAttr = {
+                                     .mSph =
+                                         {
+                                             .mCenter = {.x = 0, .y = 0, .z = 0},
+                                             .mRadius = 60.0f,
+                                         },
+                                 }};
 
 static s16 pen_dir = -0x4000;
 static s16 gate_dir = -0x8000;
@@ -3165,7 +3226,7 @@ u8 daCow_c::initialize() {
     mCcStts.Init(220, 0, this);
 
     for (int iSphere = 0; iSphere < N_COW_COLLIDERS; iSphere = iSphere + 1) {
-        mSph[iSphere].Set(*(dCcD_SrcSph*)&cc_sph_src);  // todo
+        mSph[iSphere].Set(cc_sph_src);  // todo
         mSph[iSphere].SetStts(&mCcStts);
     }
 
