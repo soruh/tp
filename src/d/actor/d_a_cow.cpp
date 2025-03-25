@@ -104,41 +104,39 @@ static u32 l_CowType = 0;
 
 /* 80658830-80658A68 000350 0238+00 1/1 0/0 0/0 .text            setEffect__7daCow_cFv */
 void daCow_c::setEffect() {
-    cXyz c;
-    cXyz b;
-    cXyz a;
-
     if (mShouldSetEffect) {
         if (mShouldSetEffect == 1) {
+            cXyz effectPos2;
+            cXyz effectPos3;
+            cXyz effectPos1;
+
             if (mCounter1 & 1) {
                 cXyz offset(0.0f, 10.0f, -70.0f);
 
                 offset.x = 25.0f;
-                cLib_offsetPos(&a, &current.pos, mSavedAngle.y, &offset);
+                cLib_offsetPos(&effectPos1, &current.pos, mSavedAngle.y, &offset);
                 offset.x = 0.0f;
-                cLib_offsetPos(&c, &current.pos, mSavedAngle.y, &offset);
+                cLib_offsetPos(&effectPos2, &current.pos, mSavedAngle.y, &offset);
                 offset.x = -25.0f;
-                cLib_offsetPos(&c, &current.pos, mSavedAngle.y, &offset);
+                // Not effectPos3? Is this a bug in the original code?
+                cLib_offsetPos(&effectPos2, &current.pos, mSavedAngle.y, &offset);
             } else {
                 mShouldSetEffect = 0;
             }
 
             int roomNumber = fopAcM_GetRoomNo(this);
 
-            cXyz* v3 = mShouldSetEffect ? &b : NULL;
-            cXyz* v2 = mShouldSetEffect ? &c : NULL;
-            cXyz* v1 = mShouldSetEffect ? &a : NULL;
-
-            mParticle.setEffectTwo(&tevStr, &current.pos, 0, 0, v1, v2, v3, &mSavedAngle, NULL,
-                                   roomNumber, 1.0f, speedF);
+            mParticle.setEffectTwo(&tevStr, &current.pos, 0, 0,
+                                   mShouldSetEffect ? &effectPos1 : NULL,
+                                   mShouldSetEffect ? &effectPos2 : NULL,
+                                   mShouldSetEffect ? &effectPos3 : NULL,  //
+                                   &mSavedAngle, NULL, roomNumber, 1.0f, speedF);
 
             static cXyz runScale(2.0f, 2.0f, 2.0f);
 
-            int j;
-            for (int i = 0; i < 3; i++) {
+            for (int j, i = 0; i < 3; i++) {
                 for (j = 0; j < 2; j++) {
                     JPABaseEmitter* emitter = mParticle.getEmitterTwo(i, j, 0);
-
                     if (emitter) {
                         emitter->setGlobalScale(runScale);
                         emitter->setRate(1.3f);
