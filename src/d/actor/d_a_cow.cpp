@@ -229,13 +229,13 @@ void daCow_c::setRushVibration(int i_vibmode) {
 bool daCow_c::checkThrow() {
     if (anyFlagsSet()) {
         if (getCrazyBeforeCatch()) {
-            setProcess(&daCow_c::action_thrown, 0);
+            setProcess(&daCow_c::action_thrown, false);
             initCrazyBeforeCatch(0);
             clearCrazyBeforeCatch();
             return true;
         }
         if (getCrazyCatch()) {
-            setProcess(&daCow_c::action_thrown, 0);
+            setProcess(&daCow_c::action_thrown, false);
             initCrazyCatch(0);
             clearCrazyCatch();
             return true;
@@ -301,7 +301,7 @@ BOOL daCow_c::checkProcess(void (daCow_c::*process)()) {
 }
 
 /* 80659114-806591BC 000C34 00A8+00 16/16 0/0 0/0 .text setProcess__7daCow_cFM7daCow_cFPCvPv_vi */
-bool daCow_c::setProcess(void (daCow_c::*process)(), int waitForMorf) {
+bool daCow_c::setProcess(void (daCow_c::*process)(), BOOL waitForMorf) {
     mMode = daCow_Mode_Done_e;
     if (mProcess) {
         (this->*mProcess)();
@@ -363,17 +363,17 @@ void daCow_c::damage_check() {
     } else if (checkProcess(&daCow_c::action_angry)) {
         setTimer10(200);
     } else if (hitObject->ChkAtType(COW_ATTACK_TYPES)) {
-        setProcess(&daCow_c::action_damage, 0);
+        setProcess(&daCow_c::action_damage, false);
     } else {
         mDamageTimer += 60;
         if (mDamageTimer >= 150) {
-            setProcess(&daCow_c::action_damage, 0);
+            setProcess(&daCow_c::action_damage, false);
         } else {
             setTimer5(90);
 
             if (!checkProcess(&daCow_c::action_wait)) {
                 speedF = 0.0f;
-                setProcess(&daCow_c::action_wait, 0);
+                setProcess(&daCow_c::action_wait, false);
             }
         }
     }
@@ -602,11 +602,11 @@ void daCow_c::action_wait() {
                 if (!checkNadeNadeFinish()) {
                     return;
                 }
-                setProcess(&daCow_c::action_moo, 0);
+                setProcess(&daCow_c::action_moo, false);
                 return;
             }
             if (checkPlayerWait() && (checkPlayerSurprise() || checkPlayerPos())) {
-                setProcess(&daCow_c::action_run, 0);
+                setProcess(&daCow_c::action_run, false);
                 return;
             }
             if (checkWolfBusters()) {
@@ -621,22 +621,22 @@ void daCow_c::action_wait() {
                 return;
             }
             if (checkNearCowRun()) {
-                setProcess(&daCow_c::action_run, 0);
+                setProcess(&daCow_c::action_run, false);
                 return;
             }
         }
         if (!cLib_calcTimer(&mTimer7) && !mTimer5) {
             if (checkNearWolf()) {
-                setProcess(&daCow_c::action_moo, 0);
+                setProcess(&daCow_c::action_moo, false);
             } else {
                 daPy_py_c* playerActor = daPy_getPlayerActorClass();
                 if (current.pos.absXZ(playerActor->current.pos) > 500.0f && rand < 0.4f) {
-                    setProcess(&daCow_c::action_moo, 0);
+                    setProcess(&daCow_c::action_moo, false);
                 } else {
                     if (rand < 0.5f) {
-                        setProcess(&daCow_c::action_eat, 1);
+                        setProcess(&daCow_c::action_eat, true);
                     } else {
-                        setProcess(&daCow_c::action_shake, 1);
+                        setProcess(&daCow_c::action_shake, true);
                     }
                 }
             }
@@ -679,7 +679,7 @@ void daCow_c::action_eat() {
 
         if (!getCowIn()) {
             if (checkNearCowRun() || checkPlayerWait()) {
-                setProcess(&daCow_c::action_wait, 0);
+                setProcess(&daCow_c::action_wait, false);
                 return;
             }
             setCarryStatus();
@@ -688,13 +688,13 @@ void daCow_c::action_eat() {
             }
             setActetcStatus();
             if (checkNadeNade()) {
-                setProcess(&daCow_c::action_wait, 1);
+                setProcess(&daCow_c::action_wait, true);
                 return;
             }
         }
         if (!cLib_calcTimer(&mTimer7) && mpMorf->isLoop()) {
             if (checkNearWolf()) {
-                setProcess(&daCow_c::action_moo, 0);
+                setProcess(&daCow_c::action_moo, false);
 
             } else {
                 f32 rand = cM_rnd();
@@ -702,14 +702,14 @@ void daCow_c::action_eat() {
                 if (current.pos.absXZ(daPy_getPlayerActorClass()->current.pos) > 500.0f &&
                     rand < 0.4f)
                 {
-                    setProcess(&daCow_c::action_moo, 0);
+                    setProcess(&daCow_c::action_moo, false);
                     return;
                 }
 
                 if (rand < 0.5f) {
-                    setProcess(&daCow_c::action_shake, 0);
+                    setProcess(&daCow_c::action_shake, false);
                 } else {
-                    setProcess(&daCow_c::action_wait, 1);
+                    setProcess(&daCow_c::action_wait, true);
                 }
             }
         }
@@ -745,7 +745,7 @@ void daCow_c::action_moo() {
 
         if (!getCowIn()) {
             if (checkNearCowRun() || checkPlayerWait()) {
-                setProcess(&daCow_c::action_wait, 0);
+                setProcess(&daCow_c::action_wait, false);
                 return;
             } else {
                 setCarryStatus();
@@ -756,16 +756,16 @@ void daCow_c::action_moo() {
         }
         if (mpMorf->isStop()) {
             if (checkNearWolf()) {
-                setProcess(&daCow_c::action_shake, 1);
+                setProcess(&daCow_c::action_shake, true);
             } else {
                 f32 rand = cM_rnd();
                 if (rand < 0.4f) {
-                    setProcess(&daCow_c::action_eat, 1);
+                    setProcess(&daCow_c::action_eat, true);
                 } else {
                     if (rand < 0.7f) {
-                        setProcess(&daCow_c::action_shake, 1);
+                        setProcess(&daCow_c::action_shake, true);
                     } else {
-                        setProcess(&daCow_c::action_wait, 0);
+                        setProcess(&daCow_c::action_wait, false);
                     }
                 }
             }
@@ -800,7 +800,7 @@ void daCow_c::action_shake() {
 
         if (!getCowIn()) {
             if (checkNearCowRun() || checkPlayerWait()) {
-                setProcess(&daCow_c::action_wait, 0);
+                setProcess(&daCow_c::action_wait, false);
                 return;
             }
             setCarryStatus();
@@ -809,24 +809,24 @@ void daCow_c::action_shake() {
             }
             setActetcStatus();
             if (checkNadeNade()) {
-                setProcess(&daCow_c::action_wait, 1);
+                setProcess(&daCow_c::action_wait, true);
                 return;
             }
         }
         if (mpMorf->isLoop()) {
             if (checkNearWolf()) {
-                setProcess(&daCow_c::action_moo, 1);
+                setProcess(&daCow_c::action_moo, true);
             } else {
                 f32 rand = cM_rnd();
                 if (current.pos.absXZ(daPy_getPlayerActorClass()->current.pos) > 500.0f &&
                     rand < 0.4f)
                 {
-                    setProcess(&daCow_c::action_moo, 1);
+                    setProcess(&daCow_c::action_moo, true);
                 } else {
                     if (rand < 0.5f) {
-                        setProcess(&daCow_c::action_wait, 0);
+                        setProcess(&daCow_c::action_wait, false);
                     } else {
-                        setProcess(&daCow_c::action_eat, 1);
+                        setProcess(&daCow_c::action_eat, true);
                     }
                 }
             }
@@ -1185,7 +1185,7 @@ bool daCow_c::checkCowInOwn(int param_1) {
     if (diff.z > 250.0f && fabsf(diff.x) < 220.0f &&
         cLib_distanceAngleS(pen_dir, mSavedAngle.y) < param_1)
     {
-        setProcess(&daCow_c::action_enter, 0);
+        setProcess(&daCow_c::action_enter, false);
         setEnterCount();
         return true;
     }
@@ -1332,7 +1332,7 @@ void daCow_c::action_run() {
         }
         int cowIn = checkCowIn(800.0f, 300.0f);
         if (cowIn == 1) {
-            setProcess(&daCow_c::action_enter, 0);
+            setProcess(&daCow_c::action_enter, false);
         } else {
             if (cowIn == 2) {
                 targetSpeed = mSpeed * (mBoostSpeed / 1000.0f);
@@ -1349,7 +1349,7 @@ void daCow_c::action_run() {
                     {
                         mReadyToDash = false;
                         mRunDuration = 0;
-                        setProcess(&daCow_c::action_angry, 0);
+                        setProcess(&daCow_c::action_angry, false);
                         return;
                     }
                 }
@@ -1364,7 +1364,7 @@ void daCow_c::action_run() {
             cLib_addCalcAngleS2(&shape_angle.y, current.angle.y, 8, 0x400);
             mSavedAngle.y = shape_angle.y;
             if (!speedF) {
-                setProcess(&daCow_c::action_wait, 0);
+                setProcess(&daCow_c::action_wait, false);
             }
         }
         break;
@@ -1563,7 +1563,7 @@ void daCow_c::action_enter() {
             speedF = 0;
             setCowIn();
 
-            setProcess(&daCow_c::action_wait, 0);
+            setProcess(&daCow_c::action_wait, false);
             mAcchCir.SetWall(100.0f, 110.0f);
             break;
         }
@@ -1756,7 +1756,7 @@ void daCow_c::action_angry() {
             mTimer10--;
         } else {
             if (mCrazy != daCow_Crazy_Attack_e) {
-                setProcess(&daCow_c::action_run, 0);
+                setProcess(&daCow_c::action_run, false);
                 mWillGetAngry = true;
                 return;
             }
@@ -1771,7 +1771,7 @@ void daCow_c::action_angry() {
             if (checkOutOfGate(daPy_getPlayerActorClass()->current.pos) ||
                 checkOutOfGate(current.pos))
             {
-                setProcess(&daCow_c::action_run, 0);
+                setProcess(&daCow_c::action_run, false);
                 mWillGetAngry = true;
                 return;
             }
@@ -1893,7 +1893,7 @@ void daCow_c::action_angry() {
             s32 angleDist = cLib_distanceAngleS(mTargetAngle, mSavedAngle.y);
             if (angleDist < 0x200 && mJoint8Offset.y < 0x200) {
                 if (mCrazy == daCow_Crazy_Throw_e) {
-                    setProcess(&daCow_c::action_run, 0);
+                    setProcess(&daCow_c::action_run, false);
                 } else {
                     mCrazy = daCow_Crazy_Dash_e;
                     mJoint1Offset.y = 0;
@@ -2635,7 +2635,7 @@ void daCow_c::action_crazy() {
  */
 void daCow_c::executeCrazyBack2() {
     if (checkOutOfGate(daPy_getPlayerActorClass()->current.pos) || checkOutOfGate(current.pos)) {
-        setProcess(&daCow_c::action_run, 0);
+        setProcess(&daCow_c::action_run, false);
         mWillGetAngry = true;
         return;
     }
@@ -2647,7 +2647,7 @@ void daCow_c::executeCrazyBack2() {
     if (!mWillGetAngry) {
         mReadyToDash = false;
         mRunDuration = 1;
-        setProcess(&daCow_c::action_angry, 0);
+        setProcess(&daCow_c::action_angry, false);
         return;
     }
 
@@ -2667,7 +2667,7 @@ void daCow_c::executeCrazyBack2() {
 
         if (current.pos.abs(home.pos) < 200.0f || !mTimer1) {
             speedF = 0.0f;
-            setProcess(&daCow_c::action_moo, 0);
+            setProcess(&daCow_c::action_moo, false);
         } else {
             if (checkNadeNade()) {
                 setBck(daCow_Animation_26_e, J3DFrameCtrl::EMode_LOOP, 10.0f, 1.0f);
@@ -2726,7 +2726,7 @@ void daCow_c::action_thrown() {
         case 6:
             player = daPy_getPlayerActorClass();
             if (checkOutOfGate(player->current.pos) || checkOutOfGate(current.pos)) {
-                setProcess(&daCow_c::action_run, 0);
+                setProcess(&daCow_c::action_run, false);
                 mWillGetAngry = true;
                 return;
             }
@@ -2734,9 +2734,9 @@ void daCow_c::action_thrown() {
                 return;
             }
             if (checkBck(0x15)) {
-                setProcess(&daCow_c::action_wait, 1);
+                setProcess(&daCow_c::action_wait, true);
             } else {
-                setProcess(&daCow_c::action_wait, 0);
+                setProcess(&daCow_c::action_wait, false);
             }
             break;
         case 8:
@@ -2780,7 +2780,7 @@ bool daCow_c::checkWolfBusters() {
     for (int iWolfBuster = 0; iWolfBuster < N_WOLF_BUSTERS; iWolfBuster = iWolfBuster + 1) {
         if (gWolfBustersID[iWolfBuster] == -1) {
             gWolfBustersID[iWolfBuster] = fopAcM_GetID(this);
-            setProcess(&daCow_c::action_wolf, 0);
+            setProcess(&daCow_c::action_wolf, false);
             return true;
         }
     }
@@ -2816,7 +2816,7 @@ void daCow_c::action_wolf() {
         calcRunAnime(false);
 
         if (!player->checkNowWolf() || checkOutOfGate(aru->current.pos)) {
-            setProcess(&daCow_c::action_run, 0);
+            setProcess(&daCow_c::action_run, false);
             mWillGetAngry = true;
             return;
         }
@@ -2869,7 +2869,7 @@ void daCow_c::action_wolf() {
                     if (abs(angleDifference) < 0x2000) {
                         mReadyToDash = false;
                         mRunDuration = 1;
-                        setProcess(&daCow_c::action_angry, 0);
+                        setProcess(&daCow_c::action_angry, false);
                         return;
                     }
                 }
@@ -2883,7 +2883,7 @@ void daCow_c::action_wolf() {
                         if (abs(angleDifference) < 0x2000) {
                             mReadyToDash = false;
                             mRunDuration = 1;
-                            setProcess(&daCow_c::action_angry, 0);
+                            setProcess(&daCow_c::action_angry, false);
                             return;
                         }
                     }
@@ -2931,7 +2931,7 @@ void daCow_c::action_damage() {
         if (mpMorf->isStop()) {
             mReadyToDash = false;
             mRunDuration = 1;
-            setProcess(&daCow_c::action_angry, 0);
+            setProcess(&daCow_c::action_angry, false);
         }
         break;
     case daCow_Mode_Active_e:
@@ -3188,7 +3188,7 @@ u8 daCow_c::initialize() {
             dStage_dPnt_c* point = dPath_GetPnt(mPath, mPointIndex);
             current.pos = point->m_position;
 
-            setProcess(&daCow_c::action_crazy, 0);
+            setProcess(&daCow_c::action_crazy, false);
         }
     } break;
     case 4:
@@ -3197,13 +3197,13 @@ u8 daCow_c::initialize() {
         int rand = cM_rndF(4.0f) + fopAcM_GetID(this);
         int nextAction = rand % 4;
         if (nextAction == 1) {
-            setProcess(&daCow_c::action_shake, 0);
+            setProcess(&daCow_c::action_shake, false);
         } else if (nextAction == 2) {
-            setProcess(&daCow_c::action_moo, 0);
+            setProcess(&daCow_c::action_moo, false);
         } else if (nextAction == 3) {
-            setProcess(&daCow_c::action_eat, 0);
+            setProcess(&daCow_c::action_eat, false);
         } else {
-            setProcess(&daCow_c::action_wait, 0);
+            setProcess(&daCow_c::action_wait, false);
         }
     }
 
