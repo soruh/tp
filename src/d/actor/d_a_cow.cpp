@@ -279,8 +279,8 @@ void daCow_c::setBodyAngle(s16 angle) {
     if (abs(offsetAngle) < 0x100) {
         offsetAngle = 0;
     }
-    cLib_chaseS(&field_0xc3e.y, offsetAngle * 0.7f, 0x100);
-    cLib_chaseS(&field_0xc38.y, offsetAngle * 0.3f, 0x100);
+    cLib_chaseS(&mJoint8Offset.y, offsetAngle * 0.7f, 0x100);
+    cLib_chaseS(&mJoint1Offset.y, offsetAngle * 0.3f, 0x100);
 }
 
 /* 80658F94-806590E8 000AB4 0154+00 1/1 0/0 0/0 .text            setBodyAngle2__7daCow_cFs */
@@ -293,7 +293,7 @@ void daCow_c::setBodyAngle2(s16 angle) {
         offsetAngle = 0;
     }
 
-    cLib_chaseS(&field_0xc38.y, offsetAngle * 0.3f, 0x100);
+    cLib_chaseS(&mJoint1Offset.y, offsetAngle * 0.3f, 0x100);
     daPy_py_c* player = daPy_getPlayerActorClass();
     s16 targetAngle = cLib_targetAngleY(&current.pos, &player->current.pos);
     s16 bodyAngle = mSavedAngle.y - targetAngle;
@@ -306,7 +306,7 @@ void daCow_c::setBodyAngle2(s16 angle) {
         chaseAngle = offsetAngle * 0.7f;
     }
 
-    cLib_chaseS(&field_0xc3e.y, chaseAngle, 0x100);
+    cLib_chaseS(&mJoint8Offset.y, chaseAngle, 0x100);
 }
 
 /* 806590E8-80659114 000C08 002C+00 5/5 0/0 0/0 .text checkProcess__7daCow_cFM7daCow_cFPCvPv_v */
@@ -454,8 +454,8 @@ void daCow_c::setGroundAngle() {
         beta = (s16)cM_atan2s(pfVar2->x, pfVar2->y);
     }
 
-    cLib_chaseAngleS(&field_0xc2c.x, alpha, 128);
-    cLib_chaseAngleS(&field_0xc2c.y, beta, 128);
+    cLib_chaseAngleS(&mGroundTransform.x, alpha, 128);
+    cLib_chaseAngleS(&mGroundTransform.y, beta, 128);
 }
 
 /* ############################################################################################## */
@@ -573,11 +573,10 @@ bool daCow_c::checkNearCowRun() {
 /* 80659ADC-8065A0E8 0015FC 060C+00 15/0 0/0 0/0 .text            action_wait__7daCow_cFv */
 void daCow_c::action_wait() {
     f32 rand = cM_rnd();
-    s16 angle;
 
     switch (mMode) {
     case daCow_Mode_Starting_e:
-        field_0xc58 = cM_rndF(100.0f) + 300.0f;
+        mTimer7 = cM_rndF(100.0f) + 300.0f;
         mMode = daCow_Mode_WaitingForMorf_e;
         mTimer1 = 0;
         if (!mWaitForMorf) {
@@ -598,15 +597,15 @@ void daCow_c::action_wait() {
             mMode = daCow_Mode_Active_e;
         }
 
-    case daCow_Mode_Active_e:
-        angle = 0;
+    case daCow_Mode_Active_e: {
+        s16 angle = 0;
         if (mTimer5 > 30) {
             angle = mSavedAngle.y - fopAcM_searchPlayerAngleY(this);
             CLAMP(angle, -0x2800, 0x2800);
         }
 
-        cLib_addCalcAngleS2(&field_0xc3e.y, angle * 0.9f, 0x10, 0x100);
-        cLib_addCalcAngleS2(&field_0xc38.y, angle * 0.1f, 0x10, 0x100);
+        cLib_addCalcAngleS2(&mJoint8Offset.y, angle * 0.9f, 0x10, 0x100);
+        cLib_addCalcAngleS2(&mJoint1Offset.y, angle * 0.1f, 0x10, 0x100);
 
         if (!getCowIn()) {
             if (checkCowInOwn(0x8000)) {
@@ -640,7 +639,7 @@ void daCow_c::action_wait() {
                 return;
             }
         }
-        if (!cLib_calcTimer(&field_0xc58) && !mTimer5) {
+        if (!cLib_calcTimer(&mTimer7) && !mTimer5) {
             if (checkNearWolf()) {
                 setProcess(&daCow_c::action_moo, 0);
             } else {
@@ -656,10 +655,10 @@ void daCow_c::action_wait() {
                 }
             }
         }
-        break;
+    } break;
     case daCow_Mode_Done_e:
-        field_0xc38.y = 0;
-        field_0xc3e.y = 0;
+        mJoint1Offset.y = 0;
+        mJoint8Offset.y = 0;
         mTimer5 = 0;
         field_0xca8 = 0;
         break;
@@ -670,7 +669,7 @@ void daCow_c::action_wait() {
 void daCow_c::action_eat() {
     switch (mMode) {
     case daCow_Mode_Starting_e:
-        field_0xc58 = cM_rndF(100.0f) + 300.0f;
+        mTimer7 = cM_rndF(100.0f) + 300.0f;
         mTimer1 = 0;
         if (!mWaitForMorf) {
             setBck(9, 2, 12.0f, 1.0f);
@@ -707,7 +706,7 @@ void daCow_c::action_eat() {
                 return;
             }
         }
-        if (!cLib_calcTimer(&field_0xc58) && mpMorf->isLoop()) {
+        if (!cLib_calcTimer(&mTimer7) && mpMorf->isLoop()) {
             if (checkNearWolf()) {
                 setProcess(&daCow_c::action_moo, 0);
 
@@ -1019,7 +1018,7 @@ void daCow_c::checkBeforeBg() {
     if (planeTri[2]) {
         field_0xca2 |= 4;
     }
-    if (cLib_calcTimer(&field_0xc54)) {
+    if (cLib_calcTimer(&mTimer6)) {
         return;
     }
 
@@ -1040,7 +1039,7 @@ void daCow_c::checkBeforeBg() {
                 mAction = 3;
             }
         }
-        field_0xc54 = 10;
+        mTimer6 = 10;
     } else {
         if (planeTri[0]) {
             if (planeTri[1]) {
@@ -1078,7 +1077,7 @@ void daCow_c::checkBeforeBg() {
             case 0:
             case 1:
                 mAction = 4;
-                field_0xc54 = 10;
+                mTimer6 = 10;
                 break;
             case 3:
                 mAction = 2;
@@ -1095,7 +1094,7 @@ void daCow_c::checkBeforeBg() {
             case 0:
             case 1:
                 mAction = 3;
-                field_0xc54 = 10;
+                mTimer6 = 10;
                 break;
             case 2:
                 mAction = 1;
@@ -1303,7 +1302,7 @@ void daCow_c::action_run() {
                 fVar12 = mSpeed * (field_0xc6c / 1000.0f) / 2.0f;
             }
         }
-        if ((field_0xc54 == 0) || (field_0xc54 == 10)) {
+        if ((mTimer6 == 0) || (mTimer6 == 10)) {
             s16 targetAngle = current.angle.y;
             if (!field_0xca2 && mCowP) {
                 targetAngle = getCowP()->mSavedAngle.y;
@@ -1916,13 +1915,13 @@ void daCow_c::action_angry() {
             mSavedAngle.y = shape_angle.y = current.angle.y;
             setBodyAngle(mTargetAngle);
             s32 angleDist = cLib_distanceAngleS(mTargetAngle, mSavedAngle.y);
-            if (angleDist < 0x200 && field_0xc3e.y < 0x200) {
+            if (angleDist < 0x200 && mJoint8Offset.y < 0x200) {
                 if (mCrazy == daCow_Crazy_Throw_e) {
                     setProcess(&daCow_c::action_run, 0);
                 } else {
                     mCrazy = daCow_Crazy_Dash_e;
-                    field_0xc38.y = 0;
-                    field_0xc3e.y = 0;
+                    mJoint1Offset.y = 0;
+                    mJoint8Offset.y = 0;
                 }
             }
             break;
@@ -1944,7 +1943,7 @@ void daCow_c::action_angry() {
             return;
         }
 
-        cLib_chaseS(&field_0xc3e.z, targetZ, 0x400);
+        cLib_chaseS(&mJoint8Offset.z, targetZ, 0x400);
         break;
     case daCow_Mode_Active_e:
         break;
@@ -1952,9 +1951,9 @@ void daCow_c::action_angry() {
         mTimer2 = 0;
         mTimer1 = 0;
         field_0xcb0 = 0.0f;
-        field_0xc3e.z = 0;
-        field_0xc38.y = 0;
-        field_0xc3e.y = 0;
+        mJoint8Offset.z = 0;
+        mJoint1Offset.y = 0;
+        mJoint8Offset.y = 0;
 
         attention_info.flags &= ~1;
         break;
@@ -1966,7 +1965,7 @@ void daCow_c::calcCatchPos(f32 distance, int someBool) {
     daPy_py_c* player = daPy_getPlayerActorClass();
     s16 offsetAngle = player->shape_angle.y - (s16)0x8000;
     f32 playerPosY = player->current.pos.y;
-    f32 diff = playerPosY - field_0xc44;
+    f32 diff = playerPosY - mGroundHeight;
     f32 abs = current.pos.absXZ(player->current.pos);
     int angle = cM_atan2s(abs, diff);
 
@@ -2021,7 +2020,7 @@ void daCow_c::executeCrazyDash() {
         mSound.startCreatureVoice(Z2SE_GOAT_V_ANGRY, -1);
     }
     if (mPointIndex == 4 || mPointIndex == 5) {
-        cLib_chaseS(&field_0xc3e.z, 0x1000, 0x400);
+        cLib_chaseS(&mJoint8Offset.z, 0x1000, 0x400);
 
         if (anyFlagsSet()) {
             if (getCrazyBeforeCatch()) {
@@ -2099,7 +2098,7 @@ void daCow_c::executeCrazyDash() {
 void daCow_c::initCrazyBeforeCatch(int param_0) {
     mCrazy = daCow_Crazy_BeforeCatch_e;
     speedF = 0.0f;
-    field_0xc3e.z = 0;
+    mJoint8Offset.z = 0;
     field_0xc63 = 1;
     gravity = 0.0f;
 }
@@ -2127,7 +2126,7 @@ void daCow_c::initCrazyCatch(int param_0) {
     setBck(23, 0, 0.0f, 1.0f);
     mCrazy = daCow_Crazy_Catch_e;
     speedF = 0.0f;
-    field_0xc3e.z = 0;
+    mJoint8Offset.z = 0;
     field_0xc60 = 0;
     calcCatchPos(-220.0f, 1);
 
@@ -2340,7 +2339,7 @@ void daCow_c::executeCrazyThrow() {
 
 /* 8065F088-8065F144 006BA8 00BC+00 3/3 0/0 0/0 .text            initCrazyAttack__7daCow_cFi */
 void daCow_c::initCrazyAttack(int playerMoving) {
-    field_0xc3e.z = 0;
+    mJoint8Offset.z = 0;
     mCrazy = daCow_Crazy_Attack_e;
     if (playerMoving) {
         mAction = 1;
@@ -2408,7 +2407,7 @@ void daCow_c::executeCrazyAway() {
 
     mShouldSetEffect = 1;
     cLib_chaseF(&speedF, 30.0f, 2.0f);
-    cLib_chaseS(&field_0xc3e.z, 0x1000, 0x400);
+    cLib_chaseS(&mJoint8Offset.z, 0x1000, 0x400);
 
     cXyz pointPos = dPath_GetPnt(mPath, mPointIndex)->m_position;
     cLib_addCalcAngleS(&current.angle.y, cLib_targetAngleY(&current.pos, &pointPos), 0x10, 0x800,
@@ -2655,9 +2654,9 @@ void daCow_c::action_crazy() {
         dComIfGoat_SetThrow(0);
         field_0xca6 = 0;
         field_0xcb0 = 0;
-        field_0xc3e.z = 0;
-        field_0xc38.y = 0;
-        field_0xc3e.y = 0;
+        mJoint8Offset.z = 0;
+        mJoint1Offset.y = 0;
+        mJoint8Offset.y = 0;
     }
 }
 
@@ -2783,9 +2782,9 @@ void daCow_c::action_thrown() {
         }
         break;
     case daCow_Mode_Done_e:
-        field_0xc3e.z = 0;
-        field_0xc38.y = 0;
-        field_0xc3e.y = 0;
+        mJoint8Offset.z = 0;
+        mJoint1Offset.y = 0;
+        mJoint8Offset.y = 0;
         dComIfGoat_SetThrow(0);
     }
 }
@@ -2929,7 +2928,7 @@ void daCow_c::action_wolf() {
             }
         } break;
         }
-        cLib_chaseS(&field_0xc3e.z, 0, 0x400);
+        cLib_chaseS(&mJoint8Offset.z, 0, 0x400);
         break;
     case daCow_Mode_Active_e:
         break;
@@ -2938,9 +2937,9 @@ void daCow_c::action_wolf() {
         mTimer2 = 0;
         mTimer1 = 0;
         field_0xcb0 = 0.0f;
-        field_0xc3e.z = 0;
-        field_0xc38.y = 0;
-        field_0xc3e.y = 0;
+        mJoint8Offset.z = 0;
+        mJoint1Offset.y = 0;
+        mJoint8Offset.y = 0;
 
         attention_info.flags &= ~0x1;
 
@@ -3021,7 +3020,7 @@ void daCow_c::action() {
 void daCow_c::setMtx() {
     if (mpMorf) {
         mDoMtx_stack_c::transS(current.pos);
-        mDoMtx_stack_c::ZXYrotM(field_0xc2c);
+        mDoMtx_stack_c::ZXYrotM(mGroundTransform);
         mDoMtx_stack_c::ZXYrotM(mSavedAngle);
         mpMorf->getModel()->setBaseTRMtx(mDoMtx_stack_c::get());
         mpMorf->modelCalc();
@@ -3100,7 +3099,7 @@ int daCow_c::Execute() {
     if (!field_0xca6) {
         fopAcM_posMoveF(this, mCcStts.GetCCMoveP());
         mAcch.CrrPos(dComIfG_Bgsp());
-        field_0xc44 = mAcch.GetGroundH();
+        mGroundHeight = mAcch.GetGroundH();
         setEffect();
         mpMorf->play(0, dComIfGp_getReverb(fopAcM_GetRoomNo(this)));
 
@@ -3205,7 +3204,7 @@ u8 daCow_c::initialize() {
     fopAcM_OnStatus(this, 0x8000000);
     mAcch.CrrPos(dComIfG_Bgsp());
 
-    field_0xc44 = mAcch.GetGroundH();
+    mGroundHeight = mAcch.GetGroundH();
 
     attention_info.distances[4] = 0x28;
     attention_info.distances[0] = 0x16;
@@ -3344,11 +3343,11 @@ int daCow_c::ctrlJoint(J3DJoint* joint, J3DModel* model) {
 
     switch (jointNo) {
     case 1:
-        mDoMtx_stack_c::YrotM(field_0xc38.y);
+        mDoMtx_stack_c::YrotM(mJoint1Offset.y);
         break;
     case 8:
-        mDoMtx_stack_c::ZrotM(field_0xc3e.z);
-        mDoMtx_stack_c::YrotM(field_0xc3e.y);
+        mDoMtx_stack_c::ZrotM(mJoint8Offset.z);
+        mDoMtx_stack_c::YrotM(mJoint8Offset.y);
         break;
     }
 
@@ -3417,13 +3416,13 @@ int daCow_c::Draw() {
         cXyz arg(0.0f, 0.0f, -20.0f);
 
         cLib_offsetPos(&shadowPos, &current.pos, current.angle.y, &arg);
-        dComIfGd_setSimpleShadow(&current.pos, field_0xc44, 90.0f, mAcch.m_gnd, 0, 1.0f,
+        dComIfGd_setSimpleShadow(&current.pos, mGroundHeight, 90.0f, mAcch.m_gnd, 0, 1.0f,
                                  dDlst_shadowControl_c::getSimpleTex());
 
         arg.set(0.0f, 0.0f, 120.0f);
 
         cLib_offsetPos(&shadowPos, &current.pos, current.angle.y, &arg);
-        dComIfGd_setSimpleShadow(&shadowPos, field_0xc44, 50.0f, mAcch.m_gnd, 0, 1.0f,
+        dComIfGd_setSimpleShadow(&shadowPos, mGroundHeight, 50.0f, mAcch.m_gnd, 0, 1.0f,
                                  dDlst_shadowControl_c::getSimpleTex());
 
     } else {
@@ -3434,8 +3433,8 @@ int daCow_c::Draw() {
             }
         }
         field_0xc64 = dComIfGd_setShadow(field_0xc64, 1, model, &current.pos, fVar1, 0.0f,
-                                         current.pos.y, field_0xc44, mAcch.m_gnd, &tevStr, 0, 1.0f,
-                                         dDlst_shadowControl_c::getSimpleTex());
+                                         current.pos.y, mGroundHeight, mAcch.m_gnd, &tevStr, 0,
+                                         1.0f, dDlst_shadowControl_c::getSimpleTex());
     }
     tevStr.TevColor.r = field_0xcac * 50.0f;
     return 1;

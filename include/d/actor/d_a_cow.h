@@ -166,19 +166,19 @@ private:
     /* 0xc10 */ s8 mPointIndex;
     /* 0xc14 */ cXyz mJointPos;
     /* 0xc20 */ cXyz field_0xc20;
-    /* 0xc2c */ csXyz field_0xc2c;
+    /* 0xc2c */ csXyz mGroundTransform;
     /* 0xc32 */ csXyz mSavedAngle;
-    /* 0xc38 */ csXyz field_0xc38;
-    /* 0xc3e */ csXyz field_0xc3e;
-    /* 0xc44 */ f32 field_0xc44;
+    /* 0xc38 */ csXyz mJoint1Offset;
+    /* 0xc3e */ csXyz mJoint8Offset;
+    /* 0xc44 */ f32 mGroundHeight;
     /* 0xc48 */ void (daCow_c::*mProcess)();
-    /* 0xc54 */ int field_0xc54;
-    /* 0xc58 */ int field_0xc58;
+    /* 0xc54 */ int mTimer6;
+    /* 0xc58 */ int mTimer7;
     /* 0xc5c */ u16 mMode;
     /* 0xc5e */ s8 mAnimationPhase;
     /* 0xc5f */ u8 mPrm0;
     /* 0xc60 */ u8 field_0xc60;
-    /* 0xc61 */ u8 mAction;  // s8 or u8?
+    /* 0xc61 */ u8 mAction;
     /* 0xc62 */ u8 mJointIndex;
     /* 0xc63 */ u8 field_0xc63;
     /* 0xc64 */ u32 field_0xc64;
@@ -193,8 +193,8 @@ private:
     /* 0xc7c */ f32 mSpeed;
     /* 0xc80 */ int field_0xc80;
     /* 0xc84 */ s32 field_0xc84;
-    /* 0xc88 */ int mTimer5;  // some timer
-    /* 0xc8c */ int mTimer4;  // some timer
+    /* 0xc88 */ int mTimer5;
+    /* 0xc8c */ int mTimer4;
     /* 0xc90 */ s32 mTimer1;
     /* 0xc94 */ s32 mTimer2;
     /* 0xc98 */ s32 field_0xc98;
