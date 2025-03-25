@@ -134,14 +134,14 @@ private:
     /* 0x860 */ dCcD_Sph mSph[N_COW_COLLIDERS];
     /* 0xc08 */ daCow_c* mCowP;
     /* 0xc0c */ dPath* mPath;
-    /* 0xc10 */ s8 field_0xc10;
+    /* 0xc10 */ s8 mPointIndex;
     /* 0xc11 */ u8 field_0xc11;  // undefined
     /* 0xc12 */ u8 field_0xc12;  // undefined
     /* 0xc13 */ u8 field_0xc13;  // undefined
     /* 0xc14 */ cXyz field_0xc14;
     /* 0xc20 */ cXyz field_0xc20;
     /* 0xc2c */ csXyz field_0xc2c;
-    /* 0xc32 */ csXyz field_0xc32;
+    /* 0xc32 */ csXyz mSavedAngle;
     /* 0xc38 */ csXyz field_0xc38;
     /* 0xc3e */ csXyz field_0xc3e;
     /* 0xc44 */ f32 field_0xc44;
