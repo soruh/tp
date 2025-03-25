@@ -981,8 +981,8 @@ void daCow_c::checkBeforeBg() {
         for (int iPlane = 0; iPlane < 3; iPlane++) {
             c = b;
             if (!iPlane) {
-                c.x += f1 * cM_ssin(field_0xc32.y + x[0]);
-                c.z += f1 * cM_scos(field_0xc32.y + x[0]);
+                c.x += f1 * cM_ssin(field_0xc32.y + x[iPlane]);
+                c.z += f1 * cM_scos(field_0xc32.y + x[iPlane]);
             } else {
                 c.x += f2 * cM_ssin(field_0xc32.y + x[iPlane]);
                 c.z += f2 * cM_scos(field_0xc32.y + x[iPlane]);
@@ -992,7 +992,7 @@ void daCow_c::checkBeforeBg() {
             linChk.Set(&b, &c, this);
             if (dComIfG_Bgsp().LineCross(&linChk)) {
                 planeTri[iPlane] = dComIfG_Bgsp().GetTriPla(linChk, &planes[iPlane]);
-                if ((f32)fabs(planes[iPlane].mNormal.y) >= cM_ssin(0x6000)) {
+                if ((f32)fabs(planes[iPlane].mNormal.y) <= cM_ssin(0x6000)) {
                     a = current.pos - linChk.GetCross();
                     y[iPlane] = a.absXZ();
                     z[iPlane] = cM_atan2s(planes[iPlane].mNormal.x, planes[iPlane].mNormal.z);
