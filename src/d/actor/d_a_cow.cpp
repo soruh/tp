@@ -2214,7 +2214,7 @@ void daCow_c::initCrazyThrow(int param_1) {
     mAction = param_1;
 
     field_0xc60 = 0;
-    field_0xc62 = 1;
+    mJointIndex = 1;
     mCrazy = daCow_Crazy_Throw_e;
     gravity = 0.0f;
     speedF = 0.0f;
@@ -2245,7 +2245,7 @@ void daCow_c::executeCrazyThrow() {
         }
         if (mpMorf->checkFrame(34.0f)) {
             field_0xc60 = 1;
-            field_0xc62 = 2;
+            mJointIndex = 2;
             field_0xc63 = 0;
             gravity = -4.0f;
 
@@ -2282,7 +2282,7 @@ void daCow_c::executeCrazyThrow() {
 
     case 2:
         cLib_chaseAngleS(&mSavedAngle.x, 0, 0x800);
-        field_0xc62 = 3;
+        mJointIndex = 3;
 
         if (mAcch.ChkGroundHit()) {
             shape_angle.x = mSavedAngle.x;
@@ -2293,7 +2293,7 @@ void daCow_c::executeCrazyThrow() {
             speed.y = 0.0f;
             mTimer1 = 90;
             field_0xc60 = 3;
-            field_0xc62 = 0;
+            mJointIndex = 0;
             mShouldSetEffect = 2;
 
             if (mAction) {
@@ -3091,7 +3091,7 @@ void daCow_c::setCollisions() {
 /* 80661940-80661AD0 009460 0190+00 2/2 0/0 0/0 .text            Execute__7daCow_cFv */
 int daCow_c::Execute() {
     field_0xc68++;
-    field_0xc62 = 0;
+    mJointIndex = 0;
 
     attention_info.flags &= ~0x10;
     attention_info.flags &= ~0x80;
@@ -3358,24 +3358,24 @@ int daCow_c::ctrlJoint(J3DJoint* joint, J3DModel* model) {
     cXyz currentMtx;
 
     if (!jointNo) {
-        switch (field_0xc62) {
+        switch (mJointIndex) {
         case 1:
-            field_0xc14.set(J3DSys::mCurrentMtx[0][3], J3DSys::mCurrentMtx[1][3],
-                            J3DSys::mCurrentMtx[2][3]);
+            mJointPos.set(J3DSys::mCurrentMtx[0][3], J3DSys::mCurrentMtx[1][3],
+                          J3DSys::mCurrentMtx[2][3]);
             break;
         case 2: {
             currentMtx.set(J3DSys::mCurrentMtx[0][3], J3DSys::mCurrentMtx[1][3],
                            J3DSys::mCurrentMtx[2][3]);
 
-            cXyz currentOffset = field_0xc14 - current.pos;
-            currentMtx = field_0xc14 - currentMtx;
+            cXyz currentOffset = mJointPos - current.pos;
+            currentMtx = mJointPos - currentMtx;
             current.pos -= currentMtx;
-            field_0xc14 = currentOffset;
+            mJointPos = currentOffset;
 
-            field_0xc14.y -= 50.0f;
+            mJointPos.y -= 50.0f;
         } break;
         case 3: {
-            currentMtx = current.pos + field_0xc14;
+            currentMtx = current.pos + mJointPos;
             J3DSys::mCurrentMtx[0][3] = currentMtx.x;
             J3DSys::mCurrentMtx[1][3] = currentMtx.y;
             J3DSys::mCurrentMtx[2][3] = currentMtx.z;

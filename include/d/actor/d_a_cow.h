@@ -164,7 +164,7 @@ private:
     /* 0xc08 */ daCow_c* mCowP;
     /* 0xc0c */ dPath* mPath;
     /* 0xc10 */ s8 mPointIndex;
-    /* 0xc14 */ cXyz field_0xc14;
+    /* 0xc14 */ cXyz mJointPos;
     /* 0xc20 */ cXyz field_0xc20;
     /* 0xc2c */ csXyz field_0xc2c;
     /* 0xc32 */ csXyz mSavedAngle;
@@ -179,7 +179,7 @@ private:
     /* 0xc5f */ u8 mPrm0;
     /* 0xc60 */ u8 field_0xc60;
     /* 0xc61 */ u8 mAction;  // s8 or u8?
-    /* 0xc62 */ u8 field_0xc62;
+    /* 0xc62 */ u8 mJointIndex;
     /* 0xc63 */ u8 field_0xc63;
     /* 0xc64 */ u32 field_0xc64;
     /* 0xc68 */ u8 field_0xc68;
