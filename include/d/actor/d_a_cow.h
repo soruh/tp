@@ -177,7 +177,7 @@ private:
     /* 0xc9c */ u8 field_0xc9c;
     /* 0xc9d */ u8 field_0xc9d;
     /* 0xc9e */ u8 field_0xc9e;
-    /* 0xc9f */ u8 field_0xc9f;
+    /* 0xc9f */ u8 mCrazy;
     /* 0xca0 */ u8 field_0xca0;
     /* 0xca1 */ u8 field_0xca1;
     /* 0xca2 */ u8 field_0xca2;  // undefined
@@ -202,5 +202,17 @@ private:
 };
 
 STATIC_ASSERT(sizeof(daCow_c) == 0xd40);
+
+enum daCow_Crazy {
+    daCow_Crazy_Wait_e = 0,
+    daCow_Crazy_Dash_e = 1,
+    daCow_Crazy_BeforeCatch_e = 2,
+    daCow_Crazy_Catch_e = 3,
+    daCow_Crazy_Throw_e = 4,
+    daCow_Crazy_Attack_e = 5,
+    daCow_Crazy_Away_e = 6,
+    daCow_Crazy_End_e = 7,
+    daCow_Crazy_Back_e = 8,
+};
 
 #endif /* D_A_COW_H */
