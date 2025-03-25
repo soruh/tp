@@ -3226,21 +3226,18 @@ u8 daCow_c::initialize() {
         setCowInCage();
     }
 
-    dStage_dPnt_c* point;
-
     switch (mPrm0) {
-    case 3:
-        if (getUnknownParam() != (u8)-1) {  // todo
+    case 3: {
+        if (getUnknownParam() != (u8)-1) {
             mPath = dPath_GetRoomPath(fopAcM_GetParam(this), fopAcM_GetRoomNo(this));
             field_0xc10 = 0;
 
-            point = dPath_GetPnt(mPath, field_0xc10);
+            dStage_dPnt_c* point = dPath_GetPnt(mPath, field_0xc10);
             current.pos = point->m_position;
 
             setProcess(&daCow_c::action_crazy, 0);
         }
-        break;
-
+    } break;
     case 4:
         field_0xca5 = 1;
     default:
