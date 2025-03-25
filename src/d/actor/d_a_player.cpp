@@ -8,10 +8,10 @@
 #include "JSystem/JKernel/JKRSolidHeap.h"
 #include "SSystem/SComponent/c_math.h"
 #include "d/actor/d_a_alink.h"
+#include "m_Do/m_Do_lib.h"
 #include "d/actor/d_a_boomerang.h"
 #include "d/actor/d_a_midna.h"
 #include "d/actor/d_a_spinner.h"
-#include "m_Do/m_Do_lib.h"
 
 bool daPy_frameCtrl_c::checkAnmEnd() {
     if (getEndFlg() != 0 && getNowSetFlg() == 0) {
@@ -145,52 +145,44 @@ u32 daPy_py_c::setParamData(int param_0, int param_1, int param_2, int param_3) 
 /* 8015EA20-8015EA48 159360 0028+00 0/0 10/10 3/3 .text            checkFishingRodItem__9daPy_py_cFi
  */
 BOOL daPy_py_c::checkFishingRodItem(int i_itemNo) {
-    return i_itemNo == fpcNm_ITEM_FISHING_ROD_1 ||
-           (i_itemNo >= fpcNm_ITEM_BEE_ROD && i_itemNo <= fpcNm_ITEM_JEWEL_WORM_ROD);
+    return i_itemNo == fpcNm_ITEM_FISHING_ROD_1 || (i_itemNo >= fpcNm_ITEM_BEE_ROD && i_itemNo <= fpcNm_ITEM_JEWEL_WORM_ROD);
 }
 
 /* 8015EA48-8015EA88 159388 0040+00 0/0 3/3 0/0 .text            checkBombItem__9daPy_py_cFi */
 BOOL daPy_py_c::checkBombItem(int i_itemNo) {
-    return i_itemNo == fpcNm_ITEM_NORMAL_BOMB || i_itemNo == fpcNm_ITEM_WATER_BOMB ||
-           i_itemNo == fpcNm_ITEM_POKE_BOMB;
+    return i_itemNo == fpcNm_ITEM_NORMAL_BOMB || i_itemNo == fpcNm_ITEM_WATER_BOMB || i_itemNo == fpcNm_ITEM_POKE_BOMB;
 }
 
 /* 8015EA88-8015EAD8 1593C8 0050+00 0/0 5/5 0/0 .text            checkBottleItem__9daPy_py_cFi */
 BOOL daPy_py_c::checkBottleItem(int i_itemNo) {
-    return (i_itemNo >= fpcNm_ITEM_EMPTY_BOTTLE && i_itemNo <= fpcNm_ITEM_FAIRY) ||
-           i_itemNo == fpcNm_ITEM_BEE_CHILD || i_itemNo == fpcNm_ITEM_WORM ||
-           i_itemNo == fpcNm_ITEM_FAIRY_DROP || i_itemNo == fpcNm_ITEM_CHUCHU_BLACK ||
+    return (i_itemNo >= fpcNm_ITEM_EMPTY_BOTTLE && i_itemNo <= fpcNm_ITEM_FAIRY) || i_itemNo == fpcNm_ITEM_BEE_CHILD ||
+           i_itemNo == fpcNm_ITEM_WORM || i_itemNo == fpcNm_ITEM_FAIRY_DROP || i_itemNo == fpcNm_ITEM_CHUCHU_BLACK ||
            (i_itemNo >= fpcNm_ITEM_CHUCHU_RARE && i_itemNo <= fpcNm_ITEM_LV3_SOUP);
 }
 
 /* 8015EAD8-8015EB40 159418 0068+00 0/0 3/3 0/0 .text            checkDrinkBottleItem__9daPy_py_cFi
  */
 BOOL daPy_py_c::checkDrinkBottleItem(int i_itemNo) {
-    return (i_itemNo >= fpcNm_ITEM_RED_BOTTLE && i_itemNo <= fpcNm_ITEM_HALF_MILK_BOTTLE) ||
-           i_itemNo == fpcNm_ITEM_RED_BOTTLE_2 || i_itemNo == fpcNm_ITEM_UGLY_SOUP ||
-           i_itemNo == fpcNm_ITEM_HOT_SPRING || i_itemNo == fpcNm_ITEM_BEE_CHILD ||
+    return (i_itemNo >= fpcNm_ITEM_RED_BOTTLE && i_itemNo <= fpcNm_ITEM_HALF_MILK_BOTTLE) || i_itemNo == fpcNm_ITEM_RED_BOTTLE_2 ||
+           i_itemNo == fpcNm_ITEM_UGLY_SOUP || i_itemNo == fpcNm_ITEM_HOT_SPRING || i_itemNo == fpcNm_ITEM_BEE_CHILD ||
            i_itemNo == fpcNm_ITEM_CHUCHU_BLACK || i_itemNo == fpcNm_ITEM_FAIRY_DROP ||
-           (i_itemNo >= fpcNm_ITEM_CHUCHU_RARE && i_itemNo != fpcNm_ITEM_CHUCHU_YELLOW &&
-            i_itemNo <= fpcNm_ITEM_LV3_SOUP);
+           (i_itemNo >= fpcNm_ITEM_CHUCHU_RARE && i_itemNo != fpcNm_ITEM_CHUCHU_YELLOW && i_itemNo <= fpcNm_ITEM_LV3_SOUP);
 }
 
 /* 8015EB40-8015EB68 159480 0028+00 0/0 4/4 0/0 .text            checkOilBottleItem__9daPy_py_cFi */
 BOOL daPy_py_c::checkOilBottleItem(int i_itemNo) {
-    return i_itemNo == fpcNm_ITEM_CHUCHU_YELLOW || i_itemNo == fpcNm_ITEM_OIL_BOTTLE_2 ||
-           i_itemNo == fpcNm_ITEM_OIL_BOTTLE;
+    return i_itemNo == fpcNm_ITEM_CHUCHU_YELLOW || i_itemNo == fpcNm_ITEM_OIL_BOTTLE_2 || i_itemNo == fpcNm_ITEM_OIL_BOTTLE;
 }
 
 /* 8015EB68-8015EB90 1594A8 0028+00 0/0 2/2 0/0 .text            checkOpenBottleItem__9daPy_py_cFi
  */
 BOOL daPy_py_c::checkOpenBottleItem(int i_itemNo) {
-    return i_itemNo == fpcNm_ITEM_WATER_BOTTLE || i_itemNo == fpcNm_ITEM_WORM ||
-           i_itemNo == fpcNm_ITEM_FAIRY;
+    return i_itemNo == fpcNm_ITEM_WATER_BOTTLE || i_itemNo == fpcNm_ITEM_WORM || i_itemNo == fpcNm_ITEM_FAIRY;
 }
 
 /* 8015EB90-8015EBB8 1594D0 0028+00 0/0 11/11 0/0 .text            checkBowItem__9daPy_py_cFi */
 BOOL daPy_py_c::checkBowItem(int i_itemNo) {
-    return i_itemNo == fpcNm_ITEM_BOW || i_itemNo == fpcNm_ITEM_BOMB_ARROW ||
-           i_itemNo == fpcNm_ITEM_HAWK_ARROW;
+    return i_itemNo == fpcNm_ITEM_BOW || i_itemNo == fpcNm_ITEM_BOMB_ARROW || i_itemNo == fpcNm_ITEM_HAWK_ARROW;
 }
 
 /* 8015EBB8-8015EBD8 1594F8 0020+00 0/0 23/23 0/0 .text            checkHookshotItem__9daPy_py_cFi
@@ -201,9 +193,8 @@ BOOL daPy_py_c::checkHookshotItem(int i_itemNo) {
 
 /* 8015EBD8-8015EC28 159518 0050+00 0/0 3/3 0/0 .text            checkTradeItem__9daPy_py_cFi */
 BOOL daPy_py_c::checkTradeItem(int i_itemNo) {
-    return (i_itemNo >= fpcNm_ITEM_LETTER && i_itemNo <= fpcNm_ITEM_IRIAS_PENDANT) ||
-           i_itemNo == fpcNm_ITEM_ANCIENT_DOCUMENT || i_itemNo == fpcNm_ITEM_AIR_LETTER ||
-           i_itemNo == fpcNm_ITEM_ANCIENT_DOCUMENT2 || i_itemNo == fpcNm_ITEM_RAFRELS_MEMO ||
+    return (i_itemNo >= fpcNm_ITEM_LETTER && i_itemNo <= fpcNm_ITEM_IRIAS_PENDANT) || i_itemNo == fpcNm_ITEM_ANCIENT_DOCUMENT ||
+           i_itemNo == fpcNm_ITEM_AIR_LETTER || i_itemNo == fpcNm_ITEM_ANCIENT_DOCUMENT2 || i_itemNo == fpcNm_ITEM_RAFRELS_MEMO ||
            i_itemNo == fpcNm_ITEM_TKS_LETTER || i_itemNo == fpcNm_ITEM_ASHS_SCRIBBLING;
 }
 
@@ -469,6 +460,10 @@ BOOL daPy_py_c::checkWoodShieldEquip() {
     return equipShield == fpcNm_ITEM_WOOD_SHIELD || equipShield == fpcNm_ITEM_SHIELD;
 }
 
+BOOL daPy_py_c::checkNowWolf() {
+    return dComIfGp_getLinkPlayer()->checkWolf();
+}
+
 /* 8015F3FC-8015F424 159D3C 0028+00 0/0 4/4 3/3 .text            getAttentionOffsetY__9daPy_py_cFv
  */
 f32 daPy_py_c::getAttentionOffsetY() {
@@ -548,7 +543,8 @@ bool daPy_py_c::checkRoomRestartStart() {
 
 /* 8015F698-8015F730 159FD8 0098+00 0/0 2/2 1/1 .text checkCarryStartLightBallA__9daPy_py_cFv */
 u32 daPy_py_c::checkCarryStartLightBallA() {
-    if (checkRoomRestartStart() || !dComIfGp_getStage() || !dComIfGp_getStage()->getStagInfo() ||
+    if (checkRoomRestartStart() || !dComIfGp_getStage() ||
+        !dComIfGp_getStage()->getStagInfo() ||
         i_dStage_stagInfo_GetSaveTbl(dComIfGp_getStage()->getStagInfo()) != 0x17)
     {
         return FALSE;
@@ -559,7 +555,8 @@ u32 daPy_py_c::checkCarryStartLightBallA() {
 
 /* 8015F730-8015F7C8 15A070 0098+00 0/0 2/2 1/1 .text checkCarryStartLightBallB__9daPy_py_cFv */
 u32 daPy_py_c::checkCarryStartLightBallB() {
-    if (checkRoomRestartStart() || !dComIfGp_getStage() || !dComIfGp_getStage()->getStagInfo() ||
+    if (checkRoomRestartStart() || !dComIfGp_getStage() ||
+        !dComIfGp_getStage()->getStagInfo() ||
         i_dStage_stagInfo_GetSaveTbl(dComIfGp_getStage()->getStagInfo()) != 0x17)
     {
         return FALSE;
