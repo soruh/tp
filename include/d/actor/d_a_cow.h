@@ -162,7 +162,7 @@ private:
     /* 0xc6b */ u8 field_0xc6b;  // undefined
     /* 0xc6c */ f32 field_0xc6c;
     /* 0xc70 */ s16 field_0xc70;
-    /* 0xc72 */ s16 field_0xc72;
+    /* 0xc72 */ s16 mTargetAngle;
     /* 0xc74 */ s16 field_0xc74;
     /* 0xc76 */ s16 field_0xc76;
     /* 0xc78 */ f32 field_0xc78;

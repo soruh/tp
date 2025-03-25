@@ -1206,11 +1206,9 @@ bool daCow_c::checkCowInOwn(int param_1) {
 
 /* 8065BC68-8065C32C 003788 06C4+00 9/0 0/0 0/0 .text            action_run__7daCow_cFv */
 void daCow_c::action_run() {
-    f32 fVar11;
-
     switch (mMode) {
     case 0:
-        calcRunAnime(1);
+        calcRunAnime(true);
         mMode = 1;
         field_0xc90 = 0x1e;
         field_0xc94 = 0x32;
@@ -1219,7 +1217,7 @@ void daCow_c::action_run() {
         field_0xc9d = 0;
         break;
     case 1: {
-        calcRunAnime(0);
+        calcRunAnime(false);
 
         if (field_0xc90) {
             field_0xc90--;
@@ -1231,7 +1229,7 @@ void daCow_c::action_run() {
             field_0xca3--;
         }
 
-        fVar11 = 1.0f;
+        f32 fVar11 = 1.0f;
         if (field_0xc94 == 0) {
             mCowP = 0;
         }
@@ -1302,40 +1300,40 @@ void daCow_c::action_run() {
             }
         }
         if ((field_0xc54 == 0) || (field_0xc54 == 10)) {
-            s16 sVar3 = current.angle.y;
+            s16 targetAngle = current.angle.y;
             if (!field_0xca2 && mCowP) {
-                sVar3 = getCowP()->field_0xc32.y;
+                targetAngle = getCowP()->field_0xc32.y;
             }
 
             switch (field_0xc61) {
             case 1:
-                sVar3 -= 0x1000;
+                targetAngle -= 0x1000;
                 break;
             case 2:
-                sVar3 += 0x1000;
+                targetAngle += 0x1000;
                 break;
             case 3:
-                sVar3 -= 0x4000;
+                targetAngle -= 0x4000;
                 break;
             case 4:
-                sVar3 += 0x4000;
+                targetAngle += 0x4000;
                 break;
             case 0: {
-                s16 sVar7 = getCowshedAngle();
+                s16 cowshedAngle = getCowshedAngle();
                 s16 playerAngle = fopAcM_searchPlayerAngleY(this);
-                sVar3 = playerAngle - (s16)0x8000;
-                if (isChaseCowGame() && cLib_distanceAngleS(sVar7, (field_0xc32).y) < 0x3000 &&
-                    cLib_distanceAngleS(sVar7, playerAngle) > 0x5800)
+                targetAngle = playerAngle - (s16)0x8000;
+                if (isChaseCowGame() && cLib_distanceAngleS(cowshedAngle, field_0xc32.y) < 0x3000 &&
+                    cLib_distanceAngleS(cowshedAngle, playerAngle) > 0x5800)
                 {
-                    sVar3 = sVar7;
+                    targetAngle = cowshedAngle;
                 }
             } break;
             }
 
             if (!havePlayerPos) {
-                sVar3 += field_0xc74;
+                targetAngle += field_0xc74;
             }
-            field_0xc72 = sVar3;
+            mTargetAngle = targetAngle;
         }
 
         int outOfGate = checkOutOfGate(current.pos);
@@ -1345,9 +1343,9 @@ void daCow_c::action_run() {
         }
 
         if (field_0xc9d == 1) {
-            field_0xc72 = gate_dir - (s16)0x8000;
+            mTargetAngle = gate_dir - (s16)0x8000;
         } else if (field_0xc9d == 2) {
-            field_0xc72 = pen_dir - (s16)0x8000;
+            mTargetAngle = pen_dir - (s16)0x8000;
         }
         int cowIn = checkCowIn(800.0f, 300.0f);
         if (cowIn == 1) {
@@ -1379,9 +1377,9 @@ void daCow_c::action_run() {
                 fVar12 = 0.0f;
             }
             cLib_chaseF(&speedF, fVar12, fVar11);
-            cLib_addCalcAngleS2(&current.angle.y, field_0xc72, 8, 0x400);
+            cLib_addCalcAngleS2(&current.angle.y, mTargetAngle, 8, 0x400);
             cLib_addCalcAngleS2(&shape_angle.y, current.angle.y, 8, 0x400);
-            (field_0xc32).y = shape_angle.y;
+            field_0xc32.y = shape_angle.y;
             if (!speedF) {
                 setProcess(&daCow_c::action_wait, 0);
             }
@@ -1483,7 +1481,7 @@ void daCow_c::action_enter() {
 
     switch (mMode) {
     case 0:
-        calcRunAnime(1);
+        calcRunAnime(true);
         mMode = 1;
         field_0xc9f = 0;
         for (int iSphere = 0; iSphere < N_COW_COLLIDERS; iSphere++) {
@@ -1495,26 +1493,26 @@ void daCow_c::action_enter() {
         f32 fVar2 = 30.0f;
         switch (field_0xc9f) {
         case 0:
-            calcRunAnime(0);
+            calcRunAnime(false);
 
             if (penDistanceAbs < 80.0f) {
                 setEnterCount();
             } else {
-                field_0xc72 = getCowshedAngle();
+                mTargetAngle = getCowshedAngle();
                 if (penDistanceAbs < 200.0f) {
-                    cLib_addCalcAngleS2(&current.angle.y, field_0xc72, 4, 0x1000);
+                    cLib_addCalcAngleS2(&current.angle.y, mTargetAngle, 4, 0x1000);
                     cLib_addCalcAngleS2(&shape_angle.y, current.angle.y, 4, 0x1000);
                 } else {
-                    cLib_addCalcAngleS2(&current.angle.y, field_0xc72, 8, 0x800);
+                    cLib_addCalcAngleS2(&current.angle.y, mTargetAngle, 8, 0x800);
                     cLib_addCalcAngleS2(&shape_angle.y, current.angle.y, 8, 0x800);
                 }
                 field_0xc32.y = shape_angle.y;
             }
             break;
         case 1:
-            calcRunAnime(0);
-            field_0xc72 = pen_dir;
-            cLib_addCalcAngleS2(&current.angle.y, field_0xc72, 4, 0x800);
+            calcRunAnime(false);
+            mTargetAngle = pen_dir;
+            cLib_addCalcAngleS2(&current.angle.y, mTargetAngle, 4, 0x800);
             cLib_addCalcAngleS2(&shape_angle.y, current.angle.y, 8, 0x800);
             field_0xc32.y = shape_angle.y;
             if (penDistanceNow.z > 500.0f) {
@@ -1638,10 +1636,10 @@ bool daCow_c::isGuardFad() {
 /* 8065D0B8-8065D17C 004BD8 00C4+00 0/0 0/0 1/1 .text            setAngryHit__7daCow_cFv */
 void daCow_c::setAngryHit() {
     if (isAngry()) {
-        field_0xc72 = field_0xc32.y - (s16)0x8000;
+        mTargetAngle = field_0xc32.y - (s16)0x8000;
         speedF = 0.0f;
         current.angle.y = field_0xc32.y;
-        calcRunAnime(1);
+        calcRunAnime(true);
 
         if (!daPy_getPlayerActorClass()->checkHorseRide() &&
             (u32)daPy_getPlayerActorClass()->checkNowWolf() == (u32)0)
@@ -1706,7 +1704,7 @@ void daCow_c::action_angry() {
     s16 targetZ = 0;
     switch (mMode) {
     case 0:
-        calcRunAnime(1);
+        calcRunAnime(true);
         mMode = 1;
         if (field_0xca0) {
             field_0xc9f = 1;
@@ -1802,7 +1800,7 @@ void daCow_c::action_angry() {
 
         switch (field_0xc9f) {
         case 0:
-            calcRunAnime(0);
+            calcRunAnime(false);
             mShouldSetEffect = 1;
             targetZ = 0x2000;
             if (checkBeforeBgAngry(0)) {
@@ -1817,7 +1815,7 @@ void daCow_c::action_angry() {
             field_0xc32.y = shape_angle.y;
             break;
         case 1: {
-            calcRunAnime(0);
+            calcRunAnime(false);
             mShouldSetEffect = 1;
             targetZ = 0x2000;
             targetSpeed = 50.0f;
@@ -1843,9 +1841,9 @@ void daCow_c::action_angry() {
                 return;
             }
             if (field_0xc94) {
-                field_0xc72 = current.angle.y;
+                mTargetAngle = current.angle.y;
             } else {
-                field_0xc72 = playerAngle;
+                mTargetAngle = playerAngle;
                 s16 angleToPlayer = cLib_distanceAngleS(playerAngle, field_0xc32.y);
 
                 if (player->getSpeedF() > 5.0f) {
@@ -1875,14 +1873,14 @@ void daCow_c::action_angry() {
                 (dComIfGp_getAttention().LockonTarget(0) == this) &&
                 (s16)cLib_distanceAngleS(playerAngle, field_0xc32.y) < 0x800)
             {
-                field_0xc72 = playerAngle;
+                mTargetAngle = playerAngle;
                 lockedOn = true;
             }
 
             if (lockedOn) {
-                cLib_chaseAngleS(&current.angle.y, field_0xc72, 0x800);
+                cLib_chaseAngleS(&current.angle.y, mTargetAngle, 0x800);
             } else {
-                cLib_addCalcAngleS2(&current.angle.y, field_0xc72, 0x10, 0x400);
+                cLib_addCalcAngleS2(&current.angle.y, mTargetAngle, 0x10, 0x400);
             }
             cLib_addCalcAngleS2(&shape_angle.y, current.angle.y, 4, 0x800);
             field_0xc32.y = shape_angle.y;
@@ -1890,28 +1888,28 @@ void daCow_c::action_angry() {
             break;
         }
         case 2:
-            calcRunAnime(0);
+            calcRunAnime(false);
             if (checkBeforeBgAngry(0)) {
                 speedF = 0.0f;
             }
             if (cLib_chaseF(&speedF, 0.0f, 4.0f)) {
                 field_0xc9f = 3;
-                field_0xc72 = playerAngle;
+                mTargetAngle = playerAngle;
                 current.angle.y = field_0xc32.y;
             }
             break;
         case 4:
-            calcRunAnime(0);
+            calcRunAnime(false);
             if (field_0xc90) {
                 break;
             }
         case 3: {
-            calcRunAnime(0);
+            calcRunAnime(false);
             speedF = 15.0f;
-            cLib_addCalcAngleS2(&current.angle.y, field_0xc72, 8, 0x400);
+            cLib_addCalcAngleS2(&current.angle.y, mTargetAngle, 8, 0x400);
             field_0xc32.y = shape_angle.y = current.angle.y;
-            setBodyAngle(field_0xc72);
-            s32 angleDist = cLib_distanceAngleS(field_0xc72, field_0xc32.y);
+            setBodyAngle(mTargetAngle);
+            s32 angleDist = cLib_distanceAngleS(mTargetAngle, field_0xc32.y);
             if (angleDist < 0x200 && field_0xc3e.y < 0x200) {
                 if (field_0xc9f == 4) {
                     setProcess(&daCow_c::action_run, 0);
@@ -1936,7 +1934,7 @@ void daCow_c::action_angry() {
 
             if (mpMorf->isStop()) {
                 field_0xc9f = 1;
-                calcRunAnime(1);
+                calcRunAnime(true);
             }
             return;
         }
@@ -1968,24 +1966,19 @@ void daCow_c::calcCatchPos(f32 distance, int someBool) {
     int angle = cM_atan2s(abs, diff);
 
     cXyz catchPos(0.0f, distance * cM_scos(angle), distance * cM_ssin(angle));
-    shape_angle.x = angle - 0x4000;
-    field_0xc32.x = angle - 0x4000;
+    field_0xc32.x = shape_angle.x = angle - 0x4000;
 
     if (someBool) {
         cLib_addCalcAngleS(&shape_angle.y, offsetAngle, 8, 0x400, 0x100);
-        angle = shape_angle.y;
-        current.angle.y = angle;
-        field_0xc32.y = angle;
-        cXyz target;
+        field_0xc32.y = current.angle.y = shape_angle.y;
         cXyz* pos = &daPy_getPlayerActorClass()->current.pos;
+        cXyz target;
         cLib_offsetPos(&target, pos, offsetAngle, &catchPos);
         cLib_chasePos(&current.pos, target, 30.0f);
     } else {
         cXyz* pos = &daPy_getPlayerActorClass()->current.pos;
         cLib_offsetPos(&current.pos, pos, offsetAngle, &catchPos);
-        shape_angle.y = offsetAngle;
-        current.angle.y = offsetAngle;
-        field_0xc32.y = offsetAngle;
+        field_0xc32.y = current.angle.y = shape_angle.y = offsetAngle;
     }
 }
 
@@ -2399,9 +2392,7 @@ void daCow_c::initCrazyAway(int param_0) {
     if (mPrm0 == 3) {
         setBck(0x14, 2, 0.0f, 1.0f);
     }
-    s16 sVar1 = shape_angle.y;
-    current.angle.y = sVar1;
-    field_0xc32.y = sVar1;
+    field_0xc32.y = current.angle.y = shape_angle.y;
     gravity = -4.0f;
 }
 
@@ -2463,9 +2454,7 @@ void daCow_c::initCrazyBack(int param_0) {
 
     field_0xc90 = 0;
     field_0xc61 = 0;
-    s16 angle = field_0xc32.y;
-    shape_angle.y = angle;
-    current.angle.y = angle;
+    current.angle.y = shape_angle.y = field_0xc32.y;
     field_0xc9f = 8;
 }
 
@@ -2495,7 +2484,7 @@ void daCow_c::executeCrazyBack() {
             if (field_0xc10 < 0) {
                 speedF = 0.0f;
                 field_0xc61 = 3;
-                field_0xc72 = field_0xc32.y - 0x2000;
+                mTargetAngle = field_0xc32.y - 0x2000;
             }
         }
         if (checkNadeNade()) {
@@ -2545,7 +2534,7 @@ void daCow_c::executeCrazyBack() {
                 setBck(0x1c, 2, 10.0f, 1.0f);
                 field_0xc61 = 0;
             } else {
-                calcRunAnime(1);
+                calcRunAnime(true);
                 field_0xc61 = 7;
                 field_0xc90 = 0x1e;
                 speedF = 30.0f;
@@ -2565,7 +2554,7 @@ void daCow_c::executeCrazyBack() {
         cLib_addCalcAngleS(&shape_angle.y, current.angle.y, 8, 0x100, 0x80);
         field_0xc32.y = shape_angle.y;
         setBodyAngle(angle);
-        calcRunAnime(0);
+        calcRunAnime(false);
 
         if (current.pos.abs(pointPos) < 300.0f) {
             field_0xc10 -= 1;
@@ -2850,7 +2839,7 @@ void daCow_c::action_wolf() {
     case 0:
         mMode = 1;
         field_0xc9f = 0;
-        calcRunAnime(1);
+        calcRunAnime(true);
         attention_info.flags |= 1;
         mSound.startCreatureVoice(Z2SE_GOAT_V_ANGRY, -1);
         field_0xc98 = cM_rndF(90.0f) + 90.0f;
@@ -2863,7 +2852,7 @@ void daCow_c::action_wolf() {
             field_0xc98--;
         }
 
-        calcRunAnime(0);
+        calcRunAnime(false);
 
         if (!player->checkNowWolf() || checkOutOfGate(aru->current.pos)) {
             setProcess(&daCow_c::action_run, 0);
@@ -2892,11 +2881,11 @@ void daCow_c::action_wolf() {
             field_0xc20 = aruPos;
             field_0xc20.x += cM_ssin(aruAngle) * 500.0f;
             field_0xc20.z += cM_scos(aruAngle) * 500.0f;
-            field_0xc72 = cLib_targetAngleY(&current.pos, &field_0xc20);
+            mTargetAngle = cLib_targetAngleY(&current.pos, &field_0xc20);
             field_0xc9f = 2;
             field_0xc90 = 0x96;
         case 2: {
-            field_0xc72 = cLib_targetAngleY(&current.pos, &field_0xc20);
+            mTargetAngle = cLib_targetAngleY(&current.pos, &field_0xc20);
 
             f32 fVar13 = current.pos.absXZ(aru->current.pos) / 100.0f;
 
@@ -2905,9 +2894,9 @@ void daCow_c::action_wolf() {
             }
 
             cLib_chaseF(&speedF, fVar13, 1.0f);
-            cLib_addCalcAngleS2(&current.angle.y, field_0xc72, 8, 0x200);
+            cLib_addCalcAngleS2(&current.angle.y, mTargetAngle, 8, 0x200);
             field_0xc32.y = shape_angle.y = current.angle.y;
-            setBodyAngle2(field_0xc72);
+            setBodyAngle2(mTargetAngle);
 
             if (!field_0xc90 || current.pos.absXZ(field_0xc20) < 100.0f || mAcch.ChkWallHit()) {
                 field_0xc9f = 1;
@@ -3229,8 +3218,7 @@ u8 daCow_c::initialize() {
     attention_info.flags = 0;
     mParticle.init(&mAcch, 60.0f, 200.0f);
     current.angle.set(0, home.angle.y, 0);
-    field_0xc32 = current.angle;
-    shape_angle = field_0xc32;
+    shape_angle = field_0xc32 = current.angle;
     speedF = 0.0f;
     speed.set(0.0f, 0.0f, 0.0f);
 
