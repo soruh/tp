@@ -1513,10 +1513,10 @@ void daCow_c::action_enter() {
                     mDoMtx_stack_c::YrotS(pen_dir);
                     mDoMtx_stack_c::multVecSR(&penDistanceNow, &penDistanceNow);
 
-                    field_0xc20 = pen_pos + penDistance;
+                    field_0xc20 = pen_pos + penDistanceNow;
 
                     setBck(0x1b, 2, 12.0f, 1.0f);
-                    speedF = 0x40400000;
+                    speedF = 3.0f;
                     field_0xc9f = 2;
 
                     if ((u32)dMeter2Info_getNowCount() == (u32)dMeter2Info_getMaxCount() &&
@@ -1552,7 +1552,7 @@ void daCow_c::action_enter() {
             if (mpMorf->isStop()) {
                 if (current.pos.abs(field_0xc20) > 100.0f) {
                     field_0xc9f = 2;
-                    speedF = 0x40400000;
+                    speedF = 3.0f;
                     setBck(0x1b, 2, 12.0f, 1.0f);
                 } else {
                     setBck(0xf, 0, 12.0f, 1.0f);
