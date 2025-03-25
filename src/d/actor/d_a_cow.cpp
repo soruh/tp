@@ -1023,41 +1023,41 @@ void daCow_c::checkBeforeBg() {
         return;
     }
 
-    if ((planeTri[1] == 0) || (planeTri[2] == 0)) {
-        if (planeTri[0] != 0) {
-            if (planeTri[1] != 0) {
+    if (!planeTri[1] || !planeTri[2]) {
+        if (planeTri[0]) {
+            if (planeTri[1]) {
                 if (field_0xc60 > 3) {
                     field_0xc61 = 2;
                 } else {
                     field_0xc61 = 4;
                 }
-                return;
-            }
-            if (planeTri[2] != 0) {
-                if (field_0xc60 > 3) {
-                    field_0xc61 = 1;
-                } else {
-                    field_0xc61 = 3;
-                }
-                return;
-            }
-            s16 sVar2 = z[0] - field_0xc32.y;
-            if (abs(sVar2) <= 0x7800) {
-                if (sVar2 > 0) {
-                    field_0xc61 = 4;
-                } else {
-                    field_0xc61 = 3;
-                }
-                return;
-            }
-            if ((field_0xc60 & 1) != 0) {
-                field_0xc61 = 4;
             } else {
-                field_0xc61 = 3;
+                if (planeTri[2]) {
+                    if (field_0xc60 > 3) {
+                        field_0xc61 = 1;
+                    } else {
+                        field_0xc61 = 3;
+                    }
+                    return;
+                }
+                s16 sVar2 = z[0] - field_0xc32.y;
+                if (abs(sVar2) <= 0x7800) {
+                    if (sVar2 > 0) {
+                        field_0xc61 = 4;
+                    } else {
+                        field_0xc61 = 3;
+                    }
+                } else {
+                    if ((field_0xc60 & 1) != 0) {
+                        field_0xc61 = 4;
+                    } else {
+                        field_0xc61 = 3;
+                    }
+                }
             }
             return;
         }
-        if (planeTri[1] != 0) {
+        if (planeTri[1]) {
             switch (field_0xc60) {
             case 0:
             case 1:
@@ -1077,7 +1077,7 @@ void daCow_c::checkBeforeBg() {
             }
             return;
         }
-        if (planeTri[2] == 0) {
+        if (!planeTri[2]) {
             switch (field_0xc60) {
             case 0:
                 field_0xc61 = 3;
@@ -1094,51 +1094,50 @@ void daCow_c::checkBeforeBg() {
             default:
                 field_0xc61 = 0;
             }
-            return;
+        } else {
+            switch (field_0xc60) {
+            case 0:
+            case 1:
+                field_0xc61 = 3;
+                field_0xc54 = 10;
+                break;
+            case 2:
+                field_0xc61 = 1;
+                break;
+            default:
+                if (y[2] < 600.0) {
+                    field_0xc61 = 1;
+                } else {
+                    field_0xc61 = 0;
+                }
+                break;
+            }
         }
-        switch (field_0xc60) {
+    } else {
+        switch (field_0xc61) {
         case 0:
+            break;
         case 1:
             field_0xc61 = 3;
-            field_0xc54 = 10;
             break;
         case 2:
-            field_0xc61 = 1;
+            field_0xc61 = 4;
+            break;
+        case 3:
+            field_0xc61 = 3;
+            break;
+        case 4:
+            field_0xc61 = 4;
             break;
         default:
-            if (y[2] < 600.0) {
-                field_0xc61 = 1;
+            if (field_0xc60 & 1) {
+                field_0xc61 = 4;
             } else {
-                field_0xc61 = 0;
+                field_0xc61 = 3;
             }
-            break;
         }
-        return;
+        field_0xc54 = 10;
     }
-
-    switch (field_0xc61) {
-    case 0:
-        break;
-    case 1:
-        field_0xc61 = 3;
-        break;
-    case 2:
-        field_0xc61 = 4;
-        break;
-    case 3:
-        field_0xc61 = 3;
-        break;
-    case 4:
-        field_0xc61 = 4;
-        break;
-    default:
-        if (field_0xc60 & 1) {
-            field_0xc61 = 4;
-        } else {
-            field_0xc61 = 3;
-        }
-    }
-    field_0xc54 = 10;
 }
 
 /* 8065B760-8065B8A8 003280 0148+00 6/6 0/0 0/0 .text            checkOutOfGate__7daCow_cF4cXyz
