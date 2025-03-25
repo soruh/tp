@@ -21,77 +21,13 @@
 UNK_REL_DATA;
 UNK_REL_BSS;
 
-static dCcD_SrcSph cc_sph_src = {.mObjInf =
-                                     {
-                                         .mObj =
-                                             {
-                                                 .mFlags = 0,
-                                                 .mSrcObjHitInf =
-                                                     {
-                                                         .mObjAt =
-                                                             {
-                                                                 .mType = 0,
-                                                                 .mAtp = 0,
-                                                                 .mBase =
-                                                                     {
-                                                                         .mSPrm = 0,
-                                                                     },
-                                                             },
-                                                         .mObjTg =
-                                                             {
-                                                                 .mType = 0,
-                                                                 .mBase =
-                                                                     {
-                                                                         .mSPrm = 0,
-                                                                     },
-                                                             },
-                                                         .mObjCo =
-                                                             {
-                                                                 .mBase =
-                                                                     {
-                                                                         .mSPrm = 0,
-                                                                     },
-                                                             },
-                                                     },
-                                             },
-                                         .mGObjAt =
-                                             {
-                                                 .mSe = 0,
-                                                 .mHitMark = 0,
-                                                 .mSpl = 0,
-                                                 .mMtrl = 0,
-                                                 .mBase =
-                                                     {
-                                                         .mGFlag = 0,
-                                                     },
-                                             },
-                                         .mGObjTg =
-                                             {
-                                                 .mSe = 0,
-                                                 .mHitMark = 0,
-                                                 .mSpl = 0,
-                                                 .mMtrl = 0,
-                                                 .mBase =
-                                                     {
-                                                         .mGFlag = 0,
-                                                     },
-                                             },
-                                         .mGObjCo =
-                                             {
-                                                 .mBase =
-                                                     {
-                                                         .mGFlag = 0,
-                                                     },
-                                             },
-
-                                     },
-                                 .mSphAttr = {
-                                     .mSph =
-                                         {
-                                             .mCenter = {.x = 0, .y = 0, .z = 0},
-                                             .mRadius = 60.0f,
-                                         },
-                                 }};
+static dCcD_SrcSph cc_sph_src = {{
+                                     {0, {{0, 0, {0}}, {0xfbfdfb, {0x11}}, {{0x79}}}},
+                                     {0, 0, 0, 0, {0}},
+                                     {0, 0, 0, 0, {0x0304}},
+                                     {{0}},
+                                 },
+                                 {{{0, 0, 0}, 60.0f}}};
 
 static s16 pen_dir = -0x4000;
 static s16 gate_dir = -0x8000;
