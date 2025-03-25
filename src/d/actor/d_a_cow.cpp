@@ -1607,7 +1607,7 @@ void daCow_c::action_enter() {
             cLib_chaseF(&speedF, fVar2, 1.5f);
         }
     } break;
-    case daCow_Mode_Active_e:
+    case daCow_Mode_Done_e:
         break;
     }
 
@@ -2975,8 +2975,6 @@ void daCow_c::action_damage() {
     case daCow_Mode_Active_e:
         return;
     case daCow_Mode_Done_e:
-        break;
-    default:
         break;
     }
 }
