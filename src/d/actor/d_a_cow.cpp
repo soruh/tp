@@ -207,8 +207,8 @@ void daCow_c::setActetcStatus() {
 
 /* 80658C78-80658CA4 000798 002C+00 3/3 0/0 0/0 .text            checkNadeNadeFinish__7daCow_cFv */
 bool daCow_c::checkNadeNadeFinish() {
-    if (mFlags & 0x100) {
-        mFlags &= ~0x0100;  // todo: enum
+    if (getNaderuFinish()) {
+        clearNaderuFinish();
         field_0xca8 = 0;
         return true;
     }
@@ -217,8 +217,8 @@ bool daCow_c::checkNadeNadeFinish() {
 
 /* 80658CA4-80658CD0 0007C4 002C+00 5/5 0/0 0/0 .text            checkNadeNade__7daCow_cFv */
 bool daCow_c::checkNadeNade() {
-    if ((mFlags & 0x80) != 0) {
-        mFlags &= ~0x080;  // todo: enum
+    if (getNaderu()) {
+        clearNaderu();
         field_0xca8 = 1;
         return 1;
     }
@@ -241,17 +241,17 @@ void daCow_c::setRushVibration(int i_vibmode) {
 
 /* 80658DB8-80658E98 0008D8 00E0+00 6/6 0/0 0/0 .text            checkThrow__7daCow_cFv */
 bool daCow_c::checkThrow() {
-    if (mFlags != 0) {
-        if ((mFlags & 1) != 0) {
+    if (anyFlagsSet()) {
+        if (getCrazyBeforeCatch()) {
             setProcess(&daCow_c::action_thrown, 0);
             initCrazyBeforeCatch(0);
-            mFlags &= ~0x0001;
+            clearCrazyBeforeCatch();
             return true;
         }
-        if ((mFlags & 2) != 0) {
+        if (getCrazyCatch()) {
             setProcess(&daCow_c::action_thrown, 0);
             initCrazyCatch(0);
-            mFlags &= ~0x0002;
+            clearCrazyCatch();
             return true;
         }
     }
@@ -339,7 +339,7 @@ STATIC_ASSERT(COW_ATTACK_TYPES == 0x482022);
 void daCow_c::damage_check() {
     mCcStts.Move();
 
-    if (field_0xca5) {
+    if (getCowIn()) {
         return;
     }
 
@@ -365,11 +365,11 @@ void daCow_c::damage_check() {
         if (mCrazy == daCow_Crazy_Back_e) {
             if (!mAction) {
                 if (hitObject->ChkAtType(COW_ATTACK_TYPES)) {
-                    field_0xc8c = 150;
+                    mTimer4 = 150;
                 } else {
-                    field_0xc8c += 60;
+                    mTimer4 += 60;
                 }
-                if (field_0xc8c >= 150) {
+                if (mTimer4 >= 150) {
                     mAction = 5;
                 }
             }
@@ -379,11 +379,11 @@ void daCow_c::damage_check() {
     } else if (hitObject->ChkAtType(COW_ATTACK_TYPES)) {
         setProcess(&daCow_c::action_damage, 0);
     } else {
-        field_0xc8c += 60;
-        if (field_0xc8c >= 150) {
+        mTimer4 += 60;
+        if (mTimer4 >= 150) {
             setProcess(&daCow_c::action_damage, 0);
         } else {
-            field_0xc88 = 90;
+            mTimer5 = 90;
 
             if (!checkProcess(&daCow_c::action_wait)) {
                 speedF = 0.0f;
@@ -533,7 +533,7 @@ bool daCow_c::checkRun() {
 
 /* 806599C0-80659ADC 0014E0 011C+00 4/4 0/0 0/0 .text            checkNearCowRun__7daCow_cFv */
 bool daCow_c::checkNearCowRun() {
-    if (field_0xca5) {
+    if (getCowIn()) {
         return false;
     }
 
@@ -600,7 +600,7 @@ void daCow_c::action_wait() {
 
     case daCow_Mode_Active_e:
         angle = 0;
-        if (field_0xc88 > 30) {
+        if (mTimer5 > 30) {
             angle = mSavedAngle.y - fopAcM_searchPlayerAngleY(this);
             CLAMP(angle, -0x2800, 0x2800);
         }
@@ -608,12 +608,12 @@ void daCow_c::action_wait() {
         cLib_addCalcAngleS2(&field_0xc3e.y, angle * 0.9f, 0x10, 0x100);
         cLib_addCalcAngleS2(&field_0xc38.y, angle * 0.1f, 0x10, 0x100);
 
-        if (!field_0xca5) {
+        if (!getCowIn()) {
             if (checkCowInOwn(0x8000)) {
                 return;
             }
             if (field_0xca8) {
-                field_0xc88 = 0;
+                mTimer5 = 0;
                 if (!checkNadeNadeFinish()) {
                     return;
                 }
@@ -640,7 +640,7 @@ void daCow_c::action_wait() {
                 return;
             }
         }
-        if (!cLib_calcTimer(&field_0xc58) && !field_0xc88) {
+        if (!cLib_calcTimer(&field_0xc58) && !mTimer5) {
             if (checkNearWolf()) {
                 setProcess(&daCow_c::action_moo, 0);
             } else {
@@ -660,7 +660,7 @@ void daCow_c::action_wait() {
     case daCow_Mode_Done_e:
         field_0xc38.y = 0;
         field_0xc3e.y = 0;
-        field_0xc88 = 0;
+        mTimer5 = 0;
         field_0xca8 = 0;
         break;
     }
@@ -692,7 +692,7 @@ void daCow_c::action_eat() {
             mSound.startCreatureVoice(Z2SE_GOAT_V_EAT, -1);
         }
 
-        if (!field_0xca5) {
+        if (!getCowIn()) {
             if (checkNearCowRun() || checkPlayerWait()) {
                 setProcess(&daCow_c::action_wait, 0);
                 return;
@@ -758,7 +758,7 @@ void daCow_c::action_moo() {
             mSound.startCreatureVoice(Z2SE_GOAT_V_CRY, -1);
         }
 
-        if (!field_0xca5) {
+        if (!getCowIn()) {
             if (checkNearCowRun() || checkPlayerWait()) {
                 setProcess(&daCow_c::action_wait, 0);
                 return;
@@ -813,7 +813,7 @@ void daCow_c::action_shake() {
             mSound.startCreatureVoice(Z2SE_GOAT_V_NOSE, -1);
         }
 
-        if (!field_0xca5) {
+        if (!getCowIn()) {
             if (checkNearCowRun() || checkPlayerWait()) {
                 setProcess(&daCow_c::action_wait, 0);
                 return;
@@ -877,7 +877,7 @@ bool daCow_c::checkPlayerWait() {
 /* 8065ADB0-8065AE88 0028D0 00D8+00 2/2 0/0 0/0 .text            checkPlayerSurprise__7daCow_cFv
  */
 bool daCow_c::checkPlayerSurprise() {
-    if (field_0xca5 != 0) {
+    if (getCowIn()) {
         return false;
     }
 
@@ -898,7 +898,7 @@ bool daCow_c::checkPlayerSurprise() {
 
 /* 8065AE88-8065B034 0029A8 01AC+00 2/2 0/0 0/0 .text            checkPlayerPos__7daCow_cFv */
 bool daCow_c::checkPlayerPos() {
-    if (field_0xca5) {
+    if (getCowIn()) {
         return false;
     }
 
@@ -1582,7 +1582,7 @@ void daCow_c::action_enter() {
             break;
         case daCow_Crazy_Throw_e:
             speedF = 0;
-            field_0xca5 = 1;
+            setCowIn();
 
             setProcess(&daCow_c::action_wait, 0);
             mAcchCir.SetWall(100.0f, 110.0f);
@@ -1989,19 +1989,19 @@ void daCow_c::calcCatchPos(f32 distance, int someBool) {
 
 /* 8065DE70-8065DF40 005990 00D0+00 1/1 0/0 0/0 .text            executeCrazyWait__7daCow_cFv */
 void daCow_c::executeCrazyWait() {
-    if (mFlags & 0x20) {
-        mFlags &= ~0x20;
+    if (getUnkFlag1()) {
+        clearUnkFlag1();
     }
-    if (mFlags & 0x200) {
+    if (getUnkFlag3()) {
         field_0xca6 = 0;
-        mFlags &= ~0x200;
+        clearUnkFlag3();
     }
-    if (mFlags & 0x40) {
+    if (getUnkFlag2()) {
         mCrazy = daCow_Crazy_Dash_e;
         speedF = 30.0f;
         setBck(20, 2, 12.0f, 1.0f);
         field_0xca6 = 0;
-        mFlags = 0;
+        clearAllFlags();
 
         mAcchCir.SetWall(100.0f, 110.0f);
         mTimer1 = 30;
@@ -2023,20 +2023,20 @@ void daCow_c::executeCrazyDash() {
     if (mPointIndex == 4 || mPointIndex == 5) {
         cLib_chaseS(&field_0xc3e.z, 0x1000, 0x400);
 
-        if (mFlags) {
-            if (mFlags & 1) {
+        if (anyFlagsSet()) {
+            if (getCrazyBeforeCatch()) {
                 initCrazyBeforeCatch(0);
                 mPointIndex = 6;
-                mFlags &= ~1;
-            } else if (mFlags & 2) {
+                clearCrazyBeforeCatch();
+            } else if (getCrazyCatch()) {
                 initCrazyCatch(0);
                 mPointIndex = 6;
-                mFlags &= ~2;
+                clearCrazyCatch();
                 dComIfGp_getVibration().StartShock(8, 0x1f, cXyz(0.0f, 1.0f, 0.0f));
-            } else if (mFlags & 4) {
+            } else if (getCrazyDash()) {
                 initCrazyAttack(0);
                 mPointIndex = 6;
-                mFlags &= ~4;
+                clearCrazyDash();
             }
         } else {
             if (mPointIndex == 4) {
@@ -2108,17 +2108,17 @@ void daCow_c::initCrazyBeforeCatch(int param_0) {
  */
 void daCow_c::executeCrazyBeforeCatch() {
     calcCatchPos(-220.0f, 1);
-    if (mFlags & 2) {
+    if (getCrazyCatch()) {
         initCrazyCatch(0);
-        mFlags &= ~2;
+        clearCrazyCatch();
         dComIfGp_getVibration().StartShock(8, 0x1f, cXyz(0.0f, 1.0f, 0.0f));
-    } else if (mFlags & 4) {
+    } else if (getCrazyDash()) {
         if (!daPy_getPlayerActorClass()->speedF) {
             initCrazyAttack(0);
         } else {
             initCrazyAttack(1);
         }
-        mFlags &= ~4;
+        clearCrazyDash();
     }
 }
 
@@ -2186,19 +2186,19 @@ void daCow_c::executeCrazyCatch() {
         break;
     }
 
-    if (mFlags) {
-        if (mFlags & 8) {
+    if (anyFlagsSet()) {
+        if (getCrazyThrowLeft()) {
             initCrazyThrow(0);
-        } else if (mFlags & 0x10) {
+        } else if (getCrazyThrowRight()) {
             initCrazyThrow(1);
-        } else if (mFlags & 4) {
+        } else if (getCrazyDash()) {
             if (!daPy_getPlayerActorClass()->speedF) {
                 initCrazyAttack(0);
             } else {
                 initCrazyAttack(1);
             }
         }
-        mFlags = 0;
+        clearAllFlags();
     } else {
         calcCatchPos(fVar2, 1);
     }
@@ -2429,7 +2429,7 @@ void daCow_c::executeCrazyAway() {
     }
     cLib_addCalcAngleS(&shape_angle.y, current.angle.y, 8, 0x400, 0x100);
     mSavedAngle.y = shape_angle.y;
-    if (mFlags & 0x20) {
+    if (getUnkFlag1()) {
         mCrazy = daCow_Crazy_End_e;
         speedF = 0.0f;
     }
@@ -2989,18 +2989,18 @@ void daCow_c::action() {
     if (mNoNearCheckTimer) {
         mNoNearCheckTimer--;
     }
-    if (field_0xc8c) {
-        field_0xc8c--;
+    if (mTimer4) {
+        mTimer4--;
     }
-    if (field_0xc88) {
-        field_0xc88--;
+    if (mTimer5) {
+        mTimer5--;
     }
 
     cLib_chaseF(&field_0xcac, field_0xcb0, 0.1f);
     damage_check();
 
     s16 sVar2 = mSavedAngle.y;
-    if (!field_0xca5) {
+    if (!getCowIn()) {
         for (int iSphere = 0; iSphere < N_COW_COLLIDERS; iSphere++) {
             mSph[iSphere].OnTgSetBit();
         }
@@ -3236,7 +3236,7 @@ u8 daCow_c::initialize() {
         }
     } break;
     case 4:
-        field_0xca5 = 1;
+        setCowIn();
     default:
         int rand = cM_rndF(4.0f) + fopAcM_GetID(this);
         int nextAction = rand % 4;

@@ -104,16 +104,45 @@ public:
     /* 80662BE4 */ int Delete();
     /* 80662D70 */ csXyz getShapeAngle();
 
-    // todo: use these
-    void setNaderu() { mFlags |= 0x80; }
-    void setNaderuFinish() { mFlags |= 0x100; }
-    void setCrazyDash() { mFlags |= 4; }
     void setCrazyBeforeCatch() { mFlags |= 1; }
     void setCrazyCatch() { mFlags |= 2; }
+    void setCrazyDash() { mFlags |= 4; }
     void setCrazyThrowLeft() { mFlags |= 8; }
     void setCrazyThrowRight() { mFlags |= 0x10; }
+    void setUnkFlag1() { mFlags |= 0x20; }
+    void setUnkFlag2() { mFlags |= 0x40; }
+    void setNaderu() { mFlags |= 0x80; }
+    void setNaderuFinish() { mFlags |= 0x100; }
+    void setUnkFlag3() { mFlags |= 0x200; }
 
-    bool getCowIn() { return field_0xca5; }
+    bool getCrazyBeforeCatch() { return mFlags & 1; }
+    bool getCrazyCatch() { return mFlags & 2; }
+    bool getCrazyDash() { return mFlags & 4; }
+    bool getCrazyThrowLeft() { return mFlags & 8; }
+    bool getCrazyThrowRight() { return mFlags & 0x10; }
+    bool getUnkFlag1() { return mFlags & 0x20; }
+    bool getUnkFlag2() { return mFlags & 0x40; }
+    bool getNaderu() { return mFlags & 0x80; }
+    bool getNaderuFinish() { return mFlags & 0x100; }
+    bool getUnkFlag3() { return mFlags & 0x200; }
+
+    void clearCrazyBeforeCatch() { mFlags &= ~1; }
+    void clearCrazyCatch() { mFlags &= ~2; }
+    void clearCrazyDash() { mFlags &= ~4; }
+    void clearCrazyThrowLeft() { mFlags &= ~8; }
+    void clearCrazyThrowRight() { mFlags &= ~0x10; }
+    void clearUnkFlag1() { mFlags &= ~0x20; }
+    void clearUnkFlag2() { mFlags &= ~0x40; }
+    void clearNaderu() { mFlags &= ~0x80; }
+    void clearNaderuFinish() { mFlags &= ~0x100; }
+    void clearUnkFlag3() { mFlags &= ~0x200; }
+
+    bool anyFlagsSet() { return mFlags; };
+    void clearAllFlags() { mFlags = 0; };
+
+    void setCowIn() { mCowIn = 1; }
+    bool getCowIn() { return mCowIn; }
+
     bool getNoNearCheckTimer() { return mNoNearCheckTimer; }
     daCow_c* getCowP() { return mCowP; }
 
@@ -169,8 +198,8 @@ private:
     /* 0xc7c */ f32 mSpeed;
     /* 0xc80 */ int field_0xc80;
     /* 0xc84 */ s32 field_0xc84;
-    /* 0xc88 */ int field_0xc88;  // some timer
-    /* 0xc8c */ int field_0xc8c;  // some timer
+    /* 0xc88 */ int mTimer5;  // some timer
+    /* 0xc8c */ int mTimer4;  // some timer
     /* 0xc90 */ s32 mTimer1;
     /* 0xc94 */ s32 mTimer2;
     /* 0xc98 */ s32 field_0xc98;
@@ -183,7 +212,7 @@ private:
     /* 0xca2 */ u8 field_0xca2;  // undefined
     /* 0xca3 */ u8 mTimer3;
     /* 0xca4 */ u8 mNoNearCheckTimer;
-    /* 0xca5 */ u8 field_0xca5;
+    /* 0xca5 */ u8 mCowIn;
     /* 0xca6 */ u8 field_0xca6;
     /* 0xca7 */ u8 field_0xca7;  // undefined
     /* 0xca8 */ u8 field_0xca8;
