@@ -953,11 +953,13 @@ bool daCow_c::checkPlayerPos() {
 /* 8065B034-8065B760 002B54 072C+00 2/2 0/0 0/0 .text            checkBeforeBg__7daCow_cFv */
 void daCow_c::checkBeforeBg() {
     s16 x[3] = {0, -0x2000, 0x2000};
+    cXyz a;
     f32 y[3];
+    cXyz b, c;
     s16 z[3];
     cM3dGPla planes[3];
 
-    cXyz b = current.pos;
+    b = current.pos;
     b.y += 110.0f;
 
     bool planeTri[3];
@@ -975,7 +977,7 @@ void daCow_c::checkBeforeBg() {
 
     if (speedF) {
         for (int iPlane = 0; iPlane < 3; iPlane++) {
-            cXyz c = b;
+            c = b;
             if (!iPlane) {
                 c.x += f1 * cM_ssin(mSavedAngle.y + x[iPlane]);
                 c.z += f1 * cM_scos(mSavedAngle.y + x[iPlane]);
@@ -988,7 +990,7 @@ void daCow_c::checkBeforeBg() {
             if (dComIfG_Bgsp().LineCross(&linChk)) {
                 planeTri[iPlane] = dComIfG_Bgsp().GetTriPla(linChk, &planes[iPlane]);
                 if ((f32)fabs(planes[iPlane].mNormal.y) <= cM_ssin(0x6000)) {
-                    cXyz a = current.pos - linChk.GetCross();
+                    a = current.pos - linChk.GetCross();
                     y[iPlane] = a.absXZ();
                     z[iPlane] = cM_atan2s(planes[iPlane].mNormal.x, planes[iPlane].mNormal.z);
                 } else {
