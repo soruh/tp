@@ -1367,7 +1367,7 @@ void daCow_c::action_run() {
                     if (daPy_getPlayerActorClass()->checkHorseRide() ||
                         (u32)daPy_getPlayerActorClass()->checkNowWolf() != 0)
                     {
-                        field_0xca0 = false;
+                        mReadyToDash = false;
                         mRunDuration = 0;
                         setProcess(&daCow_c::action_angry, 0);
                         return;
@@ -1711,12 +1711,12 @@ void daCow_c::action_angry() {
     case daCow_Mode_Starting_e:
         calcRunAnime(true);
         mMode = daCow_Mode_WaitingForMorf_e;
-        if (field_0xca0) {
+        if (mReadyToDash) {
             mCrazy = daCow_Crazy_Dash_e;
         } else {
             mCrazy = daCow_Crazy_Wait_e;
             mTimer1 = 20;
-            field_0xca0 = true;
+            mReadyToDash = true;
         }
         mTimer10 = 200;
         mTargetRedTev = 1.0f;
@@ -2673,7 +2673,7 @@ void daCow_c::executeCrazyBack2() {
     }
 
     if (!mWillGetAngry) {
-        field_0xca0 = false;
+        mReadyToDash = false;
         mRunDuration = 1;
         setProcess(&daCow_c::action_angry, 0);
         return;
@@ -2903,7 +2903,7 @@ void daCow_c::action_wolf() {
                 if (!checkOutOfGate(player->current.pos)) {
                     s16 angleDifference = fopAcM_searchPlayerAngleY(this) - mSavedAngle.y;
                     if (abs(angleDifference) < 0x2000) {
-                        field_0xca0 = false;
+                        mReadyToDash = false;
                         mRunDuration = 1;
                         setProcess(&daCow_c::action_angry, 0);
                         return;
@@ -2917,7 +2917,7 @@ void daCow_c::action_wolf() {
                     if (!fpcEx_Search(s_angry_cow2, this)) {
                         s16 angleDifference = fopAcM_searchPlayerAngleY(this) - mSavedAngle.y;
                         if (abs(angleDifference) < 0x2000) {
-                            field_0xca0 = false;
+                            mReadyToDash = false;
                             mRunDuration = 1;
                             setProcess(&daCow_c::action_angry, 0);
                             return;
@@ -2965,7 +2965,7 @@ void daCow_c::action_damage() {
     case daCow_Mode_WaitingForMorf_e:
         setRedTev();
         if (mpMorf->isStop()) {
-            field_0xca0 = false;
+            mReadyToDash = false;
             mRunDuration = 1;
             setProcess(&daCow_c::action_angry, 0);
         }

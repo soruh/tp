@@ -202,7 +202,7 @@ private:
     /* 0xc9d */ u8 mOutOfGate;
     /* 0xc9e */ u8 mWillGetAngry;
     /* 0xc9f */ u8 mCrazy;
-    /* 0xca0 */ bool field_0xca0;
+    /* 0xca0 */ bool mReadyToDash;
     /* 0xca1 */ u8 mRunDuration;
     /* 0xca2 */ u8 mIntersectedPlanes;
     /* 0xca3 */ u8 mTimer3;
