@@ -176,7 +176,7 @@ private:
     /* 0xc0c */ dPath* mPath;
     /* 0xc10 */ s8 mPointIndex;
     /* 0xc14 */ cXyz mJointPos;
-    /* 0xc20 */ cXyz field_0xc20;
+    /* 0xc20 */ cXyz mTarget;
     /* 0xc2c */ csXyz mGroundTransform;
     /* 0xc32 */ csXyz mSavedAngle;
     /* 0xc38 */ csXyz mJoint1Offset;
@@ -209,7 +209,7 @@ private:
     /* 0xc90 */ int mTimer1;
     /* 0xc94 */ int mTimer2;
     /* 0xc98 */ int mTimer10;
-    /* 0xc9c */ u8 mTimer11;
+    /* 0xc9c */ u8 mAnimationInterval;
     /* 0xc9d */ u8 mOutOfGate;
     /* 0xc9e */ u8 mWillGetAngry;
     /* 0xc9f */ u8 mCrazy;
@@ -253,6 +253,17 @@ enum daCow_Mode {
     daCow_Mode_WaitingForMorf_e = 1,
     daCow_Mode_Active_e = 2,
     daCow_Mode_Done_e = 3,
+};
+
+enum daCow_Action {
+    daCow_Action_0_e = 0,
+    daCow_Action_1_e = 1,
+    daCow_Action_2_e = 2,
+    daCow_Action_3_e = 3,
+    daCow_Action_4_e = 4,
+    daCow_Action_5_e = 5,
+    daCow_Action_6_e = 6,
+    daCow_Action_7_e = 7,
 };
 
 #endif /* D_A_COW_H */

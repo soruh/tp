@@ -363,14 +363,14 @@ void daCow_c::damage_check() {
 
     if (checkProcess(&daCow_c::action_crazy)) {
         if (mCrazy == daCow_Crazy_Back_e) {
-            if (!mAction) {
+            if (mAction == daCow_Action_0_e) {
                 if (hitObject->ChkAtType(COW_ATTACK_TYPES)) {
                     setTimer4(150);
                 } else {
                     mTimer4 += 60;
                 }
                 if (mTimer4 >= 150) {
-                    mAction = 5;
+                    mAction = daCow_Action_5_e;
                 }
             }
         }
@@ -1024,19 +1024,19 @@ void daCow_c::checkBeforeBg() {
 
     if (planeTri[1] && planeTri[2]) {
         switch (mAction) {
-        case 1:
-        case 3:
-            mAction = 3;
+        case daCow_Action_1_e:
+        case daCow_Action_3_e:
+            mAction = daCow_Action_3_e;
             break;
-        case 2:
-        case 4:
-            mAction = 4;
+        case daCow_Action_2_e:
+        case daCow_Action_4_e:
+            mAction = daCow_Action_4_e;
             break;
         default:
             if (field_0xc60 & 1) {
-                mAction = 4;
+                mAction = daCow_Action_4_e;
             } else {
-                mAction = 3;
+                mAction = daCow_Action_3_e;
             }
         }
         setTimer6(10);
@@ -1044,30 +1044,30 @@ void daCow_c::checkBeforeBg() {
         if (planeTri[0]) {
             if (planeTri[1]) {
                 if (field_0xc60 >= 4) {
-                    mAction = 2;
+                    mAction = daCow_Action_2_e;
                 } else {
-                    mAction = 4;
+                    mAction = daCow_Action_4_e;
                 }
             } else {
                 if (planeTri[2]) {
                     if (field_0xc60 >= 4) {
-                        mAction = 1;
+                        mAction = daCow_Action_1_e;
                     } else {
-                        mAction = 3;
+                        mAction = daCow_Action_3_e;
                     }
                 } else {
                     s16 sVar2 = z[0] - mSavedAngle.y;
                     if (abs(sVar2) > 0x7800) {
                         if (field_0xc60 & 1) {
-                            mAction = 4;
+                            mAction = daCow_Action_4_e;
                         } else {
-                            mAction = 3;
+                            mAction = daCow_Action_3_e;
                         }
                     } else {
                         if (sVar2 > 0) {
-                            mAction = 4;
+                            mAction = daCow_Action_4_e;
                         } else {
-                            mAction = 3;
+                            mAction = daCow_Action_3_e;
                         }
                     }
                 }
@@ -1076,16 +1076,16 @@ void daCow_c::checkBeforeBg() {
             switch (field_0xc60) {
             case 0:
             case 1:
-                mAction = 4;
+                mAction = daCow_Action_4_e;
                 setTimer6(10);
                 break;
             case 3:
-                mAction = 2;
+                mAction = daCow_Action_2_e;
                 break;
             default:
-                mAction = 0;
+                mAction = daCow_Action_0_e;
                 if (y[1] < 600.0f) {
-                    mAction = 2;
+                    mAction = daCow_Action_2_e;
                 }
                 break;
             }
@@ -1093,35 +1093,35 @@ void daCow_c::checkBeforeBg() {
             switch (field_0xc60) {
             case 0:
             case 1:
-                mAction = 3;
+                mAction = daCow_Action_3_e;
                 setTimer6(10);
                 break;
             case 2:
-                mAction = 1;
+                mAction = daCow_Action_1_e;
                 break;
             default:
-                mAction = 0;
+                mAction = daCow_Action_0_e;
                 if (y[2] < 600.0f) {
-                    mAction = 1;
+                    mAction = daCow_Action_1_e;
                 }
                 break;
             }
         } else {
             switch (field_0xc60) {
             case 0:
-                mAction = 3;
+                mAction = daCow_Action_3_e;
                 break;
             case 1:
-                mAction = 4;
+                mAction = daCow_Action_4_e;
                 break;
             case 2:
-                mAction = 1;
+                mAction = daCow_Action_1_e;
                 break;
             case 3:
-                mAction = 2;
+                mAction = daCow_Action_2_e;
                 break;
             default:
-                mAction = 0;
+                mAction = daCow_Action_0_e;
             }
         }
     }
@@ -1303,19 +1303,19 @@ void daCow_c::action_run() {
             }
 
             switch (mAction) {
-            case 1:
+            case daCow_Action_1_e:
                 targetAngle -= 0x1000;
                 break;
-            case 2:
+            case daCow_Action_2_e:
                 targetAngle += 0x1000;
                 break;
-            case 3:
+            case daCow_Action_3_e:
                 targetAngle -= 0x4000;
                 break;
-            case 4:
+            case daCow_Action_4_e:
                 targetAngle += 0x4000;
                 break;
-            case 0: {
+            case daCow_Action_0_e: {
                 s16 cowshedAngle = getCowshedAngle();
                 s16 playerAngle = fopAcM_searchPlayerAngleY(this);
                 targetAngle = playerAngle - (s16)0x8000;
@@ -1523,7 +1523,7 @@ void daCow_c::action_enter() {
                     mDoMtx_stack_c::YrotS(pen_dir);
                     mDoMtx_stack_c::multVecSR(&penDistanceNow, &penDistanceNow);
 
-                    field_0xc20 = pen_pos + penDistanceNow;
+                    mTarget = pen_pos + penDistanceNow;
 
                     setBck(27, 2, 12.0f, 1.0f);
                     speedF = 3.0f;
@@ -1542,13 +1542,13 @@ void daCow_c::action_enter() {
             }
             break;
         case daCow_Crazy_BeforeCatch_e: {
-            s16 targetAngle = cLib_targetAngleY(&current.pos, &field_0xc20);
+            s16 targetAngle = cLib_targetAngleY(&current.pos, &mTarget);
             cLib_addCalcAngleS2(&current.angle.y, targetAngle, 4, 0x100);
             cLib_addCalcAngleS2(&shape_angle.y, current.angle.y, 8, 0x800);
 
             mSavedAngle.y = shape_angle.y;
 
-            if (current.pos.abs(field_0xc20) < 50.0f) {
+            if (current.pos.abs(mTarget) < 50.0f) {
                 setBck(15, 0, 12.0f, 1.0f);
                 speedF = 0;
                 mCrazy = daCow_Crazy_Catch_e;
@@ -1560,7 +1560,7 @@ void daCow_c::action_enter() {
         } break;
         case daCow_Crazy_Catch_e:
             if (mpMorf->isStop()) {
-                if (current.pos.abs(field_0xc20) > 100.0f) {
+                if (current.pos.abs(mTarget) > 100.0f) {
                     mCrazy = daCow_Crazy_BeforeCatch_e;
                     speedF = 3.0f;
                     setBck(27, 2, 12.0f, 1.0f);
@@ -2044,7 +2044,7 @@ void daCow_c::executeCrazyDash() {
                         vec3.set(-200.0f, 0.0f, 0.0f);
                     }
                     cLib_offsetPos(&vec1, &vec1, sVar4, &vec3);
-                    field_0xc20 = vec1;
+                    mTarget = vec1;
                 } else {
                     cLib_addCalcAngleS(&current.angle.y, sVar4, 0x10, 0x800, 0x100);
                     if (current.pos.abs(vec1) < 250.0f) {
@@ -2053,10 +2053,10 @@ void daCow_c::executeCrazyDash() {
                     return;
                 }
             } else {
-                field_0xc20 = vec1;
+                mTarget = vec1;
             }
 
-            s16 sVar4 = cLib_targetAngleY(&current.pos, &field_0xc20);
+            s16 sVar4 = cLib_targetAngleY(&current.pos, &mTarget);
             cLib_addCalcAngleS(&current.angle.y, sVar4, 0x10, 0x800, 0x100);
             if (current.pos.abs(vec1) < 250.0f) {
                 mPointIndex++;
@@ -2214,7 +2214,7 @@ void daCow_c::initCrazyThrow(int param_1) {
     }
     calcCatchPos(-260.0f, 0);
 
-    field_0xc20 = current.pos;
+    mTarget = current.pos;
     mIsCrazy = true;
     gravity = 0.0f;
 }
@@ -2226,7 +2226,7 @@ void daCow_c::executeCrazyThrow() {
 
     switch (field_0xc60) {
     case 0:
-        current.pos = field_0xc20;
+        current.pos = mTarget;
 
         if (mpMorf->checkFrame(10.0f)) {
             mSound.startCreatureVoice(Z2SE_GOAT_V_THROWN, -1);
@@ -2241,7 +2241,7 @@ void daCow_c::executeCrazyThrow() {
                 mSph[iSphere].OnCoSetBit();
             }
 
-            if (mAction) {
+            if (mAction != daCow_Action_0_e) {
                 current.angle.y = daPy_getPlayerActorClass()->shape_angle.y + 0x7000;
             } else {
                 current.angle.y = daPy_getPlayerActorClass()->shape_angle.y + -0x6800;
@@ -2251,9 +2251,9 @@ void daCow_c::executeCrazyThrow() {
         }
         break;
     case 1:
-        field_0xc20.y += 100.0f;
+        mTarget.y += 100.0f;
 
-        linChk.Set(&field_0xc20, &current.pos, NULL);
+        linChk.Set(&mTarget, &current.pos, NULL);
         if (dComIfG_Bgsp().LineCross(&linChk)) {
             current.pos = linChk.GetCross();
 
@@ -2284,7 +2284,7 @@ void daCow_c::executeCrazyThrow() {
             mJointIndex = 0;
             mShouldSetEffect = 2;
 
-            if (mAction) {
+            if (mAction != daCow_Action_0_e) {
                 setBck(8, 2, 0.0f, 1.0f);
                 mSavedAngle.y -= 0x7000;
                 mThrowIntensity = -1000;
@@ -2300,7 +2300,7 @@ void daCow_c::executeCrazyThrow() {
         cLib_chaseAngleS(&mThrowIntensity, 0, 30);
         if (cLib_chaseF(&speedF, 0.0f, 0.5f) && !mTimer1) {
             field_0xc60 = 4;
-            if (mAction) {
+            if (mAction != daCow_Action_0_e) {
                 setBck(13, 0, 5.0f, 1.0f);
             } else {
                 setBck(12, 0, 5.0f, 1.0f);
@@ -2331,11 +2331,11 @@ void daCow_c::initCrazyAttack(int playerMoving) {
     mJoint8Offset.z = 0;
     mCrazy = daCow_Crazy_Attack_e;
     if (playerMoving) {
-        mAction = 1;
+        mAction = daCow_Action_1_e;
         speedF = 0.0f;
         setBck(24, 0, 3.0f, 1.0f);
     } else {
-        mAction = 0;
+        mAction = daCow_Action_0_e;
         setBck(22, 0, 3.0f, 1.0f);
     }
     for (int iSphere = 0; iSphere < N_COW_COLLIDERS; iSphere++) {
@@ -2347,7 +2347,7 @@ void daCow_c::initCrazyAttack(int playerMoving) {
 /* 8065F144-8065F308 006C64 01C4+00 2/2 0/0 0/0 .text            executeCrazyAttack__7daCow_cFv */
 void daCow_c::executeCrazyAttack() {
     switch (mAction) {
-    case 0:
+    case daCow_Action_0_e:
         cLib_chaseF(&speedF, 10.0f, 1.0f);
         if (mpMorf->checkFrame(2.0f)) {
             mSound.startCreatureVoice(Z2SE_GOAT_V_BREATH_SHAKE, -1);
@@ -2356,7 +2356,7 @@ void daCow_c::executeCrazyAttack() {
             initCrazyAway(0);
         }
         break;
-    case 1:
+    case daCow_Action_1_e:
         if (mpMorf->checkFrame(2.0f)) {
             mSound.startCreatureVoice(Z2SE_GOAT_V_BREATH_SHAKE, -1);
         }
@@ -2365,11 +2365,11 @@ void daCow_c::executeCrazyAttack() {
                 initCrazyAway(0);
             } else {
                 setBck(21, 0, 7.0f, 1.0f);
-                mAction = 2;
+                mAction = daCow_Action_2_e;
             }
         }
         break;
-    case 2:
+    case daCow_Action_2_e:
         if (mpMorf->isStop()) {
             initCrazyAway(0);
         }
@@ -2443,7 +2443,7 @@ void daCow_c::initCrazyBack(int param_0) {
     }
 
     setTimer1(0);
-    mAction = 0;
+    mAction = daCow_Action_0_e;
     current.angle.y = shape_angle.y = mSavedAngle.y;
     mCrazy = daCow_Crazy_Back_e;
 }
@@ -2454,7 +2454,7 @@ void daCow_c::executeCrazyBack() {
     s16 angle;
 
     switch (mAction) {
-    case 0: {
+    case daCow_Action_0_e: {
         setActetcStatus();
 
         pointPos = dPath_GetPnt(mPath, mPointIndex)->m_position;
@@ -2473,65 +2473,65 @@ void daCow_c::executeCrazyBack() {
             mPointIndex -= 1;
             if (mPointIndex < 0) {
                 speedF = 0.0f;
-                mAction = 3;
+                mAction = daCow_Action_3_e;
                 mTargetAngle = mSavedAngle.y - 0x2000;
             }
         }
         if (checkNadeNade()) {
             setBck(26, 2, 10.0f, 1.0f);
-            mAction = 1;
+            mAction = daCow_Action_1_e;
             speedF = 0.0f;
         }
         break;
     }
-    case 1:
+    case daCow_Action_1_e:
         if (checkNadeNadeFinish()) {
             setBck(15, 0, 10.0f, 1.0f);
-            mAction = 2;
+            mAction = daCow_Action_2_e;
             speedF = 0.0f;
         }
         break;
-    case 2:
+    case daCow_Action_2_e:
         if (mpMorf->checkFrame(35.0f)) {
             mSound.startCreatureVoice(Z2SE_GOAT_V_CRY, -1);
         }
         if (mpMorf->isStop()) {
             setBck(28, 2, 10.0f, 1.0f);
-            mAction = 0;
+            mAction = daCow_Action_0_e;
         }
         break;
-    case 3:
+    case daCow_Action_3_e:
         if (mpMorf->checkFrame(11.0f)) {
             setBck(26, 2, 10.0f, 1.0f);
-            mAction = 4;
+            mAction = daCow_Action_4_e;
         }
         break;
-    case 4:
+    case daCow_Action_4_e:
         fopAcM_OnStatus(this, 0x100);
         if (fopAcM_CheckCondition(this, 4)) {
             fopAcM_delete(this);
         }
         break;
-    case 5:
+    case daCow_Action_5_e:
         setBck(24, 0, 3.0f, 1.0f);
-        mAction = 6;
-    case 6:
+        mAction = daCow_Action_6_e;
+    case daCow_Action_6_e:
         if (mpMorf->isStop()) {
             if (mPointIndex < 0) {
                 setBck(28, 2, 10.0f, 1.0f);
-                mAction = 3;
+                mAction = daCow_Action_3_e;
             } else if (mPointIndex < 2) {
                 setBck(28, 2, 10.0f, 1.0f);
-                mAction = 0;
+                mAction = daCow_Action_0_e;
             } else {
                 calcRunAnime(true);
-                mAction = 7;
+                mAction = daCow_Action_7_e;
                 setTimer1(30);
                 speedF = 30.0f;
             }
         }
         break;
-    case 7: {
+    case daCow_Action_7_e: {
         pointPos = dPath_GetPnt(mPath, mPointIndex)->m_position;
         angle = cLib_targetAngleY(&current.pos, &pointPos);
         cLib_addCalcAngleS(&current.angle.y, angle, 0x10, 0x100, 0x80);
@@ -2550,7 +2550,7 @@ void daCow_c::executeCrazyBack() {
             mPointIndex -= 1;
             if (mPointIndex < 1 && !mTimer1) {
                 setBck(28, 2, 10.0f, 1.0f);
-                mAction = 0;
+                mAction = daCow_Action_0_e;
             }
         }
         break;
@@ -2666,11 +2666,11 @@ void daCow_c::executeCrazyBack2() {
     }
 
     switch (mAction) {
-    case 0:
+    case daCow_Action_0_e:
         setBck(28, 2, 10.0f, 1.0f);
-        mAction = 1;
+        mAction = daCow_Action_1_e;
         setTimer1(600);
-    case 1: {
+    case daCow_Action_1_e: {
         setActetcStatus();
         s16 targetAngle = cLib_targetAngleY(&current.pos, &home.pos);
         cLib_addCalcAngleS(&current.angle.y, targetAngle, 0x10, 0x100, 0x80);
@@ -2685,25 +2685,25 @@ void daCow_c::executeCrazyBack2() {
         } else {
             if (checkNadeNade()) {
                 setBck(26, 2, 10.0f, 1.0f);
-                mAction = 2;
+                mAction = daCow_Action_2_e;
                 speedF = 0.0f;
             }
         }
     } break;
-    case 2:
+    case daCow_Action_2_e:
         if (checkNadeNadeFinish()) {
             setBck(15, 0, 10.0f, 1.0f);
-            mAction = 3;
+            mAction = daCow_Action_3_e;
             speedF = 0.0f;
         }
         break;
-    case 3:
+    case daCow_Action_3_e:
         if (mpMorf->checkFrame(35.0f)) {
             mSound.startCreatureVoice(Z2SE_GOAT_V_CRY, -1);
         }
         if (mpMorf->isStop()) {
             setBck(28, 2, 10.0f, 1.0f);
-            mAction = 1;
+            mAction = daCow_Action_1_e;
         }
     }
 }
@@ -2853,14 +2853,14 @@ void daCow_c::action_wolf() {
                 aruAngle = aruAngle - 0x3000;
             }
 
-            field_0xc20 = aruPos;
-            field_0xc20.x += cM_ssin(aruAngle) * 500.0f;
-            field_0xc20.z += cM_scos(aruAngle) * 500.0f;
-            mTargetAngle = cLib_targetAngleY(&current.pos, &field_0xc20);
+            mTarget = aruPos;
+            mTarget.x += cM_ssin(aruAngle) * 500.0f;
+            mTarget.z += cM_scos(aruAngle) * 500.0f;
+            mTargetAngle = cLib_targetAngleY(&current.pos, &mTarget);
             mCrazy = daCow_Crazy_BeforeCatch_e;
             setTimer1(150);
         case daCow_Crazy_BeforeCatch_e: {
-            mTargetAngle = cLib_targetAngleY(&current.pos, &field_0xc20);
+            mTargetAngle = cLib_targetAngleY(&current.pos, &mTarget);
 
             f32 fVar13 = current.pos.absXZ(aru->current.pos) / 100.0f;
 
@@ -2873,7 +2873,7 @@ void daCow_c::action_wolf() {
             mSavedAngle.y = shape_angle.y = current.angle.y;
             setBodyAngle2(mTargetAngle);
 
-            if (!mTimer1 || current.pos.absXZ(field_0xc20) < 100.0f || mAcch.ChkWallHit()) {
+            if (!mTimer1 || current.pos.absXZ(mTarget) < 100.0f || mAcch.ChkWallHit()) {
                 mCrazy = daCow_Crazy_Dash_e;
             }
 
@@ -3073,14 +3073,14 @@ int daCow_c::Execute() {
         setEffect();
         mpMorf->play(0, dComIfGp_getReverb(fopAcM_GetRoomNo(this)));
 
-        if (!mTimer11) {
+        if (!mAnimationInterval) {
             mpBtp->setPlaySpeed(1.0f);
-            mTimer11 = cM_rndF(120.0f) + 60.0f;
-            if (mTimer11 < 80) {
-                mTimer11 = 10;
+            mAnimationInterval = cM_rndF(120.0f) + 60.0f;
+            if (mAnimationInterval < 80) {
+                mAnimationInterval = 10;
             }
         } else {
-            mTimer11--;
+            mAnimationInterval--;
             if (mpBtp->isStop()) {
                 mpBtp->setPlaySpeed(0.0f);
                 mpBtp->setFrame(0.0f);
