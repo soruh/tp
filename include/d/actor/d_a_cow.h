@@ -151,8 +151,6 @@ public:
 
 private:
     /* 0x568 */ u16 mFlags;
-    /* 0x56a */ u8 field_0x56a;  // undefined
-    /* 0x56b */ u8 field_0x56b;  // undefined
     /* 0x56c */ request_of_phase_process_class mPhase;
     /* 0x574 */ mDoExt_McaMorfSO* mpMorf;
     /* 0x578 */ mDoExt_btpAnm* mpBtp;
