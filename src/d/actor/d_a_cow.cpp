@@ -1293,16 +1293,6 @@ void daCow_c::action_run() {
             }
 
             switch (field_0xc61) {
-            case 0: {
-                s16 sVar7 = getCowshedAngle();
-                s16 playerAngle = fopAcM_searchPlayerAngleY(this);
-                sVar3 = playerAngle - (s16)0x8000;
-                if (isChaseCowGame() && cLib_distanceAngleS(sVar7, (field_0xc32).y) < 0x3000 &&
-                    cLib_distanceAngleS(sVar7, playerAngle) > 0x5800)
-                {
-                    sVar3 = sVar7;
-                }
-            } break;
             case 1:
                 sVar3 -= 0x1000;
                 break;
@@ -1315,6 +1305,16 @@ void daCow_c::action_run() {
             case 4:
                 sVar3 += 0x4000;
                 break;
+            case 0: {
+                s16 sVar7 = getCowshedAngle();
+                s16 playerAngle = fopAcM_searchPlayerAngleY(this);
+                sVar3 = playerAngle - (s16)0x8000;
+                if (isChaseCowGame() && cLib_distanceAngleS(sVar7, (field_0xc32).y) < 0x3000 &&
+                    cLib_distanceAngleS(sVar7, playerAngle) > 0x5800)
+                {
+                    sVar3 = sVar7;
+                }
+            } break;
             }
 
             if (!havePlayerPos) {
