@@ -176,7 +176,7 @@ private:
     /* 0xc98 */ s32 field_0xc98;
     /* 0xc9c */ u8 field_0xc9c;
     /* 0xc9d */ u8 field_0xc9d;
-    /* 0xc9e */ u8 field_0xc9e;
+    /* 0xc9e */ u8 mWillGetAngry;
     /* 0xc9f */ u8 mCrazy;
     /* 0xca0 */ u8 field_0xca0;
     /* 0xca1 */ u8 field_0xca1;

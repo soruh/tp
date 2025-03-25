@@ -365,11 +365,11 @@ void daCow_c::damage_check() {
         if (mCrazy == daCow_Crazy_Back_e) {
             if (!mAction) {
                 if (hitObject->ChkAtType(COW_ATTACK_TYPES)) {
-                    field_0xc8c = 0x96;
+                    field_0xc8c = 150;
                 } else {
-                    field_0xc8c += 0x3c;
+                    field_0xc8c += 60;
                 }
-                if (field_0xc8c >= 0x96) {
+                if (field_0xc8c >= 150) {
                     mAction = 5;
                 }
             }
@@ -379,11 +379,11 @@ void daCow_c::damage_check() {
     } else if (hitObject->ChkAtType(COW_ATTACK_TYPES)) {
         setProcess(&daCow_c::action_damage, 0);
     } else {
-        field_0xc8c += 0x3c;
-        if (field_0xc8c >= 0x96) {
+        field_0xc8c += 60;
+        if (field_0xc8c >= 150) {
             setProcess(&daCow_c::action_damage, 0);
         } else {
-            field_0xc88 = 0x5a;
+            field_0xc88 = 90;
 
             if (!checkProcess(&daCow_c::action_wait)) {
                 speedF = 0.0f;
@@ -597,7 +597,7 @@ void daCow_c::action_wait() {
 
     case daCow_Mode_Active_e:
         angle = 0;
-        if (field_0xc88 > 0x1e) {
+        if (field_0xc88 > 30) {
             angle = mSavedAngle.y - fopAcM_searchPlayerAngleY(this);
             CLAMP(angle, -0x2800, 0x2800);
         }
@@ -1211,10 +1211,10 @@ void daCow_c::action_run() {
     case daCow_Mode_Starting_e:
         calcRunAnime(true);
         mMode = daCow_Mode_WaitingForMorf_e;
-        field_0xc90 = 0x1e;
-        field_0xc94 = 0x32;
+        field_0xc90 = 30;
+        field_0xc94 = 50;
         field_0xca1 = 0;
-        field_0xc9e = 0;
+        mWillGetAngry = false;
         field_0xc9d = 0;
         break;
     case daCow_Mode_WaitingForMorf_e: {
@@ -1239,10 +1239,10 @@ void daCow_c::action_run() {
                 setCarryStatus();
             }
 
-            u8 bVar1 = field_0xc9e;
+            u8 willGetAngry = mWillGetAngry;
             if (checkThrow()) {
                 dComIfGp_getVibration().StartShock(2, 0x1f, cXyz(0.0f, 1.0f, 0.0f));
-                field_0xc9e = bVar1;
+                mWillGetAngry = willGetAngry;
                 return;
             }
         } else {
@@ -1339,7 +1339,7 @@ void daCow_c::action_run() {
 
         int outOfGate = checkOutOfGate(current.pos);
         if (outOfGate) {
-            field_0xc90 = 0x96;
+            field_0xc90 = 150;
             field_0xc9d = outOfGate;
         }
 
@@ -1390,7 +1390,7 @@ void daCow_c::action_run() {
     case daCow_Mode_Active_e:
         break;
     case daCow_Mode_Done_e:
-        mNoNearCheckTimer = 0x1e;
+        mNoNearCheckTimer = 30;
         field_0xca3 = 0;
         break;
     }
@@ -1463,7 +1463,7 @@ void daCow_c::setEnterCount() {
     dTimer_createGetIn2D(2, current.pos);
     dMeter2Info_setNowCount(dMeter2Info_getNowCount() + 1);
 
-    field_0xc90 = 0x32;
+    field_0xc90 = 50;
     mCrazy = daCow_Crazy_Dash_e;
     field_0xca9 = false;
 
@@ -1650,7 +1650,7 @@ void daCow_c::setAngryHit() {
             mCrazy = daCow_Crazy_Catch_e;
         } else {
             mCrazy = daCow_Crazy_Throw_e;
-            field_0xc90 = 0x1e;
+            field_0xc90 = 30;
             field_0xcb0 = 0.0f;
             field_0xcb4 = 2;
         }
@@ -1713,7 +1713,7 @@ void daCow_c::action_angry() {
             mCrazy = daCow_Crazy_Dash_e;
         } else {
             mCrazy = daCow_Crazy_Wait_e;
-            field_0xc90 = 0x14;
+            field_0xc90 = 20;
             field_0xca0 = 1;
         }
         field_0xc98 = 200;
@@ -1741,7 +1741,7 @@ void daCow_c::action_angry() {
         }
         if (checkThrow()) {
             dComIfGp_getVibration().StartShock(4, 0x1f, cXyz(0.0f, 1.0f, 0.0f));
-            field_0xc9e = 1;
+            mWillGetAngry = true;
             return;
         }
         if (!field_0xc84) {
@@ -1764,7 +1764,7 @@ void daCow_c::action_angry() {
                     sangle = shape_angle.y - (s16)0x8000;
                 }
 
-                field_0xc84 = 0x1e;
+                field_0xc84 = 30;
                 daPy_getPlayerActorClass()->setThrowDamage(sangle, 35.0f, 40.0f, 0, 0, 0);
             }
         } else {
@@ -1775,7 +1775,7 @@ void daCow_c::action_angry() {
         } else {
             if (mCrazy != daCow_Crazy_Attack_e) {
                 setProcess(&daCow_c::action_run, 0);
-                field_0xc9e = 1;
+                mWillGetAngry = true;
                 return;
             }
         }
@@ -1794,7 +1794,7 @@ void daCow_c::action_angry() {
                 checkOutOfGate(current.pos))
             {
                 setProcess(&daCow_c::action_run, 0);
-                field_0xc9e = 1;
+                mWillGetAngry = true;
                 return;
             }
         }
@@ -2001,7 +2001,7 @@ void daCow_c::executeCrazyWait() {
         mFlags = 0;
 
         mAcchCir.SetWall(100.0f, 110.0f);
-        field_0xc90 = 0x1e;
+        field_0xc90 = 30;
         fopAcM_OffStatus(this, 0x100);
     }
 }
@@ -2161,7 +2161,7 @@ void daCow_c::executeCrazyCatch() {
         fVar2 = -260.0f;
         if (mpMorf->isStop()) {
             setBck(18, 2, 0.0f, 1.0f);
-            field_0xc90 = 0x3c;
+            field_0xc90 = 60;
             field_0xc60 = 4;
         }
         break;
@@ -2172,11 +2172,11 @@ void daCow_c::executeCrazyCatch() {
         if (!field_0xc90) {
             if (field_0xc60 == 3) {
                 setBck(18, 2, 0.0f, 1.0f);
-                field_0xc90 = 0x3c;
+                field_0xc90 = 60;
                 field_0xc60 = 4;
             } else {
                 setBck(17, 2, 0.0f, 1.0f);
-                field_0xc90 = 0x3c;
+                field_0xc90 = 60;
                 field_0xc60 = 3;
             }
         }
@@ -2288,7 +2288,7 @@ void daCow_c::executeCrazyThrow() {
             dComIfGp_getVibration().StartShock(5, 0x1f, cXyz(0.0f, 1.0f, 0.0f));
 
             speed.y = 0.0f;
-            field_0xc90 = 0x5a;
+            field_0xc90 = 90;
             field_0xc60 = 3;
             field_0xc62 = 0;
             mShouldSetEffect = 2;
@@ -2306,7 +2306,7 @@ void daCow_c::executeCrazyThrow() {
         break;
     case 3:
         mSavedAngle.y += field_0xc76;
-        cLib_chaseAngleS(&field_0xc76, 0, 0x1e);
+        cLib_chaseAngleS(&field_0xc76, 0, 30);
         if (cLib_chaseF(&speedF, 0.0f, 0.5f) && !field_0xc90) {
             field_0xc60 = 4;
             if (mAction) {
@@ -2535,7 +2535,7 @@ void daCow_c::executeCrazyBack() {
             } else {
                 calcRunAnime(true);
                 mAction = 7;
-                field_0xc90 = 0x1e;
+                field_0xc90 = 30;
                 speedF = 30.0f;
             }
         }
@@ -2663,7 +2663,7 @@ void daCow_c::action_crazy() {
 void daCow_c::executeCrazyBack2() {
     if (checkOutOfGate(daPy_getPlayerActorClass()->current.pos) || checkOutOfGate(current.pos)) {
         setProcess(&daCow_c::action_run, 0);
-        field_0xc9e = 1;
+        mWillGetAngry = true;
         return;
     }
 
@@ -2671,24 +2671,21 @@ void daCow_c::executeCrazyBack2() {
         return;
     }
 
-    if (!field_0xc9e) {
+    if (!mWillGetAngry) {
         field_0xca0 = 0;
         field_0xca1 = 1;
         setProcess(&daCow_c::action_angry, 0);
         return;
     }
 
-    s16 targetAngle;
-
     switch (mAction) {
     case 0:
         setBck(28, 2, 10.0f, 1.0f);
         mAction = 1;
         field_0xc90 = 600;
-    case 1:
-
+    case 1: {
         setActetcStatus();
-        targetAngle = cLib_targetAngleY(&current.pos, &home.pos);
+        s16 targetAngle = cLib_targetAngleY(&current.pos, &home.pos);
         cLib_addCalcAngleS(&current.angle.y, targetAngle, 0x10, 0x100, 0x80);
         cLib_chaseF(&speedF, 2.0f, 1.0f);
         cLib_addCalcAngleS(&shape_angle.y, current.angle.y, 8, 0x100, 0x800);
@@ -2705,7 +2702,7 @@ void daCow_c::executeCrazyBack2() {
                 speedF = 0.0f;
             }
         }
-        break;
+    } break;
     case 2:
         if (checkNadeNadeFinish()) {
             setBck(15, 0, 10.0f, 1.0f);
@@ -2733,7 +2730,7 @@ void daCow_c::action_thrown() {
         mCrazy = daCow_Crazy_BeforeCatch_e;
         mMode = daCow_Mode_WaitingForMorf_e;
         dComIfGoat_SetThrow(this);
-        field_0xc9e = 0;
+        mWillGetAngry = false;
         break;
 
     case daCow_Mode_WaitingForMorf_e:
@@ -2761,7 +2758,7 @@ void daCow_c::action_thrown() {
             player = daPy_getPlayerActorClass();
             if (checkOutOfGate(player->current.pos) || checkOutOfGate(current.pos)) {
                 setProcess(&daCow_c::action_run, 0);
-                field_0xc9e = 1;
+                mWillGetAngry = true;
                 return;
             }
             if (checkCowInOwn(0x8000)) {
@@ -2855,7 +2852,7 @@ void daCow_c::action_wolf() {
 
         if (!player->checkNowWolf() || checkOutOfGate(aru->current.pos)) {
             setProcess(&daCow_c::action_run, 0);
-            field_0xc9e = 1;
+            mWillGetAngry = true;
             return;
         }
 
@@ -2882,7 +2879,7 @@ void daCow_c::action_wolf() {
             field_0xc20.z += cM_scos(aruAngle) * 500.0f;
             mTargetAngle = cLib_targetAngleY(&current.pos, &field_0xc20);
             mCrazy = daCow_Crazy_BeforeCatch_e;
-            field_0xc90 = 0x96;
+            field_0xc90 = 150;
         case daCow_Crazy_BeforeCatch_e: {
             mTargetAngle = cLib_targetAngleY(&current.pos, &field_0xc20);
 
